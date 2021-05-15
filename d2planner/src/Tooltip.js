@@ -1,6 +1,6 @@
 import './Tooltip.css'
 
-function Tooltip() {
+const Tooltip = () => {
   return (
     <div className='tooltipContainer'>
       <h2>Magic Arrow</h2>

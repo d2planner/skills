@@ -9,7 +9,7 @@
   width: 420px;
 }
 
-.skill {
+.skill, .skill:hover {
   position:absolute;
   top: 3.3%;
   left: 26.5%;
@@ -17,5 +17,5 @@
   height: 11.2%;
   border-radius: 2px;
   background-color: transparent;
-  border-color: red;
+  border-color: transparent;
 }

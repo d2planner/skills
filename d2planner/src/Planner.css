@@ -1,4 +1,13 @@
-.plannerContainer {
+.characterSelectorContainer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;
+  margin: auto;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.plannerCoreContainer {
   display: flex;
   flex-wrap: wrap-reverse;
   align-content: center;

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import './Planner.css'
+import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
@@ -10,22 +11,16 @@ class Planner extends Component {
     currentTab: 1,
   }
 
-  setTab = (id) => {
-    this.setState({currentTab: id})
-  }
+  setTab = (id) => {this.setState({currentTab: id})}
+  setCharacter = (character) => this.setState({character: character})
 
   render() {
     return (
       <div className='plannerContainer'>
-        <div className='characterSelectorContainer'>
-          <a>Amazon</a>
-          <a>Assassin</a>
-          <a>Barbarian</a>
-          <a>Druid</a>
-          <a>Necromancer</a>
-          <a>Paladin</a>
-          <a>Sorceress</a>
-        </div>
+        <CharacterSelector
+          character={this.state.character}
+          setCharacter={this.setCharacter}
+        />
         <hr></hr>
         <div className='plannerCoreContainer'>
           <Tooltip />

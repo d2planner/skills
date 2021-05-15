@@ -1,0 +1,33 @@
+.characterSelectorContainer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;
+  margin: auto;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.characterButton {
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0rem .3rem;
+  margin: 0px;
+  color: #0366ee;
+  font-weight: normal;
+}
+
+.characterButton:hover, .characterButton:active, .characterButton:focus {
+  text-decoration: underline;
+  background-color: transparent;
+  border-color: transparent;
+  color: #0366ee;
+}
+
+.selectedCharacterButton {
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0rem .3rem;
+  margin: 0px;
+  color: #0366ee;
+  font-weight: bold;
+}

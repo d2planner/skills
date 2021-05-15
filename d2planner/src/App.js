@@ -1,6 +1,12 @@
+import './App.css'
+import Planner from './Planner';
+
 function App() {
   return (
-    <header>Diablo II Skill Planner</header>
+    <div className="planner">
+      <h1>Diablo II Skill Planner</h1>
+      <Planner />
+    </div>
   );
 }
 

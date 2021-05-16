@@ -20,6 +20,7 @@ class Planner extends Component {
         <CharacterSelector
           character={this.state.character}
           setCharacter={this.setCharacter}
+          setTab={this.setTab}
         />
         <hr></hr>
         <div className='plannerCoreContainer'>

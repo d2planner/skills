@@ -46,6 +46,7 @@ def parse_mpq_data(outfile):
         charskills=charskills,
         missile_details=get_missile_details(MISSILES_FILE),
         monster_details=get_monster_details(MON_STATS_FILE),
+        related_non_charskills=RELATED_NON_CHARSKILLS,
     )
     with open(outfile, 'w') as f:
         json.dump(skill_details, f)

@@ -1,10 +1,12 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
 from common import safe_int
 
 
-def get_monster_details(monstats_file):
+def get_monster_details(monstats_file: Path) -> dict:
     mon_stats = pd.read_csv(monstats_file, delimiter='\t')
     monster_details = {}
     for index, row in mon_stats.iterrows():
@@ -14,7 +16,7 @@ def get_monster_details(monstats_file):
     return monster_details
 
 
-def _get_monster_details_for_row(row):
+def _get_monster_details_for_row(row: pd.Series) -> dict:
     return {
         'minHPNormal': safe_int(row['minHP']),
         'maxHPNormal': safe_int(row['maxHP']),
@@ -31,7 +33,7 @@ def _get_monster_details_for_row(row):
     }
 
 
-def get_monster_level(monlvl_file):
+def get_monster_level(monlvl_file: Path) -> dict:
     mon_lvl = pd.read_csv(monlvl_file, delimiter='\t')
     mon_lvl_column_map = {
         'DM': 'DMNormal',

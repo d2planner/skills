@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -11,7 +13,7 @@ N_SUBMISSILES_BY_ROOT = {
 }
 
 
-def get_missile_details(missiles_file):
+def get_missile_details(missiles_file: Path) -> dict:
     missiles = pd.read_csv(missiles_file, delimiter='\t')
     missile_details = {}
     for index, row in missiles.iterrows():
@@ -31,7 +33,7 @@ def get_missile_details(missiles_file):
     return missile_details
 
 
-def _get_missile_details_for_row(row):
+def _get_missile_details_for_row(row: pd.Series) -> dict:
     return {
         'range': safe_int(row.Range),
         'levRange': safe_int(row.LevRange),

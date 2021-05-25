@@ -22,7 +22,7 @@ SKILLS_FILE = module_dir / 'data/skills.txt'
 SKILL_DESC_FILE = module_dir / 'data/skilldesc.txt'
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--outfile',
@@ -34,7 +34,7 @@ def main():
     parse_mpq_data(p.outfile)
 
 
-def parse_mpq_data(outfile):
+def parse_mpq_data(outfile: Path) -> None:
     charskills = get_raw_character_skills(
         skills_file=SKILLS_FILE,
         skilldesc_file=SKILL_DESC_FILE,

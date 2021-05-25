@@ -1,7 +1,9 @@
+from pathlib import Path
+
 import pandas as pd
 
 
-def get_strings_map(string_file, expansionstring_file, patchstring_file):
+def get_strings_map(string_file: Path, expansionstring_file: Path, patchstring_file: Path) -> dict[str, str]:
 
     strings = pd.read_csv(string_file, header=0, names=('key', 'value'))
     expansionstring = pd.read_csv(expansionstring_file, header=0, names=('key', 'value'))
@@ -23,7 +25,7 @@ def get_strings_map(string_file, expansionstring_file, patchstring_file):
     )
 
 
-def _clean_string(s):
+def _clean_string(s: str) -> str:
     try:
         cleaned = s.replace('\\n', '\n')
         if s[:2].isnumeric():
@@ -33,6 +35,6 @@ def _clean_string(s):
         return s
 
 
-def get_elemental_type_map(elemtypes_file):
+def get_elemental_type_map(elemtypes_file: Path) -> dict[str, str]:
     elem_types = pd.read_csv(elemtypes_file, delimiter='\t')
     return elem_types.dropna().set_index('Code')['Elemental Type'].to_dict()

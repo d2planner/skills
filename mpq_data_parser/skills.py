@@ -1,4 +1,6 @@
+from pathlib import Path
 import re
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -15,7 +17,12 @@ N_DSC3_COLS = 7
 LVL_BREAKPOINTS = [(0, 1), (1, 8), (8, 16), (16, 22), (22, 28), (28, None)]
 
 
-def get_skill_details(charskills, missile_details, monster_details, related_non_charskills=None):
+def get_skill_details(
+    charskills: Path,
+    missile_details: Path,
+    monster_details: Path,
+    related_non_charskills: Optional[list[str]] = None,
+) -> dict:
     skill_details = {}
     for index, row in charskills.iterrows():
         row = row.copy().replace({np.nan: None})
@@ -44,7 +51,7 @@ def get_skill_details(charskills, missile_details, monster_details, related_non_
     return skill_details
 
 
-def _get_related_entities_for_calcs(row, pattern):
+def _get_related_entities_for_calcs(row: pd.Series, pattern=str) -> set[str]:
     related = set()
     for calc_column in _get_calc_columns():
         calc_expression = row[calc_column]
@@ -56,14 +63,14 @@ def _get_related_entities_for_calcs(row, pattern):
     return related
 
 
-def _without_related(skill):
+def _without_related(skill: dict) -> dict:
     skill = skill.copy()
     skill.pop('relatedSkills', None)
     skill.pop('relatedMissiles', None)
     return skill
 
 
-def _get_skill_details_for_row(row, missile_details, monster_details):
+def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_details: dict) -> dict:
     return {
         'strName': row['str name'],
         'strLong': row['str long'],
@@ -125,7 +132,7 @@ def _get_skill_details_for_row(row, missile_details, monster_details):
     }
 
 
-def _get_mastery_details_for_row(row):
+def _get_mastery_details_for_row(row: pd.Series) -> dict[str, str]:
     passives = {row[f'passivestat{i}']: row[f'passivecalc{i}'] for i in range(1, N_PASSIVE_STATS + 1)}
     mastery_details = {
         'passiveMasteryTh': passives.get('passive_mastery_melee_th') or passives.get('passive_mastery_throw_th'),
@@ -135,7 +142,7 @@ def _get_mastery_details_for_row(row):
     return {k: v for k, v in mastery_details.items() if v or v == 0}
 
 
-def _get_calc_fields_for_row(row):
+def _get_calc_fields_for_row(row: pd.Series) -> dict[str, Union[int, str]]:
     calcs = {
         'auraLen': row.auralencalc,
         **{f'calc{i}': row[f'calc{i}'] for i in range(1, N_CALC_FIELDS + 1)},
@@ -143,7 +150,7 @@ def _get_calc_fields_for_row(row):
     return {k: v for k, v in calcs.items() if v or v == 0}
 
 
-def _get_desclines_for_row(row, column_root, max_entries):
+def _get_desclines_for_row(row: pd.Series, column_root: str, max_entries: int) -> list[dict]:
     row = row.copy().replace({np.nan: None})
 
     entries = []
@@ -165,7 +172,13 @@ def _get_desclines_for_row(row, column_root, max_entries):
     return entries
 
 
-def get_raw_character_skills(skills_file, skilldesc_file, strings_map, elemental_type_map, related_non_charskills=None):
+def get_raw_character_skills(
+    skills_file: Path,
+    skilldesc_file: Path,
+    strings_map: dict[str, str],
+    elemental_type_map: dict[str, str],
+    related_non_charskills: Optional[list[str]] = None
+) -> pd.DataFrame:
     skills = pd.read_csv(skills_file, delimiter='\t')
     skilldesc = pd.read_csv(skilldesc_file, delimiter='\t')
 
@@ -182,7 +195,7 @@ def get_raw_character_skills(skills_file, skilldesc_file, strings_map, elemental
     return charskills
 
 
-def _get_string_mapped_columns():
+def _get_string_mapped_columns() -> list[str]:
     string_mapped_columns = ['str name', 'str long', 'str alt', 'str mana']
     for col_root, line_limit in {'desctext': N_DESC_COLS, 'dsc2text': N_DSC2_COLS, 'dsc3text': N_DSC3_COLS}.items():
         for a_b in 'ab':
@@ -191,7 +204,7 @@ def _get_string_mapped_columns():
     return string_mapped_columns
 
 
-def _get_calc_columns():
+def _get_calc_columns() -> list[str]:
     calc_columns = []
     for col_root, line_limit in {'desccalc': N_DESC_COLS, 'dsc2calc': N_DSC2_COLS, 'dsc3calc': N_DSC3_COLS}.items():
         for a_b in 'ab':

@@ -6,6 +6,7 @@ from missiles import get_missile_details
 from monsters import get_monster_details
 from skills import get_raw_character_skills, get_skill_details
 from string_mappings import get_elemental_type_map, get_strings_map
+from tree import build_skills_tree_lookup
 
 module_dir = Path(__file__).parent
 
@@ -48,8 +49,13 @@ def parse_mpq_data(outfile: Path) -> None:
         monster_details=get_monster_details(MON_STATS_FILE),
         related_non_charskills=RELATED_NON_CHARSKILLS,
     )
+    mpq_data = {
+        'tree': build_skills_tree_lookup(skill_details),
+        'skillDetails': skill_details,
+    }
+
     with open(outfile, 'w') as f:
-        json.dump(skill_details, f)
+        json.dump(mpq_data, f)
 
 
 if __name__ == '__main__':

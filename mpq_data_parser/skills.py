@@ -15,6 +15,15 @@ N_DESC_COLS = 6
 N_DSC2_COLS = 4
 N_DSC3_COLS = 7
 LVL_BREAKPOINTS = [(0, 1), (1, 8), (8, 16), (16, 22), (22, 28), (28, None)]
+CHARCLASS_MAP = {
+    'ama': 'amazon',
+    'ass': 'assassin',
+    'bar': 'barbarian',
+    'dru': 'druid',
+    'nec': 'necromancer',
+    'pal': 'paladin',
+    'sor': 'sorceress',
+}
 
 
 def get_skill_details(
@@ -74,6 +83,7 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
     return {
         'strName': row['str name'],
         'strLong': row['str long'],
+        'charclass': CHARCLASS_MAP.get(row.charclass),
         'skillPage': safe_int(row.SkillPage),
         'skillRow': safe_int(row.SkillRow),
         'skillColumn': safe_int(row.SkillColumn),

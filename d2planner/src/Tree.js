@@ -1,6 +1,6 @@
 import './Tree.css';
 import Tab from './Tab.js'
-import images from './assets/game_images'
+import images from './assets/1.14D/game_images'
 
 const Tree = (props) => {
   const {character, currentTab, setTab} = props

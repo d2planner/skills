@@ -1,4 +1,4 @@
-import './CharacterSelector.css'
+import './CharacterSelector.css';
 
 const characters = [
   'amazon',
@@ -8,7 +8,7 @@ const characters = [
   'necromancer',
   'paladin',
   'sorceress',
-]
+];
 
 const CharacterSelector = (props) => {
   return (
@@ -29,10 +29,10 @@ const CharacterSelector = (props) => {
           >
             {character}
           </button>
-        )
-      })}
+        );
+      })};
     </div>
   );
-}
+};
 
 export default CharacterSelector;

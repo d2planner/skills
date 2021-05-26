@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 
-import './Planner.css'
-import skillData from './assets/1.14D/game_data/d2_skill_data.json'
+import './Planner.css';
+import skillData from './assets/1.14D/game_data/d2_skill_data.json';
 import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
@@ -11,11 +11,11 @@ class Planner extends Component {
     character: 'amazon',
     currentTab: 1,
     ...Object.keys(skillData.skillDetails).reduce((o, key) => ({ ...o, [`${key}Level`]: 0}), {}),
-  }
+  };
 
-  setTab = (id) => this.setState({currentTab: id})
-  setCharacter = (character) => this.setState({character: character})
-  setSkillLevel = (skillName, lvl) => this.setState({[`${skillName}Level`]: lvl})
+  setTab = (id) => this.setState({currentTab: id});
+  setCharacter = (character) => this.setState({character: character});
+  setSkillLevel = (skillName, lvl) => this.setState({[`${skillName}Level`]: lvl});
 
   render() {
     return (
@@ -39,7 +39,7 @@ class Planner extends Component {
         </div>
       </div>
     );
-  }
-}
+  };
+};
 
 export default Planner;

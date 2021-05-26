@@ -1,4 +1,4 @@
-import './Tooltip.css'
+import './Tooltip.css';
 
 const Tooltip = () => {
   return (
@@ -16,6 +16,6 @@ Mana Cost: 1.5`}
       </p>
     </div>
   );
-}
+};
 
 export default Tooltip;

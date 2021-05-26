@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import Planner from './Planner';
 
 function App() {
@@ -8,6 +8,6 @@ function App() {
       <Planner />
     </div>
   );
-}
+};
 
 export default App;

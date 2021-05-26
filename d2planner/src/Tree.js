@@ -3,9 +3,16 @@ import Tab from './Tab.js'
 import images from './assets/1.14D/game_images'
 
 const Tree = (props) => {
-  const {character, treeData, currentTab, setTab} = props
+  const {plannerState, treeData, character, currentTab, setTab, setSkillLevel} = props
   const skills = treeData[character][currentTab].map((skill) => {
-    return <Skill {...skill} points={14} key={skill.skillName} />
+    return (
+      <Skill
+          {...skill}
+          lvl={plannerState[`${skill.skillName}Level`]}
+          key={skill.skillName}
+          setSkillLevel={setSkillLevel}
+      />
+    )
   })
   return (
     <div className='treeContainer'>
@@ -23,11 +30,21 @@ const Tree = (props) => {
 }
 
 const Skill = (props) => {
-  const {row, column, skillName} = props
+  const {row, column, skillName, lvl, setSkillLevel} = props
+  const onClick = () => setSkillLevel(`${skillName}`, lvl + 1)
+  const onContextMenu = (e) => {
+    e.preventDefault();
+    if (lvl > 0) {setSkillLevel(`${skillName}`, lvl - 1)};
+  }
+
   return (
     <div className={`skillContainer row${row} column${column}`}>
-      <button className='skill'></button>
-      <p className='skillPoints'>{props.points}</p>
+      <button
+        className='skill'
+        onClick={onClick}
+        onContextMenu={onContextMenu}
+      ></button>
+      <p className='skillPoints'>{lvl}</p>
     </div>
   )
 }

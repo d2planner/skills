@@ -9,7 +9,7 @@
 }
 .skillContainer{
   position: absolute;
-  width: 19.5%;
+  width: 19.7%;
   height: 14.45%;
 }
 .skillContainer.row1{
@@ -56,7 +56,7 @@
 .skillPoints {
   position:  absolute;
   bottom: 0%;
-  right:  7%;
+  right:  10%;
   margin:  0px;
   color:  antiquewhite;
   font-weight: bold;

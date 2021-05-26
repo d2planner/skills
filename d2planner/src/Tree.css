@@ -4,18 +4,61 @@
   width: fit-content;
   float: left;
 }
-
 .tree {
   width: 420px;
 }
-
-.skill, .skill:hover {
-  position:absolute;
+.skillContainer{
+  position: absolute;
+  width: 19.5%;
+  height: 14.45%;
+}
+.skillContainer.row1{
   top: 3.3%;
-  left: 26.5%;
-  width: 15%;
-  height: 11.2%;
+}
+.skillContainer.row2{
+  top: 18.7%;
+}
+.skillContainer.row3{
+  top: 34.3%;
+}
+.skillContainer.row4{
+  top: 49.8%;
+}
+.skillContainer.row5{
+  top: 65.4%;
+}
+.skillContainer.row6{
+  top: 80.9%;
+}
+.skillContainer.column1{
+  left: 4.82%;
+}
+.skillContainer.column2{
+  left: 26.3%;
+}
+.skillContainer.column3{
+  left: 47.9%;
+}
+.skill, .skill:focus {
+  position: absolute;
+  width: 77%;
+  height:  77%;
   border-radius: 2px;
   background-color: transparent;
   border-color: transparent;
+}
+.skill:hover, .skill:active {
+  border-radius: 2px;
+  border-width: 3px;
+  background-color: transparent;
+  border-color: #1229B5;
+}
+.skillPoints {
+  position:  absolute;
+  bottom: 0%;
+  right:  7%;
+  margin:  0px;
+  color:  antiquewhite;
+  font-weight: bold;
+  font-size: .9em;
 }

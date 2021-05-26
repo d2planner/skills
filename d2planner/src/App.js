@@ -4,7 +4,7 @@ import Planner from './Planner';
 function App() {
   return (
     <div className="planner">
-      <h1>Diablo II Skill Planner</h1>
+      <h1 className="mainTitle">Diablo II Skill Planner</h1>
       <Planner />
     </div>
   );

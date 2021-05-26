@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import './Planner.css'
+import skillData from './assets/1.14D/game_data/d2_skill_data.json'
 import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
@@ -27,6 +28,7 @@ class Planner extends Component {
           <Tooltip />
           <Tree
             character={this.state.character}
+            treeData={skillData.tree}
             currentTab={this.state.currentTab}
             setTab={this.setTab}
           />

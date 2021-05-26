@@ -5,7 +5,7 @@ from typing import Optional, Union
 import numpy as np
 import pandas as pd
 
-from common import safe_int, to_camelcase
+from common import safe_int, camelcase_skill_or_missile_calc, to_camelcase
 
 # Constants
 N_PASSIVE_STATS = 5
@@ -44,12 +44,13 @@ def get_skill_details(
         row = row.copy().replace({np.nan: None})
         skill_key = to_camelcase(row.skill)
 
-        related_skills = _get_related_entities_for_calcs(row, r"(?:skill|sklvl)\('((?:\w|\s)+)'(?:\.(?!lvl)\w+)+\)")
+        other_skill_params_pattern = r"(?:skill|sklvl)\('((?:\w|\s)+)'(?:\.(?!lvl|blvl)\w+)+\)"
+        related_skills = _get_related_entities_for_calcs(row, other_skill_params_pattern)
         related_skill_details = {skill: _without_related(skill_details[skill]) for skill in related_skills}
         if related_skill_details:
             skill_details[skill_key]['relatedSkills'] = related_skill_details
 
-        related_missiles = _get_related_entities_for_calcs(row, r"miss\('((?:\w|\s)+)'\.(?!lvl)\w+\)")
+        related_missiles = _get_related_entities_for_calcs(row, r"miss\('((?:\w|\s)+)'\.\w+\)")
         related_missile_details = {missile: _without_related(missile_details[missile]) for missile in related_missiles}
         if related_missile_details:
             skill_details[skill_key]['relatedMissiles'] = related_missile_details
@@ -70,6 +71,15 @@ def _get_related_entities_for_calcs(row: pd.Series, pattern=str) -> set[str]:
         matches = re.findall(pattern=pattern, string=str(calc_expression))
         related = related.union({to_camelcase(match) for match in matches})
     return related
+
+
+def _get_calc_columns() -> list[str]:
+    calc_columns = []
+    for col_root, line_limit in {'desccalc': N_DESC_COLS, 'dsc2calc': N_DSC2_COLS, 'dsc3calc': N_DSC3_COLS}.items():
+        for a_b in 'ab':
+            for i in range(1, line_limit + 1):
+                calc_columns.append(f'{col_root}{a_b}{i}')
+    return calc_columns
 
 
 def _without_related(skill: dict) -> dict:
@@ -94,7 +104,7 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
         'manaShift': safe_int(row['manashift']),
         'toHit': safe_int(row.ToHit),
         'levToHit': safe_int(row.LevToHit),
-        'toHitCalc': row.ToHitCalc,
+        'toHitCalc': camelcase_skill_or_missile_calc(row.ToHitCalc),
         'hitShift': safe_int(row.HitShift),
         'srcDam': safe_int(row.SrcDam),
         'minDam': safe_int(row.MinDam),
@@ -109,7 +119,7 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
         'maxLevDam3': safe_int(row.MaxLevDam3),
         'maxLevDam4': safe_int(row.MaxLevDam4),
         'maxLevDam5': safe_int(row.MaxLevDam5),
-        'dmgSymPerCalc': row.DmgSymPerCalc,
+        'dmgSymPerCalc': camelcase_skill_or_missile_calc(row.DmgSymPerCalc),
         'eType': row.EType,
         'eMin': safe_int(row.EMin),
         'eMinLev1': safe_int(row.EMinLev1),
@@ -123,15 +133,19 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
         'eMaxLev3': safe_int(row.EMaxLev3),
         'eMaxLev4': safe_int(row.EMaxLev4),
         'eMaxLev5': safe_int(row.EMaxLev5),
-        'eDmgSymPerCalc': row.EDmgSymPerCalc,
+        'eDmgSymPerCalc': camelcase_skill_or_missile_calc(row.EDmgSymPerCalc),
         'eLen': safe_int(row.ELen),
         'eLevLen1': safe_int(row.ELevLen1),
         'eLevLen2': safe_int(row.ELevLen2),
         'eLevLen3': safe_int(row.ELevLen3),
-        'eLenSymPerCalc': row.ELenSymPerCalc,
+        'eLenSymPerCalc': camelcase_skill_or_missile_calc(row.ELenSymPerCalc),
         'mastery': _get_mastery_details_for_row(row),
         'calcs': _get_calc_fields_for_row(row),
-        'params': {f'par{i}': safe_int(row[f'Param{i}']) for i in range(1, N_PARAMS + 1) if row.get(f'Param{i}') is not None},
+        'params': {
+            f'par{i}': safe_int(row[f'Param{i}'])
+            for i in range(1, N_PARAMS + 1)
+            if row.get(f'Param{i}') is not None
+        },
         'descLines': _get_desclines_for_row(row, 'desc', N_DESC_COLS),
         'dsc2Lines': _get_desclines_for_row(row, 'dsc2', N_DSC2_COLS),
         'dsc3Lines': _get_desclines_for_row(row, 'dsc3', N_DSC3_COLS),
@@ -149,7 +163,7 @@ def _get_mastery_details_for_row(row: pd.Series) -> dict[str, str]:
         'passiveMasteryDmg': passives.get('passive_mastery_melee_dmg') or passives.get('passive_mastery_throw_dmg'),
         'passiveMasteryCrit': passives.get('passive_mastery_melee_crit') or passives.get('passive_mastery_throw_crit'),
     }
-    return {k: v for k, v in mastery_details.items() if v or v == 0}
+    return {k: camelcase_skill_or_missile_calc(v) for k, v in mastery_details.items() if v or v == 0}
 
 
 def _get_calc_fields_for_row(row: pd.Series) -> dict[str, Union[int, str]]:
@@ -157,7 +171,7 @@ def _get_calc_fields_for_row(row: pd.Series) -> dict[str, Union[int, str]]:
         'auraLen': row.auralencalc,
         **{f'calc{i}': row[f'calc{i}'] for i in range(1, N_CALC_FIELDS + 1)},
     }
-    return {k: v for k, v in calcs.items() if v or v == 0}
+    return {k: camelcase_skill_or_missile_calc(v) for k, v in calcs.items() if v or v == 0}
 
 
 def _get_desclines_for_row(row: pd.Series, column_root: str, max_entries: int) -> list[dict]:
@@ -175,14 +189,14 @@ def _get_desclines_for_row(row: pd.Series, column_root: str, max_entries: int) -
             f'{column_root}CalcA': safe_int(row[f'{column_root}calca{i}']),
             f'{column_root}CalcB': safe_int(row[f'{column_root}calcb{i}']),
         }
-        entries.append({k: v for k, v in entry.items() if v or v == 0})
+        entries.append({k: camelcase_skill_or_missile_calc(v) for k, v in entry.items() if v or v == 0})
 
     if column_root in ('desc', 'dsc2'):
         entries.reverse()  # D2 renders desclines bottom-up
     return entries
 
 
-def get_raw_character_skills(
+def get_character_skills(
     skills_file: Path,
     skilldesc_file: Path,
     strings_map: dict[str, str],
@@ -212,12 +226,3 @@ def _get_string_mapped_columns() -> list[str]:
             for i in range(1, line_limit + 1):
                 string_mapped_columns.append(f'{col_root}{a_b}{i}')
     return string_mapped_columns
-
-
-def _get_calc_columns() -> list[str]:
-    calc_columns = []
-    for col_root, line_limit in {'desccalc': N_DESC_COLS, 'dsc2calc': N_DSC2_COLS, 'dsc3calc': N_DSC3_COLS}.items():
-        for a_b in 'ab':
-            for i in range(1, line_limit + 1):
-                calc_columns.append(f'{col_root}{a_b}{i}')
-    return calc_columns

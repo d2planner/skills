@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from common import safe_int, to_camelcase
+from common import safe_int, camelcase_skill_or_missile_calc, to_camelcase
 
 N_SUBMISSILES_BY_ROOT = {
     'SubMissile': 3,
@@ -50,7 +50,7 @@ def _get_missile_details_for_row(row: pd.Series) -> dict:
         'maxLevDam3': safe_int(row.MaxLevDam3),
         'maxLevDam4': safe_int(row.MaxLevDam4),
         'maxLevDam5': safe_int(row.MaxLevDam5),
-        'dmgSymPerCalc': row.DmgSymPerCalc,
+        'dmgSymPerCalc': camelcase_skill_or_missile_calc(row.DmgSymPerCalc),
         'eType': row.EType,
         'eMin': safe_int(row.EMin),
         'eMinLev1': safe_int(row.MinELev1),
@@ -64,7 +64,7 @@ def _get_missile_details_for_row(row: pd.Series) -> dict:
         'eMaxLev3': safe_int(row.MaxELev3),
         'eMaxLev4': safe_int(row.MaxELev4),
         'eMaxLev5': safe_int(row.MaxELev5),
-        'eDmgSymPerCalc': row.EDmgSymPerCalc,
+        'eDmgSymPerCalc': camelcase_skill_or_missile_calc(row.EDmgSymPerCalc),
         'eLen': safe_int(row.ELen),
         'eLevLen1': safe_int(row.ELevLen1),
         'eLevLen2': safe_int(row.ELevLen2),

@@ -4,7 +4,7 @@ import images from './assets/1.14D/game_images'
 
 const Tree = (props) => {
   const {plannerState, treeData, character, currentTab, setTab, setSkillLevel} = props
-  const skills = treeData[character][currentTab].map((skill) => {
+  const skills = treeData[currentTab]['skills'].map((skill) => {
     return (
       <Skill
           {...skill}
@@ -22,9 +22,9 @@ const Tree = (props) => {
         alt='Skill Tree'
       />
       {skills}
-      <Tab id={1} setTab={setTab}/>
-      <Tab id={2} setTab={setTab}/>
-      <Tab id={3} setTab={setTab}/>
+      <Tab id={1} treeName={treeData[1]['treeName']} setTab={setTab}/>
+      <Tab id={2} treeName={treeData[2]['treeName']} setTab={setTab}/>
+      <Tab id={3} treeName={treeData[3]['treeName']} setTab={setTab}/>
     </div>
   );
 }

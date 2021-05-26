@@ -1,10 +1,10 @@
 import './Tab.css'
 
 const Tab = (props) => {
-  const {id, setTab} = props
+  const {id, treeName, setTab} = props
   return (
-    <button className={`Tab${id}`} onClick={() => setTab(id)}>
-      {`Tab ${id}`}
+    <button className={`Tab Tab${id}`} onClick={() => setTab(id)}>
+      {`${treeName}`}
     </button>
   );
 }

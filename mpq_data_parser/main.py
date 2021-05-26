@@ -36,10 +36,11 @@ def main() -> None:
 
 
 def parse_mpq_data(outfile: Path) -> None:
+    strings_map = get_strings_map(STRING_FILE, EXPANSION_STRING_FILE, PATCH_STRING_FILE)
     charskills = get_character_skills(
         skills_file=SKILLS_FILE,
         skilldesc_file=SKILL_DESC_FILE,
-        strings_map=get_strings_map(STRING_FILE, EXPANSION_STRING_FILE, PATCH_STRING_FILE),
+        strings_map=strings_map,
         elemental_type_map=get_elemental_type_map(ELEM_TYPES_FILE),
         related_non_charskills=RELATED_NON_CHARSKILLS,
     )
@@ -50,7 +51,7 @@ def parse_mpq_data(outfile: Path) -> None:
         related_non_charskills=RELATED_NON_CHARSKILLS,
     )
     mpq_data = {
-        'tree': build_skills_tree_lookup(skill_details),
+        'tree': build_skills_tree_lookup(skill_details, strings_map),
         'skillDetails': skill_details,
     }
 

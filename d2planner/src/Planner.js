@@ -30,7 +30,7 @@ class Planner extends Component {
           <Tooltip />
           <Tree
             plannerState={this.state}
-            treeData={skillData.tree}
+            treeData={skillData.tree[this.state.character]}
             character={this.state.character}
             currentTab={this.state.currentTab}
             setTab={this.setTab}

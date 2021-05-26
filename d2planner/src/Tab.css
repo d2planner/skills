@@ -1,32 +1,30 @@
-.Tab1, .Tab1:hover, .Tab1:focus {
+.Tab, .Tab:hover, .Tab:focus {
   position:absolute;
-  top: 75.5%;
-  left: 72%;
   width: 26.5%;
   height: 21.7%;
   border-radius: 15px;
   background-color: transparent;
   border-color: transparent;
+  text-align: center;
+  padding: 0px;
+  padding-left: 2px;
+  color:  antiquewhite;
+  line-height: 1.5em;
+  font-weight: 600;
+  white-space: pre;
+}
+
+.Tab1, .Tab1:hover, .Tab1:focus {
+  top: 75.5%;
+  left: 72%;
 }
 
 .Tab2, .Tab2:hover, .Tab2:focus {
-  position:absolute;
   top: 50.7%;
   left: 72%;
-  width: 26.5%;
-  height: 21.7%;
-  border-radius: 15px;
-  background-color: transparent;
-  border-color: transparent;
 }
 
 .Tab3, .Tab3:hover, .Tab3:focus {
-  position:absolute;
   top: 26%;
   left: 72%;
-  width: 26.5%;
-  height: 21.7%;
-  border-radius: 15px;
-  background-color: transparent;
-  border-color: transparent;
 }

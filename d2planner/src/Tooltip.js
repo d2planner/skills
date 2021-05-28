@@ -1,19 +1,29 @@
+import React, {useEffect, useState} from 'react';
 import './Tooltip.css';
 
-const Tooltip = () => {
+const Tooltip = (props) => {
+
+  const [name, SetName] = useState("Magic Arrow")
+  const [desc, setDesc] = useState("Creates a magical arrow or bolt that does extra damage")
+  const [currentLevel, setCurrentLevel] = useState (1)
+  const [levelDesc, setLevelDesc] = useState("Converts 1% Physical Damage to Magic Damage")
+  const [attackRating, setAttackRating] = useState(10)
+  const [effect, setEffect] = useState(1)
+  const [cost, setCost] = useState(1.5)
+  
+  
   return (
     <div className='tooltipContainer'>
-      <h2>Magic Arrow</h2>
+      <h2>{name}</h2>
       <p className='skillDescription'>
-        Creates a magical arrow or bolt that does extra damage
+      {desc}
       </p>
-      <p className='skillStats' style={{whiteSpace: 'pre'}}>
-{`Current Skill Level: 1
-Converts 1% Physical Damage to Magic Damage
-To Attack Rating: +10 percent
-Damage: +1
-Mana Cost: 1.5`}
-      </p>
+      <p className='skillStats' style={{whiteSpace: 'pre'}}>{`Current Skill level: ${currentLevel}`}</p>
+      <p className='skillStats' style={{whiteSpace: 'pre'}}>{levelDesc}</p>
+      <p className='skillStats' style={{whiteSpace: 'pre'}}>{`To Attack Rating: +${attackRating}%` }</p>
+      <p className='skillStats' style={{whiteSpace: 'pre'}}>{`Damage: +${effect}`}</p>
+      <p className='skillStats' style={{whiteSpace: 'pre'}}>{`Mana Cost: ${cost}`}</p>
+      
     </div>
   );
 };

@@ -27,7 +27,11 @@ class Planner extends Component {
         />
         <hr></hr>
         <div className='plannerCoreContainer'>
-          <Tooltip />
+          <Tooltip
+            skill={skillData.skillDetails.ironSkin}
+            lvl={10}
+            plannerState={this.state}
+          />
           <Tree
             plannerState={this.state}
             treeData={skillData.tree[this.state.character]}

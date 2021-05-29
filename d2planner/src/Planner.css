@@ -3,4 +3,6 @@
   flex-wrap: wrap-reverse;
   align-content: center;
   margin-top: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
 }

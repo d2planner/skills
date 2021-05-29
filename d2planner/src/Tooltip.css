@@ -1,4 +1,16 @@
 .tooltipContainer {
     padding: 1em;
-    max-width: 25em;
+    max-width: 20em;
+    white-space: pre;
+    text-align: center;
+    padding-right: 3em;
  }
+
+.skillName {
+    margin-bottom:  .2em;
+}
+
+.levelHeader {
+    font-size: 14pt;
+    margin-bottom: .2em;
+}

@@ -26,6 +26,10 @@ const SkillPreamble = (props) => {
 
 const CurrentLevel = (props) => {
   const {skill, lvl, plannerState} = props;
+  if (lvl === 0) {
+    return null;
+  }
+
   return (
     <div className='currentLevelBlock'>
       <h3 className='currentLevelHeader levelHeader'>{`Current Level: ${lvl}`}</h3>
@@ -38,7 +42,7 @@ const NextLevel = (props) => {
   const {skill, lvl, plannerState} = props;
   return (
     <div className='nextLevelBlock'>
-      <h3 className='nextLevelHeader levelHeader'>{`Next Level: ${lvl + 1}`}</h3>
+      <h3 className='nextLevelHeader levelHeader'>Next Level:</h3>
       <p className='levelDesclines'>{formatDesclines('desc', skill, lvl + 1, plannerState)}</p>
     </div>
   );

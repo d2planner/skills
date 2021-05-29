@@ -10,12 +10,14 @@ class Planner extends Component {
   state = {
     character: 'amazon',
     currentTab: 1,
+    currentSkill: 'magicArrow',
     ...Object.keys(skillData.skillDetails).reduce((o, key) => ({ ...o, [`${key}Level`]: 0}), {}),
   };
 
   setTab = (id) => this.setState({currentTab: id});
   setCharacter = (character) => this.setState({character: character});
   setSkillLevel = (skillName, lvl) => this.setState({[`${skillName}Level`]: lvl});
+  setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
     return (
@@ -28,8 +30,8 @@ class Planner extends Component {
         <hr></hr>
         <div className='plannerCoreContainer'>
           <Tooltip
-            skill={skillData.skillDetails.ironSkin}
-            lvl={10}
+            skill={skillData.skillDetails[this.state.currentSkill]}
+            lvl={this.state[`${this.state.currentSkill}Level`]}
             plannerState={this.state}
           />
           <Tree
@@ -39,6 +41,7 @@ class Planner extends Component {
             currentTab={this.state.currentTab}
             setTab={this.setTab}
             setSkillLevel={this.setSkillLevel}
+            setCurrentSkill={this.setCurrentSkill}
           />
         </div>
       </div>

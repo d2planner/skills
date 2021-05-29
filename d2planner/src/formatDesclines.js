@@ -28,7 +28,11 @@ function formatDesclines (root, skill, lvl, skillLevels) {
 
 function formatDescline (desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
   const formatter = formattersByDescline[desclineNumber];
+  if (formatter === undefined) {
+    return `MISSING FORMATTER: ${desclineNumber}`;
+  }
   return formatter(skill, lvl, skillLevels, ta, tb, ca, cb);
 }
+
 
 export default formatDesclines;

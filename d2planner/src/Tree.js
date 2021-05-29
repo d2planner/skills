@@ -3,7 +3,7 @@ import Tab from './Tab.js';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
-  const {plannerState, treeData, character, currentTab, setTab, setSkillLevel} = props;
+  const {plannerState, treeData, character, currentTab, setTab, setSkillLevel, setCurrentSkill} = props;
   const skills = treeData[currentTab]['skills'].map((skill) => {
     return (
       <Skill
@@ -11,6 +11,7 @@ const Tree = (props) => {
           lvl={plannerState[`${skill.skillName}Level`]}
           key={skill.skillName}
           setSkillLevel={setSkillLevel}
+          setCurrentSkill={setCurrentSkill}
       />
     );
   });
@@ -30,8 +31,9 @@ const Tree = (props) => {
 };
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, setSkillLevel} = props;
+  const {row, column, skillName, lvl, setSkillLevel, setCurrentSkill} = props;
   const onClick = () => setSkillLevel(`${skillName}`, lvl + 1);
+  const onHover = () => setCurrentSkill(`${skillName}`)
   const onContextMenu = (e) => {
     e.preventDefault();
     if (lvl > 0) {setSkillLevel(`${skillName}`, lvl - 1)};
@@ -42,6 +44,7 @@ const Skill = (props) => {
       <button
         className='skill'
         onClick={onClick}
+        onMouseEnter={onHover}
         onContextMenu={onContextMenu}
       ></button>
       <p className='skillPoints'>{lvl}</p>

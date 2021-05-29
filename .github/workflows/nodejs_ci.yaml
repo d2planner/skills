@@ -22,5 +22,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+        - working-directory: d2planner
       - run: npm run build --if-present
+        - working-directory: d2planner
       - run: npm test
+        - working-directory: d2planner

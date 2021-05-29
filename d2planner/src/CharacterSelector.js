@@ -29,8 +29,8 @@ const CharacterSelector = (props) => {
           >
             {character}
           </button>
-        );
-      })};
+        )
+      })}
     </div>
   );
 };

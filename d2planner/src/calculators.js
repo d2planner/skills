@@ -29,4 +29,5 @@ function createParamCalculator (paramNumber) {
   return calculator;
 }
 
+export {createLinearCalculator, createParamCalculator};
 export default calcLookup;

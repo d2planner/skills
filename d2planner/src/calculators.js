@@ -1,6 +1,18 @@
 import calculateSkillValue from './calculateSkillValue';
+import {
+  calculatePhysicalDamageMin,
+  calculatePhysicalDamageMax,
+  calculateElementalDamageMin,
+  calculateElementalDamageMax,
+} from './damageCalculators';
 
 const calcLookup = {
+  toht: calculateToHit,
+  edmn: calculateElementalDamageMin,
+  edmx: calculateElementalDamageMax,
+
+  edns: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMin(skill, lvl, skillLevels)),
+  edxs: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMax(skill, lvl, skillLevels)),
   ln12: createLinearCalculator('par1', 'par2'),
   ln34: createLinearCalculator('par3', 'par4'),
   ln56: createLinearCalculator('par5', 'par6'),

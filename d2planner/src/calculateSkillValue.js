@@ -1,3 +1,5 @@
+import { evaluate } from 'mathjs'
+
 import calcLookup from './calculators';
 
 function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
@@ -5,7 +7,8 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
     return undefined
   }
   calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels);
-  return calcExpression;
+  const calc = evaluate(calcExpression);
+  return calc;
 }
 
 

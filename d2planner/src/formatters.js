@@ -9,7 +9,7 @@ const formattersByDescline = {
 
 
 function createCalcFormatter (template, frames=false, gameUnits=false, precision=null, multiplier=null) {
-  function formatter(skill, lvl, skillLevels, ta, tb, ca, cb) {
+  function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
     let calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
     let calcB = calculateSkillValue(cb, skill, lvl, skillLevels);
 
@@ -22,7 +22,7 @@ function createCalcFormatter (template, frames=false, gameUnits=false, precision
 }
 
 
-function convertCalc(calc, frames, gameUnits, precision, multiplier) {
+function convertCalc (calc, frames, gameUnits, precision, multiplier) {
     if (calc === undefined) {
       return calc;
     }
@@ -42,7 +42,7 @@ function convertCalc(calc, frames, gameUnits, precision, multiplier) {
 }
 
 
-function floor(x, precision=null) {
+function floor (x, precision=null) {
   if (precision === null) {
     return Math.floor(x);
   }

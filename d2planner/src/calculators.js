@@ -11,6 +11,7 @@ const calcLookup = {
   par6: createParamCalculator(6),
   par7: createParamCalculator(7),
   par8: createParamCalculator(8),
+  lvl: (skill, lvl, skillLevels) => (lvl),
 };
 
 function createLinearCalculator (paramKeyA, paramKeyB) {

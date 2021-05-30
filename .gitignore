@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+mpq_data_parser/data

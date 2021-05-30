@@ -48,11 +48,8 @@ function calculateDamage (
     const damagePerLevel = skill[`${damagePerLevelKeyRoot}${i}`] || 0;
     const lvlForBand = (upper !== null) ? Math.min(upper, lvl) : lvl;
     damage += (lvlForBand - lower) * damagePerLevel;
-    console.log('i ' + i)
-    console.log('damage ' + damage)
   }
   const hitShift = skill.hitShift || 0;
-  console.log('final damage ' + damage)
   return damage * synergyMultiplier * 2 ** (hitShift - 8);
 }
 

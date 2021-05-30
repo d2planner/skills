@@ -69,7 +69,7 @@ function getEntityKind (entityKey) {
 
 
 function evaluateCalcs (calcExpression, skill, lvl, skillLevels) {
-  const re = new RegExp(Object.keys(calcLookup).join('|'));
+  const re = new RegExp(Object.keys(calcLookup).join('|'), 'g');
   const replacer = (match) => {
     const calculator = calcLookup[match];
     return calculator(skill, lvl, skillLevels);

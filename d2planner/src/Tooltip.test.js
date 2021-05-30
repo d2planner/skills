@@ -4,12 +4,19 @@ import '@testing-library/jest-dom'
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
 import Tooltip from './Tooltip'
 
+
+let skillLevels = {}
+Object.keys(skillData.skillDetails).forEach((skillName) => {
+  skillLevels[`${skillName}Level`] = 0
+});
+
+
 describe('<Tooltip />', () => {
   const plannerState = {
     character: 'amazon',
     currentTab: 1,
     currentSkill: 'magicArrow',
-    ...Object.keys(skillData.skillDetails).reduce((o, key) => ({ ...o, [`${key}Level`]: 0}), {}),
+    ...skillLevels,
   }
 
   it('renders magic arrow', () => {

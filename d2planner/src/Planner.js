@@ -6,12 +6,17 @@ import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
+let skillLevels = {}
+Object.keys(skillData.skillDetails).forEach((skillName) => {
+  skillLevels[`${skillName}Level`] = 0
+});
+
 class Planner extends Component {
   state = {
     character: 'amazon',
     currentTab: 1,
     currentSkill: 'magicArrow',
-    ...Object.keys(skillData.skillDetails).reduce((o, key) => ({ ...o, [`${key}Level`]: 0}), {}),
+    ...skillLevels,
   };
 
   setTab = (id) => this.setState({currentTab: id});

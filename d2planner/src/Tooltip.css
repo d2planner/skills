@@ -3,7 +3,8 @@
     width: 26em;
     white-space: pre-line;
     text-align: center;
-    padding-right: 3em;
+    padding-right: 2em;
+    padding-left:  0px;
  }
 
 .skillName {

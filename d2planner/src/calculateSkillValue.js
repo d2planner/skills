@@ -4,8 +4,13 @@ import calcLookup from './calculators';
 
 function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
   if (calcExpression === undefined) {
-    return undefined
+    return calcExpression;
   }
+  calcExpression = String(calcExpression)
+  if (!calcExpression.trim()) {
+    return calcExpression;
+  }
+
   calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels);
   const calc = evaluate(calcExpression);
   return calc;

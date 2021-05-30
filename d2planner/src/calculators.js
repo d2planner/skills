@@ -1,3 +1,5 @@
+import calculateSkillValue from './calculateSkillValue';
+
 const calcLookup = {
   ln12: createLinearCalculator('par1', 'par2'),
   ln34: createLinearCalculator('par3', 'par4'),
@@ -13,6 +15,14 @@ const calcLookup = {
   par8: createParamCalculator(8),
   lvl: (skill, lvl, skillLevels) => (lvl),
 };
+
+function calculateToHit(skill, lvl, skillLevels) {
+  const toHitExpression = skill.toHitCalc;
+  if (toHitExpression) {
+    return calculateSkillValue(toHitExpression, skill, lvl, skillLevels);
+  }
+  return (skill.toHit || 0) + (skill.levToHit || 0) * (lvl - 1)
+}
 
 function createLinearCalculator (paramKeyA, paramKeyB) {
   function calculator (skill, lvl, skillLevels) {
@@ -30,5 +40,9 @@ function createParamCalculator (paramNumber) {
   return calculator;
 }
 
-export {createLinearCalculator, createParamCalculator};
+export {
+  calculateToHit,
+  createLinearCalculator,
+  createParamCalculator,
+};
 export default calcLookup;

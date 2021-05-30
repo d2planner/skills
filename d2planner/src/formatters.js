@@ -1,11 +1,71 @@
 import calculateSkillValue from './calculateSkillValue'
+import { calculateToHit } from './calculators'
+import {
+  calculatePhysicalDamageMin,
+  calculatePhysicalDamageMax,
+  calculateElementalDamageMin,
+  calculateElementalDamageMax,
+} from './damageCalculators';
 
 const framesPerSecond = 25;
 const yardsPerGameUnit = 2 / 3;
 
 const formattersByDescline = {
+
   6: createCalcFormatter((ta, tb, ca, cb) => (`+${ca} ${ta}`)),
+
+  8: formatAttackRating,
+  9: formatPhysicalDamage,
+  10: formatElementalDamage,
+
+  66: createFillTaWithCalcAFormatter('%d%'),
 };
+
+
+function formatAttackRating(skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const attackRating = calculateToHit(skill, lvl, skillLevels);
+  if (attackRating === undefined) {
+    return '';
+  }
+  return `Attack +${attackRating} percent`;
+}
+
+
+function formatPhysicalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  if (skill.minDam === undefined) {
+    return '';
+  }
+  const minDamage = floor(calculatePhysicalDamageMin(skill, lvl, skillLevels));
+  const maxDamage = floor(calculatePhysicalDamageMax(skill, lvl, skillLevels));
+
+  if (minDamage === maxDamage) {
+    return `Damage: +${minDamage}`
+  }
+  return `Damage: ${minDamage}-${maxDamage}`
+}
+
+
+function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  if (skill.eMin === undefined) {
+    return '';
+  }
+  const minDamage = floor(calculateElementalDamageMin(skill, lvl, skillLevels));
+  const maxDamage = floor(calculateElementalDamageMax(skill, lvl, skillLevels));
+
+  if (minDamage === maxDamage) {
+    return `${skill.eType} Damage: +${minDamage}`
+  }
+  return `${skill.eType} Damage: ${minDamage}-${maxDamage}`
+}
+
+
+function createFillTaWithCalcAFormatter (pattern) {
+  function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
+    const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
+    return ta.replace(pattern, calcA);
+  }
+  return formatter;
+}
 
 
 function createCalcFormatter (template, frames=false, gameUnits=false, precision=null, multiplier=null) {

@@ -11,8 +11,10 @@ const framesPerSecond = 25;
 const yardsPerGameUnit = 2 / 3;
 
 const formattersByDescline = {
+  2: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta} ${calcA}${tb}`), precision: 1}),
 
-  6: createCalcFormatter((ta, tb, ca, cb) => (`+${ca} ${ta}`)),
+  5: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta} ${calcA}`), precison: 1}),
+  6: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`+${calcA} ${ta}`)}),
 
   8: formatAttackRating,
   9: formatPhysicalDamage,
@@ -68,7 +70,7 @@ function createFillTaWithCalcAFormatter (pattern) {
 }
 
 
-function createCalcFormatter (template, frames=false, gameUnits=false, precision=null, multiplier=null) {
+function createCalcFormatter ({template, frames=false, gameUnits=false, precision=null, multiplier=null}={}) {
   function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
     let calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
     let calcB = calculateSkillValue(cb, skill, lvl, skillLevels);

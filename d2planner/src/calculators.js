@@ -1,10 +1,5 @@
 import calculateSkillValue from './calculateSkillValue';
-import {
-  calculatePhysicalDamageMin,
-  calculatePhysicalDamageMax,
-  calculateElementalDamageMin,
-  calculateElementalDamageMax,
-} from './damageCalculators';
+import {calculateElementalDamageMin, calculateElementalDamageMax} from './damageCalculators';
 
 const calcLookup = {
   toht: calculateToHit,

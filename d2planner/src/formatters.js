@@ -23,7 +23,6 @@ const formattersByDescline = {
   66: createFillTaWithCalcAFormatter('%d%'),
 };
 
-
 function formatAttackRating(skill, lvl, skillLevels, ta, tb, ca, cb) {
   const attackRating = calculateToHit(skill, lvl, skillLevels);
   if (attackRating === undefined) {
@@ -31,7 +30,6 @@ function formatAttackRating(skill, lvl, skillLevels, ta, tb, ca, cb) {
   }
   return `Attack +${attackRating} percent`;
 }
-
 
 function formatPhysicalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   if (skill.minDam === undefined) {
@@ -46,7 +44,6 @@ function formatPhysicalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   return `Damage: ${minDamage}-${maxDamage}`
 }
 
-
 function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   if (skill.eMin === undefined) {
     return '';
@@ -60,7 +57,6 @@ function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   return `${skill.eType} Damage: ${minDamage}-${maxDamage}`
 }
 
-
 function createFillTaWithCalcAFormatter (pattern) {
   function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
     const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
@@ -68,7 +64,6 @@ function createFillTaWithCalcAFormatter (pattern) {
   }
   return formatter;
 }
-
 
 function createCalcFormatter ({template, frames=false, gameUnits=false, precision=null, multiplier=null}={}) {
   function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -82,7 +77,6 @@ function createCalcFormatter ({template, frames=false, gameUnits=false, precisio
   }
   return formatter;
 }
-
 
 function convertCalc (calc, frames, gameUnits, precision, multiplier) {
     if (calc === undefined) {
@@ -103,13 +97,11 @@ function convertCalc (calc, frames, gameUnits, precision, multiplier) {
     return calc;
 }
 
-
 function floor (x, precision=null) {
   if (precision === null) {
     return Math.floor(x);
   }
   return Math.floor(precision * x) / precision;
 }
-
 
 export default formattersByDescline;

@@ -22,13 +22,11 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
   return evaluate(calcExpression);
 }
 
-
 function fillOtherSkillLevels (calcExpression, skillLevels) {
   const re = /skill\('((?:\w|\s)+)'.(?:lvl|blvl)\)/g;
   const replacer = (match, group1) => (skillLevels[`${group1}Level`] || 0);
   return calcExpression.replace(re, replacer);
 }
-
 
 function evaluateSklvlCalcs (calcExpression, skill, lvl, skillLevels) {
   const re = /sklvl\('((?:\w|\s)+)'\.(\w+)\.(?!lvl)(\w+)\)/g;
@@ -42,7 +40,6 @@ function evaluateSklvlCalcs (calcExpression, skill, lvl, skillLevels) {
   }
   return calcExpression.replace(re, replacer);
 }
-
 
 function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
   const re = /(skill|miss)\('((?:\w|\s)+)'\.(?!lvl)(\w+)\)/g;
@@ -58,7 +55,6 @@ function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
   return calcExpression.replace(re, replacer);
 }
 
-
 function getEntityKind (entityKey) {
   const entityKindLookup = {'miss': 'Missile', 'skill': 'Skill'};
   if (!(entityKey in entityKindLookup)) {
@@ -66,7 +62,6 @@ function getEntityKind (entityKey) {
   }
   return entityKindLookup[entityKey]
 }
-
 
 function evaluateCalcs (calcExpression, skill, lvl, skillLevels) {
   const re = new RegExp(Object.keys(calcLookup).join('|'), 'g');

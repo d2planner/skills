@@ -50,8 +50,48 @@ const formattersByDescline = {
   31: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta} ${calcA} seconds`), frames: true, precision: 10}),
   32: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA} percent`)}),
   33: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta || ''}${tb || ''}`),
-
+  34: formatSkeletonDamage,
+  35: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: ${calcA}-${calcB}`), precision: 1}),
+  36: formatTextOnCalcCondition,
+  37: formatHalfRadius,
+  38: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 1}),
+  39: formatGolemDamage,
+  40: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta.replace(/%s/, tb)),
+  41: formatFireGolemDamage,
+  42: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}.${calcB} ${tb}`), precision: 1}),
+  43: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 10, multiplier: 1/256}),
+  // 44: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 10, multiplier: 1/256}),
+  // 45: 
+  // 46: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
+  47: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}`), precision: 1}),
+  48: formatElementalDamage,
+  49: formatPhysicalDamageWithText,
+  50: formatMissileDamage,
+  51: createFillTaWithCalcAFormatter('%d'),
+  52: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcA}-${calcB}${tb}`), precision: 1}),
+  // 53:
+  // 54:
+  // 55:
+  // 56:
+  57: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcA} seconds`), frames: true, precision: 1}),
+  // 58: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA}-${calcB}`), precision: 1}),
+  59: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${tb}${ta}${calcA}-${calcB}`), precision: 1}),
+  // 60: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcB}${tb}`), precision=1, multiplier: 1/256}),
+  61: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}${tb}`), precision: 10, multiplier: 1/256}),
+  62: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}${calcA}-${calcB}`), precision: 1}),
+  63: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}% ${tb}`)}),
+  // 64: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}/${calcB} ${tb}`), precision: 1}),
+  // 65: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta || ''}: ${tb || ''}`),
   66: createFillTaWithCalcAFormatter('%d%'),
+  67: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA} ${tb}`), precision: 1}),
+  68: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA}${ta}${tb}`)}),
+  // 69: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: ${tb} ${calcA}`)}),
+  70: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA}`)}),
+  71: createFillTbWithCalcAFormatter('%d'),
+  72: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`+${calcA}/${calcB} ${ta}`)}),
+  73: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA}/${calcB} ${ta}`)}),
+  // 74: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
+  // 75: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
 };
 
 function formatManaCost (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -61,7 +101,7 @@ function formatManaCost (skill, lvl, skillLevels, ta, tb, ca, cb) {
 
 function formatAttackRating (skill, lvl, skillLevels, ta, tb, ca, cb) {
   const attackRating = calculateToHit(skill, lvl, skillLevels);
-  if (attackRating === undefined) {
+  if (!attackRating) {
     return null;
   }
   return `Attack +${attackRating} percent`;
@@ -78,6 +118,15 @@ function formatPhysicalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
     return `Damage: +${minDamage}`
   }
   return `Damage: ${minDamage}-${maxDamage}`
+}
+
+function formatPhysicalDamageWithText (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  if (skill.minDam === undefined) {
+    return null;
+  }
+  const minDamage = floor(calculatePhysicalDamageMin(skill, lvl, skillLevels));
+  const maxDamage = floor(calculatePhysicalDamageMax(skill, lvl, skillLevels));
+  return `${tb || ''}${ta || ''} ${minDamage}-${maxDamage}`;
 }
 
 function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -129,6 +178,12 @@ function formatElementalLength (skill, lvl, skillLevels, ta, tb, ca, cb) {
   return `${skill.eType} Length: ${length} seconds`;
 }
 
+function formatHalfRadius (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
+  const radius = floor(floor(calcA) * yardsPerGameUnit / 2, 10);
+  return `${ta}${radius} yards`;
+}
+
 function formatPoisonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   if (skill.eMin === undefined) {
     return null;
@@ -138,6 +193,13 @@ function formatPoisonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   const maxDamage = floor(length * calculateElementalDamageMax(skill, lvl, skillLevels));
   const formattedLength = length / framesPerSecond;
   return `Poison Damage : ${minDamage}-${maxDamage}\nover ${formattedLength} seconds`;
+}
+
+function formatMissileDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const missile = skill.missile1;
+  const minDamage = floor(calculateElementalDamageMin(missile, lvl, skillLevels));
+  const maxDamage = floor(calculateElementalDamageMax(missile, lvl, skillLevels));
+  return `${ta}${minDamage}-${maxDamage}`;
 }
 
 function formatFireMissileDamageOverTime (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -174,10 +236,62 @@ function formatMinionLife (skill, lvl, skillLevels, ta, tb, ca, cb) {
   return `Life: ${life}`;
 }
 
+function formatSkeletonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const masteryDamage = skillLevels.skeletonMasteryLevel * skill.relatedSkills.skeletonMastery.params.par2;
+
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const skillDamage = calculateElementalDamageMin(skill, lvl, skillLevels);
+  const bonus = (lvl > 3) ? (lvl - 3) * skill.params.par3 : 0;
+  const multiplier = 1 + bonus / 100;
+
+  const minDamage = floor(multiplier * (monsterMinDamage + skillDamage + masteryDamage));
+  const maxDamage = floor(multiplier * (monsterMaxDamage + skillDamage + masteryDamage));
+  return `Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatGolemDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const damageBonus = (skill.strName === 'Iron Golem') ? 0 : 35 * (lvl - 1);
+  const damageMultiplier = 1 + damageBonus / 100;
+
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const minDamage = floor(damageMultiplier * monsterMinDamage);
+  const maxDamage = floor(damageMultiplier * monsterMaxDamage);
+  return `Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatFireGolemDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const holyFireMinDamage = calculateSkillValue(ca, skill, lvl, skillLevels);
+  const holyFireMaxDamage = calculateSkillValue(cb, skill, lvl, skillLevels);
+
+  const minDamage = floor(monsterMinDamage + holyFireMinDamage);
+  const maxDamage = floor(monsterMaxDamage + holyFireMaxDamage);
+  return `Fire Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatTextOnCalcCondition (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const calcA = floor(calculateSkillValue(ca, skill, lvl, skillLevels));
+  return (calcA === 1) ? `${calcA}${ta}` : `${calcA}${tb}`
+}
+
 function createFillTaWithCalcAFormatter (pattern) {
   function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
     const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
     return ta.replace(pattern, calcA);
+  }
+  return formatter;
+}
+
+function createFillTbWithCalcAFormatter (pattern) {
+  function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
+    const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
+    return tb.replace(pattern, calcA);
   }
   return formatter;
 }

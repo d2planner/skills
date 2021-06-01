@@ -2,26 +2,21 @@ import calculateSkillValue from './calculateSkillValue'
 
 const lvlBreakpoints = [[0, 1], [1, 8], [8, 16], [16, 22], [22, 28], [28, null]];
 
-
 function calculatePhysicalDamageMin (skill, lvl, skillLevels, missileNum=null) {
   return calculateDamage(skill, lvl, skillLevels, 'minDam', 'minLevDam', 'dmgSymPerCalc');
 }
-
 
 function calculatePhysicalDamageMax (skill, lvl, skillLevels, missileNum=null) {
   return calculateDamage(skill, lvl, skillLevels, 'maxDam', 'maxLevDam', 'dmgSymPerCalc');
 }
 
-
 function calculateElementalDamageMin (skill, lvl, skillLevels, missileNum=null) {
   return calculateDamage(skill, lvl, skillLevels, 'eMin', 'eMinLev', 'eDmgSymPerCalc');
 }
 
-
 function calculateElementalDamageMax (skill, lvl, skillLevels, missileNum=null) {
   return calculateDamage(skill, lvl, skillLevels, 'eMax', 'eMaxLev', 'eDmgSymPerCalc');
 }
-
 
 function calculateDamage (
   skill,
@@ -40,7 +35,7 @@ function calculateDamage (
   const synergyMultiplier = (100 + synergyBonus) / 100;
 
   let damage = skill[initialDamageKey];
-  for (let i = 0; i <= lvlBreakpoints.length; i++) {
+  for (let i = 0; i < lvlBreakpoints.length; i++) {
     const [lower, upper] = lvlBreakpoints[i];
     if (lvl <= lower) {
       break;

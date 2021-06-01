@@ -1,7 +1,7 @@
 import calculateSkillValue from './calculateSkillValue';
 import {calculateElementalDamageMin, calculateElementalDamageMax} from './damageCalculators';
 
-const lengthLvlBreakpoints = [[0, 1], [1, 8], [8, 16]];
+const lengthLvlBreakpoints = [[0, 1], [1, 8], [8, 16], [16, null]];
 const framesPerSecond = 25;
 
 const calcLookup = {
@@ -68,7 +68,7 @@ function calculateLength (skill, lvl, skillLevels) {
   const synergyMultipler = (100 + synergyBonus) / 100;
 
   let length = skill.eLen;
-  for (let i = 0; i <= lengthLvlBreakpoints.length; i++) {
+  for (let i = 0; i < lengthLvlBreakpoints.length; i++) {
     const [lower, upper] = lengthLvlBreakpoints[i];
     if (lvl <= lower) {
       break;

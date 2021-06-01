@@ -32,6 +32,7 @@ const formattersByDescline = {
   13: formatMinionLife,
   14: formatPoisonDamage,
   // 15: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta}:${tb}`),
+  16: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`Duration: ${calcA}-${calcB} seconds`), frames: true}),
   66: createFillTaWithCalcAFormatter('%d%'),
 };
 

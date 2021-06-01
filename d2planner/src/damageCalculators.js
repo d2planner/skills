@@ -35,7 +35,7 @@ function calculateDamage (
   const synergyMultiplier = (100 + synergyBonus) / 100;
 
   let damage = skill[initialDamageKey];
-  for (let i = 0; i <= lvlBreakpoints.length; i++) {
+  for (let i = 0; i < lvlBreakpoints.length; i++) {
     const [lower, upper] = lvlBreakpoints[i];
     if (lvl <= lower) {
       break;

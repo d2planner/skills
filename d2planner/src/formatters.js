@@ -63,6 +63,16 @@ const formattersByDescline = {
   // 44: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 10, multiplier: 1/256}),
   // 45: 
   // 46: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
+  47: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}`), precision: 1}),
+  48: formatElementalDamage,
+  49: formatPhysicalDamageWithText,
+  50: formatMissileDamage,
+  51: createFillTaWithCalcAFormatter('%d'),
+  52: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcA}-${calcB}${tb}`), precision: 1}),
+  // 53:
+  // 54:
+  // 55:
+  // 56:
   66: createFillTaWithCalcAFormatter('%d%'),
 };
 
@@ -90,6 +100,15 @@ function formatPhysicalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
     return `Damage: +${minDamage}`
   }
   return `Damage: ${minDamage}-${maxDamage}`
+}
+
+function formatPhysicalDamageWithText (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  if (skill.minDam === undefined) {
+    return null;
+  }
+  const minDamage = floor(calculatePhysicalDamageMin(skill, lvl, skillLevels));
+  const maxDamage = floor(calculatePhysicalDamageMax(skill, lvl, skillLevels));
+  return `${tb || ''}${ta || ''} ${minDamage}-${maxDamage}`;
 }
 
 function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -156,6 +175,13 @@ function formatPoisonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   const maxDamage = floor(length * calculateElementalDamageMax(skill, lvl, skillLevels));
   const formattedLength = length / framesPerSecond;
   return `Poison Damage : ${minDamage}-${maxDamage}\nover ${formattedLength} seconds`;
+}
+
+function formatMissileDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const missile = skill.missile1;
+  const minDamage = floor(calculateElementalDamageMin(missile, lvl, skillLevels));
+  const maxDamage = floor(calculateElementalDamageMax(missile, lvl, skillLevels));
+  return `${ta}${minDamage}-${maxDamage}`;
 }
 
 function formatFireMissileDamageOverTime (skill, lvl, skillLevels, ta, tb, ca, cb) {

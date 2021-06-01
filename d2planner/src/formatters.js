@@ -73,7 +73,25 @@ const formattersByDescline = {
   // 54:
   // 55:
   // 56:
+  57: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcA} seconds`), frames: true, precision: 1}),
+  // 58: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA}-${calcB}`), precision: 1}),
+  59: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${tb}${ta}${calcA}-${calcB}`), precision: 1}),
+  // 60: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcB}${tb}`), precision=1, multiplier: 1/256}),
+  61: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}${tb}`), precision: 10, multiplier: 1/256}),
+  62: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}${calcA}-${calcB}`), precision: 1}),
+  63: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}% ${tb}`)}),
+  // 64: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}/${calcB} ${tb}`), precision: 1}),
+  // 65: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta || ''}: ${tb || ''}`),
   66: createFillTaWithCalcAFormatter('%d%'),
+  67: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA} ${tb}`), precision: 1}),
+  68: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA}${ta}${tb}`)}),
+  // 69: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: ${tb} ${calcA}`)}),
+  70: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA}`)}),
+  71: createFillTbWithCalcAFormatter('%d'),
+  72: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`+${calcA}/${calcB} ${ta}`)}),
+  73: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA}/${calcB} ${ta}`)}),
+  // 74: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
+  // 75: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
 };
 
 function formatManaCost (skill, lvl, skillLevels, ta, tb, ca, cb) {
@@ -83,7 +101,7 @@ function formatManaCost (skill, lvl, skillLevels, ta, tb, ca, cb) {
 
 function formatAttackRating (skill, lvl, skillLevels, ta, tb, ca, cb) {
   const attackRating = calculateToHit(skill, lvl, skillLevels);
-  if (attackRating === undefined) {
+  if (!attackRating) {
     return null;
   }
   return `Attack +${attackRating} percent`;
@@ -266,6 +284,14 @@ function createFillTaWithCalcAFormatter (pattern) {
   function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
     const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
     return ta.replace(pattern, calcA);
+  }
+  return formatter;
+}
+
+function createFillTbWithCalcAFormatter (pattern) {
+  function formatter (skill, lvl, skillLevels, ta, tb, ca, cb) {
+    const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
+    return tb.replace(pattern, calcA);
   }
   return formatter;
 }

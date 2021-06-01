@@ -34,6 +34,10 @@ describe('<Tooltip />', () => {
         lvl={plannerState[`${skillName}Level`]}
         plannerState={plannerState}
       />);
+      expect(screen.queryByText(/undefined/)).toBeNull();
+      expect(screen.queryByText(/NaN/)).toBeNull();
+      // TODO(dustin): enable this test once all formatters implemented
+      // expect(screen.queryByText(/MISSING FORMATTER/)).toBeNull();
     });
   });
 });

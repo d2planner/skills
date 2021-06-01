@@ -50,7 +50,19 @@ const formattersByDescline = {
   31: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta} ${calcA} seconds`), frames: true, precision: 10}),
   32: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${tb}+${calcA} percent`)}),
   33: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta || ''}${tb || ''}`),
-
+  34: formatSkeletonDamage,
+  35: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: ${calcA}-${calcB}`), precision: 1}),
+  36: formatTextOnCalcCondition,
+  37: formatHalfRadius,
+  38: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 1}),
+  39: formatGolemDamage,
+  40: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta.replace(/%s/, tb)),
+  41: formatFireGolemDamage,
+  42: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}: +${calcA}.${calcB} ${tb}`), precision: 1}),
+  43: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 10, multiplier: 1/256}),
+  // 44: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA}-${calcB}${tb}`), precision: 10, multiplier: 1/256}),
+  // 45: 
+  // 46: (skill, lvl, skillLevels, ta, tb, ca, cb) => (ta || ''),
   66: createFillTaWithCalcAFormatter('%d%'),
 };
 
@@ -129,6 +141,12 @@ function formatElementalLength (skill, lvl, skillLevels, ta, tb, ca, cb) {
   return `${skill.eType} Length: ${length} seconds`;
 }
 
+function formatHalfRadius (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const calcA = calculateSkillValue(ca, skill, lvl, skillLevels);
+  const radius = floor(floor(calcA) * yardsPerGameUnit / 2, 10);
+  return `${ta}${radius} yards`;
+}
+
 function formatPoisonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
   if (skill.eMin === undefined) {
     return null;
@@ -172,6 +190,50 @@ function formatMinionLife (skill, lvl, skillLevels, ta, tb, ca, cb) {
   const calcB = calculateSkillValue(cb, skill, lvl, skillLevels) || 0;
   const life = floor((1 + calcA / 100) * (baseLife + calcB));
   return `Life: ${life}`;
+}
+
+function formatSkeletonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const masteryDamage = skillLevels.skeletonMasteryLevel * skill.relatedSkills.skeletonMastery.params.par2;
+
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const skillDamage = calculateElementalDamageMin(skill, lvl, skillLevels);
+  const bonus = (lvl > 3) ? (lvl - 3) * skill.params.par3 : 0;
+  const multiplier = 1 + bonus / 100;
+
+  const minDamage = floor(multiplier * (monsterMinDamage + skillDamage + masteryDamage));
+  const maxDamage = floor(multiplier * (monsterMaxDamage + skillDamage + masteryDamage));
+  return `Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatGolemDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const damageBonus = (skill.strName === 'Iron Golem') ? 0 : 35 * (lvl - 1);
+  const damageMultiplier = 1 + damageBonus / 100;
+
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const minDamage = floor(damageMultiplier * monsterMinDamage);
+  const maxDamage = floor(damageMultiplier * monsterMaxDamage);
+  return `Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatFireGolemDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const monsterMinDamage = skill.summon.a1MinDNormal;
+  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+
+  const holyFireMinDamage = calculateSkillValue(ca, skill, lvl, skillLevels);
+  const holyFireMaxDamage = calculateSkillValue(cb, skill, lvl, skillLevels);
+
+  const minDamage = floor(monsterMinDamage + holyFireMinDamage);
+  const maxDamage = floor(monsterMaxDamage + holyFireMaxDamage);
+  return `Fire Damage: ${minDamage}-${maxDamage}`;
+}
+
+function formatTextOnCalcCondition (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const calcA = floor(calculateSkillValue(ca, skill, lvl, skillLevels));
+  return (calcA === 1) ? `${calcA}${ta}` : `${calcA}${tb}`
 }
 
 function createFillTaWithCalcAFormatter (pattern) {

@@ -10,15 +10,10 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
   if (!calcExpression.trim()) {
     return calcExpression;
   }
-  console.log(`initial: ${calcExpression}`);
   calcExpression = fillOtherSkillLevels(calcExpression, skillLevels);
-  console.log(`skills filled: ${calcExpression}`);
   calcExpression = evaluateSklvlCalcs(calcExpression, skill, lvl, skillLevels);
-  console.log(`sklvl filled: ${calcExpression}`);
   calcExpression = evaluateOtherEntityCalcs(calcExpression, skill, lvl, skillLevels);
-  console.log(`other entites filled: ${calcExpression}`);
   calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels);
-  console.log(`final: ${calcExpression}`)
   return evaluate(calcExpression);
 }
 
@@ -50,7 +45,7 @@ function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
 
     const calculator = calcLookup[group3];
     lvl = (entityKind === 'Skill') ? skillLevels[`${entityName}Level`] || 0 : lvl;
-    return calculator(entity, lvl, skillLevels)
+    return calculator(entity, lvl, skillLevels);
   }
   return calcExpression.replace(re, replacer);
 }
@@ -60,7 +55,7 @@ function getEntityKind (entityKey) {
   if (!(entityKey in entityKindLookup)) {
     throw Error(`logic for handling ${entityKey} entity calcs not implemented.`);
   }
-  return entityKindLookup[entityKey]
+  return entityKindLookup[entityKey];
 }
 
 function evaluateCalcs (calcExpression, skill, lvl, skillLevels) {

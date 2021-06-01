@@ -2,7 +2,6 @@ import calculateSkillValue from './calculateSkillValue'
 
 const lvlBreakpoints = [[0, 1], [1, 8], [8, 16], [16, 22], [22, 28], [28, null]];
 
-
 function calculatePhysicalDamageMin (skill, lvl, skillLevels, missileNum=null) {
   return calculateDamage(skill, lvl, skillLevels, 'minDam', 'minLevDam', 'dmgSymPerCalc');
 }

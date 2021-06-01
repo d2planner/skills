@@ -33,6 +33,8 @@ const formattersByDescline = {
   14: formatPoisonDamage,
   // 15: (skill, lvl, skillLevels, ta, tb, ca, cb) => (`${ta}:${tb}`),
   16: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`Duration: ${calcA}-${calcB} seconds`), frames: true}),
+  17: formatElementalDamageOverTimeWithText,
+
   66: createFillTaWithCalcAFormatter('%d%'),
 };
 
@@ -73,6 +75,12 @@ function formatElementalDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
     return `${skill.eType} Damage: +${minDamage}`
   }
   return `${skill.eType} Damage: ${minDamage}-${maxDamage}`
+}
+
+function formatElementalDamageOverTimeWithText (skill, lvl, skillLevels, ta, tb, ca, cb) {
+  const calcA = floor(calculateSkillValue(ca, skill, lvl, skillLevels));
+  const calcB = floor(calculateSkillValue(cb, skill, lvl, skillLevels));
+  return `${tb}${ta}${calcA}-${calcB} per second`
 }
 
 function formatElementalLength (skill, lvl, skillLevels, ta, tb, ca, cb) {

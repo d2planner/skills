@@ -11,11 +11,11 @@ function calculatePhysicalDamageMax (skill, lvl, skillLevels, missileNum=null) {
 }
 
 function calculateElementalDamageMin (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'eMin', 'eMinLev', 'eDmgSymPerCalc');
+  return calculateDamage(skill, lvl, skillLevels, 'eMin', 'eMinLev', 'eDmgSymPerCalc', missileNum);
 }
 
 function calculateElementalDamageMax (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'eMax', 'eMaxLev', 'eDmgSymPerCalc');
+  return calculateDamage(skill, lvl, skillLevels, 'eMax', 'eMaxLev', 'eDmgSymPerCalc', missileNum);
 }
 
 function calculateDamage (

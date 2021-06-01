@@ -25,6 +25,18 @@ const calcLookup = {
   mps: calculateManaCostPerSecond,
   len: createCalculatorOnCalcField('auraLen'),
   usmc: (skill, lvl, skillLevels) => (calculateManaCost(skill, lvl, skillLevels, 256)),
+  m1en: createMissileMinDamageCalculator(1),
+  m1ex: createMissileMaxDamageCalculator(1),
+  m2en: createMissileMinDamageCalculator(2),
+  m2ex: createMissileMaxDamageCalculator(2),
+  m3en: createMissileMinDamageCalculator(3),
+  m3ex: createMissileMaxDamageCalculator(3),
+  m1eo: createMissileMinDamageCalculator(1, 256),
+  m1ey: createMissileMaxDamageCalculator(1, 256),
+  m2eo: createMissileMinDamageCalculator(2, 256),
+  m2ey: createMissileMaxDamageCalculator(2, 256),
+  m3e0: createMissileMinDamageCalculator(3, 256),
+  m3ey: createMissileMaxDamageCalculator(3, 256),
   par1: createParamCalculator(1),
   par2: createParamCalculator(2),
   par3: createParamCalculator(3),
@@ -96,6 +108,14 @@ function createDiminishingCalculator (paramKeyA, paramKeyB) {
     return Math.floor(a + ((110 * lvl) * (b - a)) / (100 * (lvl + 6)));
   }
   return calculator;
+}
+
+function createMissileMinDamageCalculator (missileNum, multipler=1) {
+  return (skill, lvl, skillLevels) => (multipler * calculateElementalDamageMin(skill, lvl, skillLevels, missileNum));
+}
+
+function createMissileMaxDamageCalculator (missileNum, multipler=1) {
+  return (skill, lvl, skillLevels) => (multipler * calculateElementalDamageMax(skill, lvl, skillLevels, missileNum));
 }
 
 function createCalculatorOnCalcField (calcField) {

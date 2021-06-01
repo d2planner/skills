@@ -1,10 +1,14 @@
 import calculateSkillValue from './calculateSkillValue';
 import {calculateElementalDamageMin, calculateElementalDamageMax} from './damageCalculators';
 
+const lengthLvlBreakpoints = [[0, 1], [1, 8], [8, 16]];
+const framesPerSecond = 25;
+
 const calcLookup = {
   toht: calculateToHit,
   edmn: calculateElementalDamageMin,
   edmx: calculateElementalDamageMax,
+  edln: calculateLength,
   edns: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMin(skill, lvl, skillLevels)),
   edxs: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMax(skill, lvl, skillLevels)),
   ln12: createLinearCalculator('par1', 'par2'),
@@ -18,6 +22,8 @@ const calcLookup = {
   math: createMasteryCalculator('passiveMasteryTh'),
   madm: createMasteryCalculator('passiveMasteryDmg'),
   macr: createMasteryCalculator('passiveMasteryCrit'),
+  mps: calculateManaCostPerSecond,
+  len: createCalculatorOnCalcField('auraLen'),
   usmc: (skill, lvl, skillLevels) => (calculateManaCost(skill, lvl, skillLevels, 256)),
   par1: createParamCalculator(1),
   par2: createParamCalculator(2),
@@ -42,6 +48,10 @@ function calculateToHit (skill, lvl, skillLevels) {
   return (skill.toHit || 0) + (skill.levToHit || 0) * (lvl - 1);
 }
 
+function calculateManaCostPerSecond (skill, lvl, skillLevels) {
+  return calculateManaCost(skill, lvl, skillLevels) * framesPerSecond / 2;
+}
+
 function calculateManaCost (skill, lvl, skillLevels, multiplier=null) {
   const mana = skill.mana;
   const lvlMana = skill.lvlMana || 0;
@@ -51,6 +61,23 @@ function calculateManaCost (skill, lvl, skillLevels, multiplier=null) {
     cost *= multiplier;
   }
   return Math.max(cost, skill.minMana || 0);
+}
+
+function calculateLength (skill, lvl, skillLevels) {
+  const synergyBonus = calculateSkillValue(skill.eLenSymPerCalc, skill, lvl, skillLevels) || 0;
+  const synergyMultipler = (100 + synergyBonus) / 100;
+
+  let length = skill.eLen;
+  for (let i = 0; i <= lengthLvlBreakpoints.length; i++) {
+    const [lower, upper] = lengthLvlBreakpoints[i];
+    if (lvl <= lower) {
+      break;
+    }
+    const lengthPerLevel = skill[`eLevLen${i}`] || 0;
+    const lvlForBand = Math.min(upper, lvl);
+    length += (lvlForBand - lower) * lengthPerLevel;
+  }
+  return length * synergyMultipler;
 }
 
 function createLinearCalculator (paramKeyA, paramKeyB) {
@@ -87,8 +114,12 @@ function createParamCalculator (paramNumber) {
 }
 
 export {
+  calculateManaCost,
+  calculateManaCostPerSecond,
+  calculateLength,
   calculateToHit,
   createLinearCalculator,
   createParamCalculator,
+  framesPerSecond,
 };
 export default calcLookup;

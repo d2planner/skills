@@ -23,7 +23,7 @@ const SkillPreamble = (props) => {
     <div className='skillPreamble'>
       <h2 className='skillName'>{props.skill['strName']}</h2>
       <p className='skillLongName'>{props.skill['strLong'] + '\n'}</p>
-      <p className='staticDesclines'>{formatDesclines('dsc2', skill, lvl, skillLevels)}</p>
+      {formatDesclines('dsc2', skill, lvl, skillLevels)}
     </div>
   );
 };
@@ -33,11 +33,10 @@ const CurrentLevel = (props) => {
   if (lvl === 0) {
     return null;
   }
-
   return (
     <div className='currentLevelBlock'>
       <h3 className='currentLevelHeader levelHeader'>{`Current Level: ${lvl}`}</h3>
-      <p className='levelDesclines'>{formatDesclines('desc', skill, lvl, skillLevels)}</p>
+      {formatDesclines('desc', skill, lvl, skillLevels)}
     </div>
   );
 };
@@ -47,13 +46,15 @@ const NextLevel = (props) => {
   return (
     <div className='nextLevelBlock'>
       <h3 className='nextLevelHeader levelHeader'>Next Level:</h3>
-      <p className='levelDesclines'>{formatDesclines('desc', skill, lvl + 1, skillLevels)}</p>
+      {formatDesclines('desc', skill, lvl + 1, skillLevels)}
     </div>
   );
 };
 
 const Synergies = (props) => (
-  <p className='synergies'>{formatDesclines('dsc3', props.skill, props.lvl, props.skillLevels)}</p>
-)
+  <div className='synergyBlock'>
+    {formatDesclines('dsc3', props.skill, props.lvl, props.skillLevels)}
+  </div>
+);
 
 export default Tooltip;

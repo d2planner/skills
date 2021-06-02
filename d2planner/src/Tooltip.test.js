@@ -1,29 +1,17 @@
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
-import Tooltip from './Tooltip'
-
-
-let skillLevels = {}
-Object.keys(skillData.skillDetails).forEach((skillName) => {
-  skillLevels[`${skillName}Level`] = 0
-});
-
+import { getAllCharacterSkillLevels } from './Planner';
+import Tooltip from './Tooltip';
 
 describe('<Tooltip />', () => {
-  const plannerState = {
-    character: 'amazon',
-    currentTab: 1,
-    currentSkill: 'magicArrow',
-    ...skillLevels,
-  }
 
-  it('renders magic arrow', () => {
+  it('renders immolation arrow', () => {
     render(<Tooltip
       skill={skillData.skillDetails['magicArrow']}
-      lvl={plannerState['magicArrowLevel']}
-      plannerState={plannerState}
+      lvl={20}
+      skillLevels={{'fireArrowLevel': 10, 'explodingArrowLevel': 5}}
     />);
   });
 
@@ -31,8 +19,8 @@ describe('<Tooltip />', () => {
     Object.entries(skillData.skillDetails).forEach(([skillName, skill]) => {
       render(<Tooltip
         skill={skill}
-        lvl={plannerState[`${skillName}Level`]}
-        plannerState={plannerState}
+        lvl={10}
+        skillLevels={{}}
       />);
       expect(screen.queryByText(/undefined/)).toBeNull();
       expect(screen.queryByText(/NaN/)).toBeNull();

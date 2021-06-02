@@ -237,7 +237,7 @@ function formatMinionLife (skill, lvl, skillLevels, ta, tb, ca, cb) {
 }
 
 function formatSkeletonDamage (skill, lvl, skillLevels, ta, tb, ca, cb) {
-  const masteryDamage = skillLevels.skeletonMasteryLevel * skill.relatedSkills.skeletonMastery.params.par2;
+  const masteryDamage = skillLevels.skeletonMasteryLevel || 0 * skill.relatedSkills.skeletonMastery.params.par2;
 
   const monsterMinDamage = skill.summon.a1MinDNormal;
   const monsterMaxDamage = skill.summon.a1MaxDNormal;

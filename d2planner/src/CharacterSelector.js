@@ -22,10 +22,7 @@ const CharacterSelector = (props) => {
           <button
             className={buttonClass}
             key={character}
-            onClick={() => {
-              props.setCharacter(character);
-              props.setTab(1);
-            }}
+            onClick={() => props.setCharacter(character)}
           >
             {character}
           </button>

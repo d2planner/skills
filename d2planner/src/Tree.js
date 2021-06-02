@@ -3,12 +3,17 @@ import Tab from './Tab.js';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
-  const {plannerState, treeData, character, currentTab, setTab, setSkillLevel, setCurrentSkill} = props;
+  const {skillLevels, treeData, character, currentTab, setTab, setSkillLevels, setCurrentSkill} = props;
+
+  const setSkillLevel = (skillName, lvl) => {
+    setSkillLevels(character, { ...skillLevels, [`${skillName}Level`]: lvl});
+  }
+
   const skills = treeData[currentTab]['skills'].map((skill) => {
     return (
       <Skill
           {...skill}
-          lvl={plannerState[`${skill.skillName}Level`]}
+          lvl={skillLevels[`${skill.skillName}Level`]}
           key={skill.skillName}
           setSkillLevel={setSkillLevel}
           setCurrentSkill={setCurrentSkill}

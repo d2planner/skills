@@ -2,12 +2,11 @@ import formattersByDescline from './formatters';
 
 function formatDesclines (root, skill, lvl, skillLevels) {
   if (skill[`${root}Lines`] === undefined) {
-    return null;
+    return [];
   }
   let lines = [];
-  for (const [lineNumber, entry] of skill[`${root}Lines`].entries()) {
+  for (const entry of skill[`${root}Lines`]) {
     const line = formatDescline(
-      lineNumber,
       entry[`${root}Line`],
       skill,
       lvl,
@@ -21,21 +20,10 @@ function formatDesclines (root, skill, lvl, skillLevels) {
       lines.push(line);
     }
   }
-  if (lines.length === 0) {
-    return null;
-  }
-  if (root === 'dsc3') {
-    return (
-      <div className='synergyBlock'>
-        <h3 className='synergyHeader'>Synergy Bonuses:</h3>
-        <ul className={root}>{lines}</ul>
-      </div>
-    );
-  }
-  return <ul className={root}>{lines}</ul>;
+  return lines;
 }
 
-function formatDescline (key, desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
+function formatDescline (desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
   const formatter = formattersByDescline[desclineNumber];
   if (formatter === undefined) {
     return `MISSING FORMATTER: ${desclineNumber}`;
@@ -45,10 +33,10 @@ function formatDescline (key, desclineNumber, skill, lvl, skillLevels, ta, tb, c
   if (line === null) {
     return null;
   }
-  if (desclineNumber === 40) {
+  if (desclineNumber === 40) {  // remove synergy line, rendered separately
     return null;
   }
-  return <li className={`descline${desclineNumber}`} key={key}>{line}</li>;
+  return line;
 }
 
 

@@ -1,18 +1,31 @@
 .tooltipContainer {
     padding: 1em;
-    width: 26em;
-    white-space: pre-line;
-    text-align: center;
+    width: 28em;
     padding-right: 2em;
     padding-left:  0px;
  }
-
-.skillName {
+ .skillPreamble {
+    margin-bottom: 1em;
+ }
+.skillName, .skillLongName {
     margin-top:  0px;
-    margin-bottom:  .2em;
+    margin-bottom:  .3em;
 }
-
-.levelHeader {
+.levelHeader, .synergyHeader {
     font-size: 14pt;
+    margin-top: .5em;
     margin-bottom: .2em;
+}
+ul {
+    list-style-type: none;
+    padding: 2px;
+    margin-bottom:  0;
+}
+ul.dsc3 > li {
+  background: #E3EBF2;
+}
+li {
+  background: #F5F5F5;
+  margin: .5em;
+  padding-left:  .5em;
 }

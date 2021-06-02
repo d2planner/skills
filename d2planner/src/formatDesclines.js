@@ -5,8 +5,9 @@ function formatDesclines (root, skill, lvl, skillLevels) {
     return null;
   }
   let lines = [];
-  for (const entry of skill[`${root}Lines`]) {
+  for (const [lineNumber, entry] of skill[`${root}Lines`].entries()) {
     const line = formatDescline(
+      lineNumber,
       entry[`${root}Line`],
       skill,
       lvl,
@@ -23,15 +24,31 @@ function formatDesclines (root, skill, lvl, skillLevels) {
   if (lines.length === 0) {
     return null;
   }
-  return lines.filter(line => line !== null).join('\n');
+  if (root === 'dsc3') {
+    return (
+      <div className='synergyBlock'>
+        <h3 className='synergyHeader'>Synergy Bonuses:</h3>
+        <ul className={root}>{lines}</ul>
+      </div>
+    );
+  }
+  return <ul className={root}>{lines}</ul>;
 }
 
-function formatDescline (desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
+function formatDescline (key, desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
   const formatter = formattersByDescline[desclineNumber];
   if (formatter === undefined) {
     return `MISSING FORMATTER: ${desclineNumber}`;
   }
-  return formatter(skill, lvl, skillLevels, ta, tb, ca, cb);
+
+  const line = formatter(skill, lvl, skillLevels, ta, tb, ca, cb);
+  if (line === null) {
+    return null;
+  }
+  if (desclineNumber === 40) {
+    return null;
+  }
+  return <li className={`descline${desclineNumber}`} key={key}>{line}</li>;
 }
 
 

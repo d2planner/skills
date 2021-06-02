@@ -27,9 +27,6 @@ class Planner extends Component {
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
-    console.log(this.state.character)
-    console.log(this.state.currentTab)
-    console.log(this.state.currentSkill)
     return (
       <div className='plannerContainer'>
         <CharacterSelector

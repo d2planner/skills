@@ -5,9 +5,8 @@ function formatDesclines (root, skill, lvl, skillLevels) {
     return [];
   }
   let lines = [];
-  for (const [lineNumber, entry] of skill[`${root}Lines`].entries()) {
+  for (const entry of skill[`${root}Lines`]) {
     const line = formatDescline(
-      lineNumber,
       entry[`${root}Line`],
       skill,
       lvl,
@@ -24,7 +23,7 @@ function formatDesclines (root, skill, lvl, skillLevels) {
   return lines;
 }
 
-function formatDescline (key, desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
+function formatDescline (desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
   const formatter = formattersByDescline[desclineNumber];
   if (formatter === undefined) {
     return `MISSING FORMATTER: ${desclineNumber}`;
@@ -34,7 +33,7 @@ function formatDescline (key, desclineNumber, skill, lvl, skillLevels, ta, tb, c
   if (line === null) {
     return null;
   }
-  if (desclineNumber === 40) {
+  if (desclineNumber === 40) {  // remove synergy line, rendered separately
     return null;
   }
   return line;

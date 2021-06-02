@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 import pandas as pd
 
@@ -28,7 +29,7 @@ def get_strings_map(string_file: Path, expansionstring_file: Path, patchstring_f
 def _clean_string(s: str) -> str:
     try:
         cleaned = s.replace('\\n', '\n')
-        if s[:2].isnumeric():
+        if re.match(r'\d+\n', cleaned):  # strings tarting with numbers on a separate line not reversed
             return cleaned
         return '\n'.join(reversed(cleaned.split('\n')))  # reverse skill strings
     except AttributeError:

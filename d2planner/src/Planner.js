@@ -4,6 +4,7 @@ import { createBrowserHistory } from 'history';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
+import getBuildString, { buildSkillsMap, decompressSkills} from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
@@ -17,7 +18,7 @@ class Planner extends Component {
       character: 'amazon',
       currentTab: 1,
       currentSkill: 'magicArrow',
-      ...getAllCharacterSkillLevels(skillData),
+      ...getEmptySkillLevels(skillData),
     };
     const { buildCode } = props.match.params;
     const build = (buildCode) ? JSON.parse(atob(buildCode)) : {};
@@ -30,7 +31,7 @@ class Planner extends Component {
       character: build.c,
       currentSkill: skillData.tree[build.c][1].skills[0].skillName,
       currentTab: build.t || 1,
-      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(build.c)) : {},
+      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(skillData.tree[build.c])) : {},
     };
   }
 
@@ -47,7 +48,7 @@ class Planner extends Component {
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
-    history.push(getBuildString(this.state));
+    history.push(getBuildString(this.state, skillData.skillDetails));
 
     return (
       <div className='plannerContainer'>
@@ -77,7 +78,7 @@ class Planner extends Component {
   };
 };
 
-function getAllCharacterSkillLevels (skillData) {
+function getEmptySkillLevels (skillData) {
   let skillLevels = {};
   Object.keys(skillData.tree).forEach((character) => {
     skillLevels[`${character}Skills`] = {};
@@ -85,40 +86,4 @@ function getAllCharacterSkillLevels (skillData) {
   return skillLevels;
 }
 
-function getBuildString (plannerState) {
-  let compressedSkills = {};
-  for (const [key, value] of Object.entries(plannerState[`${plannerState.character}Skills`])) {
-    const skillName = key.split('Level')[0];
-    const skill = skillData.skillDetails[skillName];
-    compressedSkills[skill.skillId] = value;
-  }
-  const buildData = {
-    v: 1,  // build version
-    g: '1.14D', // patch/mod version
-    c: plannerState.character,  // character
-    s: compressedSkills,  // skills
-    t: plannerState.currentTab,
-  };
-  return btoa(JSON.stringify(buildData));
-}
-
-function decompressSkills (compressedSkills, skillsMap) {
-  let skills = {};
-  for (const [compressedKey, value] of Object.entries(compressedSkills)) {
-    skills[skillsMap[compressedKey]] = value;
-  }
-  return skills;
-}
-
-function buildSkillsMap (character) {
-  let skillMap = {};
-  for (const tree of Object.values(skillData.tree[character])) {
-    for (const skill of tree.skills) {
-      skillMap[skill.id] = `${skill.skillName}Level`;
-    }
-  }
-  return skillMap;
-}
-
-export {getAllCharacterSkillLevels};
 export default withRouter(Planner);

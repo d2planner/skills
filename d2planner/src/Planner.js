@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
@@ -6,13 +8,22 @@ import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
+const  history = createBrowserHistory();
+
 class Planner extends Component {
-  state = {
-    character: 'amazon',
-    currentTab: 1,
-    currentSkill: 'magicArrow',
-    ...getAllCharacterSkillLevels(skillData),
-  };
+  constructor (props) {
+    super(props);
+    const { build } = props.match.params;
+    if (build) {
+      console.log(atob(build))
+    }
+    this.state = {
+      character: 'amazon',
+      currentTab: 1,
+      currentSkill: 'magicArrow',
+      ...getAllCharacterSkillLevels(skillData),
+    };
+  }
 
   setTab = (id) => this.setState({
     currentTab: id,
@@ -27,6 +38,8 @@ class Planner extends Component {
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
+    history.push(getBuildString(this.state));
+
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -64,5 +77,14 @@ function getAllCharacterSkillLevels (skillData) {
   return skillLevels;
 }
 
+function getBuildString (plannerState) {
+  let buildData = {
+    buildVersion: 1,
+    character: plannerState.character,
+    ...plannerState[`${plannerState.character}Skills`],
+  }
+  return btoa(JSON.stringify(buildData))
+}
+
 export {getAllCharacterSkillLevels};
-export default Planner;
+export default withRouter(Planner);

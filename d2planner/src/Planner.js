@@ -21,16 +21,16 @@ class Planner extends Component {
     };
     const { buildCode } = props.match.params;
     const build = (buildCode) ? JSON.parse(atob(buildCode)) : {};
-    if (!build.character) {
+    if (!build.c) {
       this.state = {...initialState};
       return
     }
     this.state = {
       ...initialState,
-      character: build.character,
-      currentSkill: skillData.tree[build.character][1].skills[0].skillName,
-      [`${build.character}Skills`]: build[`${build.character}Skills`] || {},
-    }
+      character: build.c,
+      currentSkill: skillData.tree[build.c][1].skills[0].skillName,
+      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(build.c)) : {},
+    };
   }
 
   setTab = (id) => this.setState({
@@ -85,12 +85,37 @@ function getAllCharacterSkillLevels (skillData) {
 }
 
 function getBuildString (plannerState) {
-  let buildData = {
-    buildVersion: 1,
-    character: plannerState.character,
-    [`${plannerState.character}Skills`]: plannerState[`${plannerState.character}Skills`],
+  let compressedSkills = {};
+  for (const [key, value] of Object.entries(plannerState[`${plannerState.character}Skills`])) {
+    const skillName = key.split('Level')[0];
+    const skill = skillData.skillDetails[skillName];
+    compressedSkills[skill.skillId] = value;
   }
-  return btoa(JSON.stringify(buildData))
+  const buildData = {
+    v: 1,  // build version
+    g: '1.14D', // patch/mod version
+    c: plannerState.character,  // character
+    s: compressedSkills,  // skills
+  };
+  return btoa(JSON.stringify(buildData));
+}
+
+function decompressSkills (compressedSkills, skillsMap) {
+  let skills = {};
+  for (const [compressedKey, value] of Object.entries(compressedSkills)) {
+    skills[skillsMap[compressedKey]] = value;
+  }
+  return skills;
+}
+
+function buildSkillsMap (character) {
+  let skillMap = {};
+  for (const tree of Object.values(skillData.tree[character])) {
+    for (const skill of tree.skills) {
+      skillMap[skill.id] = `${skill.skillName}Level`;
+    }
+  }
+  return skillMap;
 }
 
 export {getAllCharacterSkillLevels};

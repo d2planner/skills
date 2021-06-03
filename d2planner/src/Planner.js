@@ -29,6 +29,7 @@ class Planner extends Component {
       ...initialState,
       character: build.c,
       currentSkill: skillData.tree[build.c][1].skills[0].skillName,
+      currentTab: build.t || 1,
       [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(build.c)) : {},
     };
   }
@@ -96,6 +97,7 @@ function getBuildString (plannerState) {
     g: '1.14D', // patch/mod version
     c: plannerState.character,  // character
     s: compressedSkills,  // skills
+    t: plannerState.currentTab,
   };
   return btoa(JSON.stringify(buildData));
 }

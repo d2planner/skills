@@ -37,7 +37,7 @@ class Planner extends Component {
         <div className='plannerCoreContainer'>
           <Tooltip
             skill={skillData.skillDetails[this.state.currentSkill]}
-            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`]}
+            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`] || 0}
             skillLevels={this.state[`${this.state.character}Skills`]}
           />
           <Tree
@@ -60,11 +60,6 @@ function getAllCharacterSkillLevels (skillData) {
   Object.entries(skillData.tree).forEach((entry) => {
     const [character, tabs] = entry;
     skillLevels[`${character}Skills`] = {};
-    Object.values(tabs).forEach((tab) => {
-      Object.values(tab.skills).forEach((skill) => {
-        skillLevels[`${character}Skills`][`${skill.skillName}Level`] = 0;
-      });
-    });
   });
   return skillLevels;
 }

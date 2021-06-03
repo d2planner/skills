@@ -1,18 +1,39 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
+import getBuildString, { buildSkillsMap, decompressSkills} from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
+const  history = createBrowserHistory();
+
 class Planner extends Component {
-  state = {
-    character: 'amazon',
-    currentTab: 1,
-    currentSkill: 'magicArrow',
-    ...getAllCharacterSkillLevels(skillData),
-  };
+  constructor (props) {
+    super(props);
+    const initialState = {
+      character: 'amazon',
+      currentTab: 1,
+      currentSkill: 'magicArrow',
+      ...getEmptySkillLevels(skillData),
+    };
+    const { buildCode } = props.match.params;
+    const build = (buildCode) ? JSON.parse(atob(buildCode)) : {};
+    if (!build.c) {
+      this.state = {...initialState};
+      return
+    }
+    this.state = {
+      ...initialState,
+      character: build.c,
+      currentSkill: skillData.tree[build.c][1].skills[0].skillName,
+      currentTab: build.t || 1,
+      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(skillData.tree[build.c])) : {},
+    };
+  }
 
   setTab = (id) => this.setState({
     currentTab: id,
@@ -27,6 +48,8 @@ class Planner extends Component {
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
+    history.push(getBuildString(this.state, skillData.skillDetails));
+
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -37,7 +60,7 @@ class Planner extends Component {
         <div className='plannerCoreContainer'>
           <Tooltip
             skill={skillData.skillDetails[this.state.currentSkill]}
-            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`]}
+            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`] || 0}
             skillLevels={this.state[`${this.state.character}Skills`]}
           />
           <Tree
@@ -55,19 +78,12 @@ class Planner extends Component {
   };
 };
 
-function getAllCharacterSkillLevels (skillData) {
+function getEmptySkillLevels (skillData) {
   let skillLevels = {};
-  Object.entries(skillData.tree).forEach((entry) => {
-    const [character, tabs] = entry;
+  Object.keys(skillData.tree).forEach((character) => {
     skillLevels[`${character}Skills`] = {};
-    Object.values(tabs).forEach((tab) => {
-      Object.values(tab.skills).forEach((skill) => {
-        skillLevels[`${character}Skills`][`${skill.skillName}Level`] = 0;
-      });
-    });
   });
   return skillLevels;
 }
 
-export {getAllCharacterSkillLevels};
-export default Planner;
+export default withRouter(Planner);

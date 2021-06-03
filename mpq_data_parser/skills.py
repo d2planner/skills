@@ -24,6 +24,10 @@ CHARCLASS_MAP = {
     'pal': 'paladin',
     'sor': 'sorceress',
 }
+COMPRESSED_ID_MAP = {
+    raw_id: compressed_id
+    for raw_id, compressed_id in enumerate('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+}
 
 
 def get_skill_details(
@@ -33,12 +37,26 @@ def get_skill_details(
     related_non_charskills: Optional[list[str]] = None,
 ) -> dict:
     skill_details = {}
+    charskills = (
+        charskills.copy()
+        .sort_values(['charclass', 'SkillPage', 'SkillRow', 'SkillColumn'])  # deterministic id order
+    )
+
+    raw_id = 0
+    previous_character = None
     for index, row in charskills.iterrows():
         row = row.copy().replace({np.nan: None})
         skill_key = to_camelcase(row.skill)
 
         row_details = _get_skill_details_for_row(row, missile_details, monster_details)
+        row_details['skillId'] = COMPRESSED_ID_MAP[raw_id]
         skill_details[skill_key] = {k: v for k, v in row_details.items() if v or v == 0}
+
+        if previous_character == row.charclass:
+            raw_id += 1
+        else:
+            raw_id = 0
+            previous_character = row.charclass
 
     for index, row in charskills.iterrows():  # requires all skills populated first
         row = row.copy().replace({np.nan: None})

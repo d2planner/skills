@@ -41,6 +41,7 @@ def build_skills_tree_lookup(
             'skillName': skill_name,
             'row': skill['skillRow'],
             'column': skill['skillColumn'],
+            'id': skill['skillId'],
         }
         tree[skill['charclass']][skill['skillPage']]['skills'].append(skill_metadata)
     return tree

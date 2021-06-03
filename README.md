@@ -6,7 +6,7 @@ There are a few Diablo 2 skill planners out there, these are the features that h
 * **Accurate skill data** - powered by the game files
   * Support for multiple patches and mods **(TODO)**
 * **Fast to update** - in case we ever go beyond patch 1.14D
-* **Build saving and sharing** - through auto-updating URL in your address bar **(TODO)**
+* **Build saving and sharing** - through auto-updating URL in your address bar
 * **Simple modern UI** - built around ease-of-use
   * Character level tracking based on skill choices **(TODO)**
   * Mobile friendly **(TODO)**

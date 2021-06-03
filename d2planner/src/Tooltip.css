@@ -1,6 +1,6 @@
 .tooltipContainer {
   padding: 1em;
-  width: 30em;
+  width: 29em;
   padding-right: 2em;
   padding-left:  0;
   padding-top:  0;
@@ -30,6 +30,8 @@ li {
   background: #F5F5F5;
   margin: .5em;
   padding-left:  .5em;
+  padding-right: .5em;
+  font-size:  11pt;
 }
 p.skillLongName {
   width:  fit-content;

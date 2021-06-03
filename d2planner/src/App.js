@@ -12,7 +12,7 @@ function App() {
         <div className="planner">
           <h1 className="mainTitle">Diablo II Skill Planner</h1>
           <Switch>
-            <Route path="/:build" component={Planner}/>
+            <Route path="/:buildCode" component={Planner}/>
             <Route path="/" component={Planner}/>
           </Switch>
         </div>

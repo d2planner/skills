@@ -13,16 +13,24 @@ const  history = createBrowserHistory();
 class Planner extends Component {
   constructor (props) {
     super(props);
-    const { build } = props.match.params;
-    if (build) {
-      console.log(atob(build))
-    }
-    this.state = {
+    const initialState = {
       character: 'amazon',
       currentTab: 1,
       currentSkill: 'magicArrow',
       ...getAllCharacterSkillLevels(skillData),
     };
+    const { buildCode } = props.match.params;
+    const build = (buildCode) ? JSON.parse(atob(buildCode)) : {};
+    if (!build.character) {
+      this.state = {...initialState};
+      return
+    }
+    this.state = {
+      ...initialState,
+      character: build.character,
+      currentSkill: skillData.tree[build.character][1].skills[0].skillName,
+      [`${build.character}Skills`]: build[`${build.character}Skills`] || {},
+    }
   }
 
   setTab = (id) => this.setState({
@@ -70,8 +78,7 @@ class Planner extends Component {
 
 function getAllCharacterSkillLevels (skillData) {
   let skillLevels = {};
-  Object.entries(skillData.tree).forEach((entry) => {
-    const [character, tabs] = entry;
+  Object.keys(skillData.tree).forEach((character) => {
     skillLevels[`${character}Skills`] = {};
   });
   return skillLevels;
@@ -81,7 +88,7 @@ function getBuildString (plannerState) {
   let buildData = {
     buildVersion: 1,
     character: plannerState.character,
-    ...plannerState[`${plannerState.character}Skills`],
+    [`${plannerState.character}Skills`]: plannerState[`${plannerState.character}Skills`],
   }
   return btoa(JSON.stringify(buildData))
 }

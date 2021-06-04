@@ -1,6 +1,7 @@
 import './Tree.css';
+import CharacterSpace from './CharacterSpace'
 import Skill from './Skill'
-import Tab from './Tab';
+import Tab, {BonusForm} from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
@@ -36,6 +37,11 @@ const Tree = (props) => {
       />
       {skills}
       {tabs}
+      <CharacterSpace
+        character={character}
+        allBonus={skillBonuses.all || 0}
+        setBonusLevel={setBonusLevel}
+      />
     </div>
   );
 };

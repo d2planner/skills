@@ -2,21 +2,19 @@
   position:absolute;
   width: 26.5%;
   height: 21.7%;
+  left: 72%;
 }
 
 .tab1Container {
   top: 75.5%;
-  left: 72%;
 }
 
 .tab2Container {
   top: 50.7%;
-  left: 72%;
 }
 
 .tab3Container {
   top: 26%;
-  left: 72%;
 }
 
 .Tab, .Tab:hover, .Tab:focus {
@@ -30,47 +28,4 @@
   line-height: 1.3em;
   font-weight: 600;
   white-space: pre;
-}
-
-.tabBonusContainer {
-  position: absolute;
-  align-items: center;
-  height:  1.6em;
-  display: flex;
-  width:  fit-content;
-  top: 0;
-  left: 0; 
-  right: 0; 
-  margin-left:  auto;
-  margin-right: auto;
-}
-
-label {
-  text-align:right;
-  font-size:  11pt;
-  padding-bottom:  .6em;
-  color:  #EDBA47
-}
-
-.tabBonus {
-  width:  1.3em;
-  height: 1.6em;
-  bottom:  0px;
-  text-align: center;
-  border-color: transparent;
-  color:  #EDBA47;
-  font-weight: bold;
-  font-size: 11pt;
-  padding:  0;
-  padding-top:  .1em;
-  padding-bottom:  .1em;
-  margin: 0;
-}
-
-.tabBonus:focus {
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px #EDBA47;
-  border-color: transparent;
-}
-.tabBonus:active {
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px linen;
 }

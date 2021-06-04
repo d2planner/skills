@@ -1,0 +1,36 @@
+.characterSpaceContainer {
+  position:absolute;
+  width: 26.5%;
+  height: 23.5%;
+  left: 73%;
+  top:  1%;
+}
+
+.characterLevelContainer {
+  position: absolute;
+  align-items: center;
+  width:  fit-content;
+  bottom:  32px;
+  right: 0;
+  left:  0;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.characterText {
+  color: linen;
+  text-align: center;
+  font-size: 11pt;
+  line-height: 1.3em;
+  margin-bottom:  11px;
+  padding-left:  8px;
+  padding-right:  8px;
+  font-style: italic;
+}
+
+.characterLevel {
+  color:  linen;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}

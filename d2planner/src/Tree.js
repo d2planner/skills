@@ -1,7 +1,7 @@
 import './Tree.css';
 import CharacterSpace from './CharacterSpace'
 import Skill from './Skill'
-import Tab, {BonusForm} from './Tab';
+import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {

@@ -13,18 +13,18 @@ const Tree = (props) => {
     } 
     if (lvl === 0) {
       let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[`${skillName}Level`]
+      delete skillLevelsNew[skillName]
       setSkillLevels(character, skillLevelsNew);
       return
     }
-    setSkillLevels(character, { ...skillLevels, [`${skillName}Level`]: lvl});
+    setSkillLevels(character, { ...skillLevels, [skillName]: lvl});
   }
 
   const skills = treeData[currentTab]['skills'].map((skill) => {
     return (
       <Skill
           {...skill}
-          lvl={skillLevels[`${skill.skillName}Level`] || 0}
+          lvl={skillLevels[skill.skillName] || 0}
           key={skill.skillName}
           setSkillLevel={setSkillLevel}
           setCurrentSkill={setCurrentSkill}

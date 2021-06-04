@@ -26,12 +26,16 @@ class Planner extends Component {
       this.state = {...initialState};
       return
     }
+
+    const skillsMap = buildSkillsMap(skillData.tree[build.c]);
     this.state = {
       ...initialState,
       character: build.c,
       currentSkill: skillData.tree[build.c][1].skills[0].skillName,
       currentTab: build.t || 1,
-      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(skillData.tree[build.c])) : {},
+      [`${build.c}SkillLevels`]: (build.s !== undefined) ? decompressSkills(build.s, skillsMap) : {},
+      [`${build.c}SkillBonuses`]: (build.b !== undefined) ? decompressSkills(build.b, skillsMap) : {},
+
     };
   }
 
@@ -44,7 +48,7 @@ class Planner extends Component {
     currentTab: 1,
     currentSkill: skillData.tree[character][1].skills[0].skillName,
   });
-  setSkillLevels = (character, skillLevels) => this.setState({[`${character}Skills`]: skillLevels});
+  setSkillLevels = (character, skillLevels) => this.setState({[`${character}SkillLevels`]: skillLevels});
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
@@ -60,11 +64,11 @@ class Planner extends Component {
         <div className='plannerCoreContainer'>
           <Tooltip
             skill={skillData.skillDetails[this.state.currentSkill]}
-            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`] || 0}
-            skillLevels={this.state[`${this.state.character}Skills`]}
+            lvl={this.state[`${this.state.character}SkillLevels`][this.state.currentSkill] || 0}
+            skillLevels={this.state[`${this.state.character}SkillLevels`]}
           />
           <Tree
-            skillLevels={this.state[`${this.state.character}Skills`]}
+            skillLevels={this.state[`${this.state.character}SkillLevels`]}
             treeData={skillData.tree[this.state.character]}
             character={this.state.character}
             currentTab={this.state.currentTab}
@@ -81,7 +85,7 @@ class Planner extends Component {
 function getEmptySkillLevels (skillData) {
   let skillLevels = {};
   Object.keys(skillData.tree).forEach((character) => {
-    skillLevels[`${character}Skills`] = {};
+    skillLevels[`${character}SkillLevels`] = {};
   });
   return skillLevels;
 }

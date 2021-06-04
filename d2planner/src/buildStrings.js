@@ -51,8 +51,8 @@ function compressSkillNames (skillLookup, skillDetails) {
   let compressedSkills = {};
   for (const [key, value] of Object.entries(skillLookup)) {
     const skillName = key.split('Level')[0];
-    const skill = skillDetails[skillName];
-    compressedSkills[skill.skillId] = value;
+    const skill = skillDetails[skillName] || {};
+    compressedSkills[skill.skillId || key] = value;
   }
   return compressedSkills;
 }

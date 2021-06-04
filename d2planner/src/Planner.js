@@ -38,12 +38,11 @@ class Planner extends Component {
     currentSkill: skillData.tree[character][1].skills[0].skillName,
   });
   setSkillLevels = (character, skillLevels) => this.setState({[`${character}SkillLevels`]: skillLevels});
-  setSkillBonuses = (character, skillBonuses) => this.setState({[`${character}skillBonuses`]: skillBonuses});
+  setSkillBonuses = (character, skillBonuses) => this.setState({[`${character}SkillBonuses`]: skillBonuses});
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
     history.push(stateToBuildString(this.state, skillData.skillDetails));
-
     return (
       <div className='plannerContainer'>
         <CharacterSelector

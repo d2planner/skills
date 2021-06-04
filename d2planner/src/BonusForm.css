@@ -1,0 +1,39 @@
+.bonusContainer {
+  position: absolute;
+  align-items: center;
+  height:  1.6em;
+  display: flex;
+  width:  fit-content;
+  top: 3px;
+  right: 3px; 
+}
+
+label {
+  text-align:right;
+  font-size:  11pt;
+  padding-bottom:  .6em;
+  color:  #EDBA47
+}
+
+.bonus {
+  width:  1.3em;
+  height: 1.6em;
+  bottom:  0px;
+  text-align: center;
+  border-color: transparent;
+  color:  #EDBA47;
+  font-weight: bold;
+  font-size: 11pt;
+  padding:  0;
+  padding-top:  .1em;
+  padding-bottom:  .1em;
+  margin: 0;
+}
+
+.bonus:focus {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px #EDBA47;
+  border-color: transparent;
+}
+.bonus:active {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px linen;
+}

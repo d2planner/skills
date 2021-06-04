@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
-import getBuildString, { buildSkillsMap, decompressSkills} from './buildStrings'
+import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
@@ -19,19 +19,12 @@ class Planner extends Component {
       currentTab: 1,
       currentSkill: 'magicArrow',
       ...getEmptySkillLevels(skillData),
+      ...getEmptySkillBonuses(skillData),
     };
-    const { buildCode } = props.match.params;
-    const build = (buildCode) ? JSON.parse(atob(buildCode)) : {};
-    if (!build.c) {
-      this.state = {...initialState};
-      return
-    }
+    const { buildString } = props.match.params;
     this.state = {
       ...initialState,
-      character: build.c,
-      currentSkill: skillData.tree[build.c][1].skills[0].skillName,
-      currentTab: build.t || 1,
-      [`${build.c}Skills`]: (build.s !== undefined) ? decompressSkills(build.s, buildSkillsMap(skillData.tree[build.c])) : {},
+      ...buildStringToState(buildString, skillData.tree),
     };
   }
 
@@ -44,12 +37,12 @@ class Planner extends Component {
     currentTab: 1,
     currentSkill: skillData.tree[character][1].skills[0].skillName,
   });
-  setSkillLevels = (character, skillLevels) => this.setState({[`${character}Skills`]: skillLevels});
+  setSkillLevels = (character, skillLevels) => this.setState({[`${character}SkillLevels`]: skillLevels});
+  setSkillBonuses = (character, skillBonuses) => this.setState({[`${character}SkillBonuses`]: skillBonuses});
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
 
   render() {
-    history.push(getBuildString(this.state, skillData.skillDetails));
-
+    history.push(stateToBuildString(this.state, skillData.skillDetails));
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -60,16 +53,18 @@ class Planner extends Component {
         <div className='plannerCoreContainer'>
           <Tooltip
             skill={skillData.skillDetails[this.state.currentSkill]}
-            lvl={this.state[`${this.state.character}Skills`][`${this.state.currentSkill}Level`] || 0}
-            skillLevels={this.state[`${this.state.character}Skills`]}
+            lvl={this.state[`${this.state.character}SkillLevels`][this.state.currentSkill] || 0}
+            skillLevels={this.state[`${this.state.character}SkillLevels`]}
           />
           <Tree
-            skillLevels={this.state[`${this.state.character}Skills`]}
+            skillLevels={this.state[`${this.state.character}SkillLevels`]}
+            skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
             treeData={skillData.tree[this.state.character]}
             character={this.state.character}
             currentTab={this.state.currentTab}
             setTab={this.setTab}
             setSkillLevels={this.setSkillLevels}
+            setSkillBonuses={this.setSkillBonuses}
             setCurrentSkill={this.setCurrentSkill}
           />
         </div>
@@ -81,7 +76,15 @@ class Planner extends Component {
 function getEmptySkillLevels (skillData) {
   let skillLevels = {};
   Object.keys(skillData.tree).forEach((character) => {
-    skillLevels[`${character}Skills`] = {};
+    skillLevels[`${character}SkillLevels`] = {};
+  });
+  return skillLevels;
+}
+
+function getEmptySkillBonuses (skillData) {
+  let skillLevels = {};
+  Object.keys(skillData.tree).forEach((character) => {
+    skillLevels[`${character}SkillBonuses`] = {};
   });
   return skillLevels;
 }

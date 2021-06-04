@@ -19,7 +19,7 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
 
 function fillOtherSkillLevels (calcExpression, skillLevels) {
   const re = /skill\('((?:\w|\s)+)'.(?:lvl|blvl)\)/g;
-  const replacer = (match, group1) => (skillLevels[`${group1}Level`] || 0);
+  const replacer = (match, group1) => (skillLevels[group1] || 0);
   return calcExpression.replace(re, replacer);
 }
 
@@ -44,7 +44,7 @@ function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
     const entity = skill[`related${entityKind}s`][entityName];
 
     const calculator = calcLookup[group3];
-    lvl = (entityKind === 'Skill') ? skillLevels[`${entityName}Level`] || 0 : lvl;
+    lvl = (entityKind === 'Skill') ? skillLevels[entityName] || 0 : lvl;
     return calculator(entity, lvl, skillLevels);
   }
   return calcExpression.replace(re, replacer);

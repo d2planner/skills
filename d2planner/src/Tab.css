@@ -1,30 +1,31 @@
-.Tab, .Tab:hover, .Tab:focus {
+.tabContainer {
   position:absolute;
   width: 26.5%;
   height: 21.7%;
+  left: 72%;
+}
+
+.tab1Container {
+  top: 75.5%;
+}
+
+.tab2Container {
+  top: 50.7%;
+}
+
+.tab3Container {
+  top: 26%;
+}
+
+.Tab, .Tab:hover, .Tab:focus {
+  width:  100%;
+  height:  100%;
   border-radius: 15px;
   background-color: transparent;
   border-color: transparent;
-  text-align: center;
   padding: 0px;
-  padding-left: 2px;
   color:  linen;
-  line-height: 1.5em;
+  line-height: 1.3em;
   font-weight: 600;
   white-space: pre;
-}
-
-.Tab1, .Tab1:hover, .Tab1:focus {
-  top: 75.5%;
-  left: 72%;
-}
-
-.Tab2, .Tab2:hover, .Tab2:focus {
-  top: 50.7%;
-  left: 72%;
-}
-
-.Tab3, .Tab3:hover, .Tab3:focus {
-  top: 26%;
-  left: 72%;
 }

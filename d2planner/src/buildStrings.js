@@ -1,24 +1,38 @@
-function getBuildString (plannerState, skillDetails) {
-  let compressedSkills = {};
-  for (const [key, value] of Object.entries(plannerState[`${plannerState.character}SkillLevels`])) {
-    const skillName = key.split('Level')[0];
-    const skill = skillDetails[skillName];
-    compressedSkills[skill.skillId] = value;
-  }
+function stateToBuildString (plannerState, skillDetails) {
+  const compressedSkills = compressSkillNames(plannerState[`${plannerState.character}SkillLevels`], skillDetails);
+  const compressedBonuses = compressSkillNames(plannerState[`${plannerState.character}SkillBonuses`], skillDetails);
   const buildData = {
     v: 1,  // build version
     p: '1.14D', // patch/mod version
     c: plannerState.character,  // character
     s: compressedSkills,  // skills
+    b: compressedBonuses,  // bonuses
     t: plannerState.currentTab,
   };
   return btoa(JSON.stringify(buildData));
 }
 
+function buildStringToState (buildString, treeData) {
+  const build = (buildString) ? JSON.parse(atob(buildString)) : {};
+  if (!build.c) {
+    return {};
+  }
+
+  const skillsMap = buildSkillsMap(treeData[build.c]);
+  return {
+    character: build.c,
+    currentSkill: treeData[build.c][1].skills[0].skillName,
+    currentTab: build.t || 1,
+    [`${build.c}SkillLevels`]: (build.s !== undefined) ? decompressSkills(build.s, skillsMap) : {},
+    [`${build.c}SkillBonuses`]: (build.b !== undefined) ? decompressSkills(build.b, skillsMap) : {},
+  };
+}
+
 function decompressSkills (compressedSkills, skillsMap) {
   let skills = {};
   for (const [compressedKey, value] of Object.entries(compressedSkills)) {
-    skills[skillsMap[compressedKey]] = value;
+    const key = skillsMap[compressedKey] || compressedKey;
+    skills[key] = value;
   }
   return skills;
 }
@@ -33,5 +47,15 @@ function buildSkillsMap (characterTree) {
   return skillMap;
 }
 
-export { decompressSkills, buildSkillsMap }
-export default getBuildString;
+function compressSkillNames (skillLookup, skillDetails) {
+  let compressedSkills = {};
+  for (const [key, value] of Object.entries(skillLookup)) {
+    const skillName = key.split('Level')[0];
+    const skill = skillDetails[skillName];
+    compressedSkills[skill.skillId] = value;
+  }
+  return compressedSkills;
+}
+
+export { buildStringToState }
+export default stateToBuildString;

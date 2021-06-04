@@ -4,9 +4,9 @@ import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
-  const {skillLevels, treeData, character, currentTab, setTab, setSkillLevels, setCurrentSkill} = props;
+  const {skillLevels, treeData, character, currentTab} = props;
 
-  const setSkillLevel = (skillName, lvl) => {
+  function setSkillLevel (skillName, lvl) {
     lvl = Math.floor(Number(lvl));
     if (!(lvl >= 0)) {
       return
@@ -14,10 +14,10 @@ const Tree = (props) => {
     if (lvl === 0) {
       let skillLevelsNew = {...skillLevels};
       delete skillLevelsNew[skillName]
-      setSkillLevels(character, skillLevelsNew);
+      props.setSkillLevels(character, skillLevelsNew);
       return
     }
-    setSkillLevels(character, { ...skillLevels, [skillName]: lvl});
+    props.setSkillLevels(character, { ...skillLevels, [skillName]: lvl});
   }
 
   const skills = treeData[currentTab]['skills'].map((skill) => {
@@ -27,7 +27,7 @@ const Tree = (props) => {
           lvl={skillLevels[skill.skillName] || 0}
           key={skill.skillName}
           setSkillLevel={setSkillLevel}
-          setCurrentSkill={setCurrentSkill}
+          setCurrentSkill={props.setCurrentSkill}
       />
     );
   });
@@ -39,9 +39,9 @@ const Tree = (props) => {
         alt='Skill Tree'
       />
       {skills}
-      <Tab id={1} treeName={treeData[1]['treeName']} setTab={setTab}/>
-      <Tab id={2} treeName={treeData[2]['treeName']} setTab={setTab}/>
-      <Tab id={3} treeName={treeData[3]['treeName']} setTab={setTab}/>
+      <Tab id={1} treeName={treeData[1]['treeName']} setTab={props.setTab}/>
+      <Tab id={2} treeName={treeData[2]['treeName']} setTab={props.setTab}/>
+      <Tab id={3} treeName={treeData[3]['treeName']} setTab={props.setTab}/>
     </div>
   );
 };

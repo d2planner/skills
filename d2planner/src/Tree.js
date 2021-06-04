@@ -4,33 +4,22 @@ import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
-  const {skillLevels, treeData, character, currentTab} = props;
+  const {skillLevels, skillBonuses, treeData, character, currentTab} = props;
 
-  function setSkillLevel (skillName, lvl) {
-    lvl = Math.floor(Number(lvl));
-    if (!(lvl >= 0)) {
-      return
-    } 
-    if (lvl === 0) {
-      let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[skillName]
-      props.setSkillLevels(character, skillLevelsNew);
-      return
-    }
-    props.setSkillLevels(character, { ...skillLevels, [skillName]: lvl});
-  }
-
-  const skills = treeData[currentTab]['skills'].map((skill) => {
-    return (
-      <Skill
-          {...skill}
-          lvl={skillLevels[skill.skillName] || 0}
-          key={skill.skillName}
-          setSkillLevel={setSkillLevel}
-          setCurrentSkill={props.setCurrentSkill}
-      />
-    );
-  });
+  const setSkillLevel = createSkillLevelSetter(character, skillLevels, props.setSkillLevels);
+  const setBonusLevel = createSkillLevelSetter(character, skillBonuses, props.setSkillBonuses);
+  const skills = treeData[currentTab]['skills'].map((skill) => (
+    <Skill
+        {...skill}
+        lvl={skillLevels[skill.skillName] || 0}
+        key={skill.skillName}
+        setSkillLevel={setSkillLevel}
+        setCurrentSkill={props.setCurrentSkill}
+    />
+  ));
+  const tabs = [1, 2, 3].map((id) => (
+    <Tab key={id} id={id} treeName={treeData[id]['treeName']} setTab={props.setTab}/>
+  ))
   return (
     <div className='treeContainer'>
       <img
@@ -39,11 +28,26 @@ const Tree = (props) => {
         alt='Skill Tree'
       />
       {skills}
-      <Tab id={1} treeName={treeData[1]['treeName']} setTab={props.setTab}/>
-      <Tab id={2} treeName={treeData[2]['treeName']} setTab={props.setTab}/>
-      <Tab id={3} treeName={treeData[3]['treeName']} setTab={props.setTab}/>
+      {tabs}
     </div>
   );
 };
+
+function createSkillLevelSetter (character, skillLevels, setStateFunction) {
+  function setter (skillName, lvl) {
+    lvl = Math.floor(Number(lvl));
+    if (!(lvl >= 0)) {
+      return
+    } 
+    if (lvl === 0) {
+      let skillLevelsNew = {...skillLevels};
+      delete skillLevelsNew[skillName]
+      setStateFunction(character, skillLevelsNew);
+      return
+    }
+    setStateFunction(character, { ...skillLevels, [skillName]: lvl});
+  }
+  return setter;
+}
 
 export default Tree;

@@ -59,6 +59,7 @@ class Planner extends Component {
           />
           <Tree
             skillLevels={this.state[`${this.state.character}SkillLevels`]}
+            skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
             treeData={skillData.tree[this.state.character]}
             character={this.state.character}
             currentTab={this.state.currentTab}

@@ -18,7 +18,14 @@ const Tree = (props) => {
     />
   ));
   const tabs = [1, 2, 3].map((id) => (
-    <Tab key={id} id={id} treeName={treeData[id]['treeName']} setTab={props.setTab}/>
+    <Tab
+      key={id}
+      id={id}
+      treeName={treeData[id]['treeName']}
+      treeBonus={skillBonuses[`tab${id}`] || 0}
+      setTab={props.setTab}
+      setBonusLevel={setBonusLevel}
+    />
   ))
   return (
     <div className='treeContainer'>
@@ -34,18 +41,18 @@ const Tree = (props) => {
 };
 
 function createSkillLevelSetter (character, skillLevels, setStateFunction) {
-  function setter (skillName, lvl) {
+  function setter (key, lvl) {
     lvl = Math.floor(Number(lvl));
     if (!(lvl >= 0)) {
       return
     } 
     if (lvl === 0) {
       let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[skillName]
+      delete skillLevelsNew[key]
       setStateFunction(character, skillLevelsNew);
       return
     }
-    setStateFunction(character, { ...skillLevels, [skillName]: lvl});
+    setStateFunction(character, { ...skillLevels, [key]: lvl});
   }
   return setter;
 }

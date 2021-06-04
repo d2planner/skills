@@ -50,7 +50,6 @@ const SkillForm = (props) => {
   }
 
   return (
-    <form>
       <input
         className='skillPoints'
         type="number"
@@ -58,7 +57,6 @@ const SkillForm = (props) => {
         onChange={handleChange}
         onClick={setAsCurrent}
       />
-    </form>
   );
 };
 

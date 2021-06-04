@@ -7,6 +7,10 @@ const Tree = (props) => {
   const {skillLevels, treeData, character, currentTab, setTab, setSkillLevels, setCurrentSkill} = props;
 
   const setSkillLevel = (skillName, lvl) => {
+    lvl = Math.floor(Number(lvl));
+    if (!(lvl >= 0)) {
+      return
+    } 
     if (lvl === 0) {
       let skillLevelsNew = {...skillLevels};
       delete skillLevelsNew[`${skillName}Level`]

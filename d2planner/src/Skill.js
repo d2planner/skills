@@ -47,33 +47,19 @@ const SkillForm = (props) => {
   const handleChange = (event) => {
     const {value} = event.target;
     setAsCurrent();
-    if (isPositiveInteger(value)) {
-      setLevel(Number(value));
-    } else if (!value) {
-      setLevel(0);
-    }
+    setLevel(value);
   }
 
   return (
     <form>
       <input
         className='skillPoints'
-        type="text"
+        type="number"
         value={lvl}
         onChange={handleChange}
       />
     </form>
   );
 };
-
-function isPositiveInteger(str) {
-  str = str.trim();
-  if (!str) {
-    return false;
-  }
-  str = str.replace(/^0+/, "") || "0";
-  const num = Math.floor(Number(str));
-  return num !== Infinity && String(num) === str && num >= 0;
-}
 
 export default Skill;

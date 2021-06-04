@@ -24,7 +24,6 @@ const Skill = (props) => {
 const SkillButton = (props) => {
   const {lvl, setLevel, setAsCurrent} = props;
   const onClick = () => setLevel(lvl + 1);
-  const onHover = setAsCurrent;
   const onContextMenu = (e) => {
     e.preventDefault();
     if (lvl > 0) {
@@ -35,7 +34,7 @@ const SkillButton = (props) => {
     <button
       className='skill'
       onClick={onClick}
-      onMouseEnter={onHover}
+      onMouseEnter={setAsCurrent}
       onContextMenu={onContextMenu}
     ></button>
   )
@@ -57,6 +56,7 @@ const SkillForm = (props) => {
         type="number"
         value={lvl}
         onChange={handleChange}
+        onClick={setAsCurrent}
       />
     </form>
   );

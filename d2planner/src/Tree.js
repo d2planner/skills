@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 import './Tree.css';
 import {getTotalBonus} from './calculateSkillValue'
 import CharacterSpace from './CharacterSpace'
@@ -6,6 +8,37 @@ import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
+  const [bonusMode, setBonusMode] = useState(false);
+
+  React.useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    // cleanup this component
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  React.useEffect(() => {
+    window.addEventListener('keyup', handleKeyUp);
+
+    // cleanup this component
+    return () => {
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);  
+
+  function handleKeyDown (event) {
+    if (['Shift', 'CapsLock'].includes(event.key)) {
+      setBonusMode(event.getModifierState('CapsLock') ? false : true);
+    }
+  }
+
+  function handleKeyUp (event) {
+    if (['Shift', 'CapsLock'].includes(event.key)) {
+      setBonusMode(event.getModifierState('CapsLock') ? true : false);
+    }
+  }
+
   const {skillLevels, skillBonuses, treeData, character, currentTab} = props;
 
   const setSkillLevel = createSkillLevelSetter(character, skillLevels, props.setSkillLevels);
@@ -18,10 +51,12 @@ const Tree = (props) => {
     return (
       <Skill
           {...skill}
+          key={skill.skillName}
           lvl={lvl}
           bonus={getTotalBonus(lvl, skillBonus, generalBonus)}
-          key={skill.skillName}
+          bonusMode={bonusMode}
           setSkillLevel={setSkillLevel}
+          setBonusLevel={setBonusLevel}
           setCurrentSkill={props.setCurrentSkill}
       />
     )

@@ -1,16 +1,13 @@
 import './Tooltip.css';
-import {getTotalBonus} from './calculateSkillValue'
+import {getTotalLevel} from './calculateSkillValue'
 import formatDesclines from './formatDesclines';
 
 const Tooltip = (props) => {
-  const {skill, skillName, skillLevels, skillBonuses} = props;
+  const {skill, skillLevels, skillBonuses} = props;
   if (!skill) {
     return <div className='tooltipContainer'></div>
   }
-  const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${skill.skillPage}`] || 0);
-  const lvl = skillLevels[skillName] || 0;
-  const totalBonus = getTotalBonus(lvl, skillBonuses[skillName] || 0, generalBonus);
-  const totalLevel = lvl + totalBonus;
+  const totalLevel = getTotalLevel(skill, skillLevels, skillBonuses);
 
   const synergyLines = formatDesclines('dsc3', skill, totalLevel, skillLevels, skillBonuses);
   const currentLevelLines = formatDesclines('desc', skill, totalLevel, skillLevels, skillBonuses);

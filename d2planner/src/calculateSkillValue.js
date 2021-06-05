@@ -10,16 +10,24 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels, skillBonu
   if (!calcExpression.trim()) {
     return calcExpression;
   }
-  calcExpression = fillOtherSkillLevels(calcExpression, skillLevels, skillBonuses);
+  calcExpression = fillOtherSkillLevels(calcExpression, skill, skillLevels, skillBonuses);
   calcExpression = evaluateSklvlCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
   calcExpression = evaluateOtherEntityCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
   calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
   return evaluate(calcExpression);
 }
 
-function fillOtherSkillLevels (calcExpression, skillLevels, skillBonuses) {
-  const re = /skill\('((?:\w|\s)+)'.(?:lvl|blvl)\)/g;
-  const replacer = (match, group1) => (skillLevels[group1] || 0);
+function fillOtherSkillLevels (calcExpression, skill, skillLevels, skillBonuses) {
+  const re = /skill\('((?:\w|\s)+)'.(lvl|blvl)\)/g;
+  const replacer = (match, group1, group2) => {
+    const otherSkillName = group1;
+    const lvlKind = group2; 
+    if (lvlKind === 'blvl') {
+      return skillLevels[otherSkillName] || 0;
+    }
+    const otherSkill = skill.relatedSkills[otherSkillName]
+    return getTotalLevel(otherSkill, skillLevels, skillBonuses);
+  };
   return calcExpression.replace(re, replacer);
 }
 
@@ -67,6 +75,13 @@ function evaluateCalcs (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   return calcExpression.replace(re, replacer);
 }
 
+function getTotalLevel (skill, skillLevels, skillBonuses) {
+  const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${skill.skillPage}`] || 0);
+  const lvl = skillLevels[skill.skillName] || 0;
+  const totalBonus = getTotalBonus(lvl, skillBonuses[skill.skillName] || 0, generalBonus);
+  return lvl + totalBonus;
+}
+
 function getTotalBonus (lvl, skillBonus, generalBonus) {
   if (!((lvl + skillBonus) > 0)) {
     return 0;
@@ -74,5 +89,5 @@ function getTotalBonus (lvl, skillBonus, generalBonus) {
   return skillBonus + generalBonus;
 }
 
-export {getTotalBonus};
+export {getTotalBonus, getTotalLevel};
 export default calculateSkillValue;

@@ -2,13 +2,13 @@ import './CharacterSpace.css';
 import BonusForm from './BonusForm'
 
 const CharacterSpace = (props) => {
-  const {character, allBonus, setBonusLevel} = props;
+  const {character, allBonus, setSkillBonus} = props;
   return (
     <div className='characterSpaceContainer'>
       <BonusForm
         lvl={allBonus}
         label={'All +'}
-        setLevel={(lvl) => setBonusLevel('all', lvl)}
+        setLevel={(lvl) => setSkillBonus('all', lvl)}
       />
       <CharacterLevel
         character={character}

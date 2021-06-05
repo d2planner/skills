@@ -41,6 +41,9 @@
   margin: 0;
 }
 
+.bonus:hover {
+  border-color: #EDBA47;
+}
 .bonus:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px #EDBA47;
   border-color: transparent;

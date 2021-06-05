@@ -2,7 +2,7 @@ import './Tab.css';
 import BonusForm from './BonusForm'
 
 const Tab = (props) => {
-  const {id, treeName, treeBonus, setTab, setBonusLevel} = props;
+  const {id, treeName, treeBonus, setTab, setSkillBonus} = props;
   return (
     <div className={`tabContainer tab${id}Container`}>
       <button className={`Tab Tab${id}`} onClick={() => setTab(id)}>
@@ -11,7 +11,7 @@ const Tab = (props) => {
       <BonusForm
         lvl={treeBonus}
         label={'+'}
-        setLevel={(lvl) => setBonusLevel(`tab${id}`, lvl)}
+        setLevel={(lvl) => setSkillBonus(`tab${id}`, lvl)}
       />
     </div>
   );

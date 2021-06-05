@@ -9,30 +9,23 @@ import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
   const [bonusMode, setBonusMode] = useState(false);
-
   React.useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
-
-    // cleanup this component
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
   React.useEffect(() => {
     window.addEventListener('keyup', handleKeyUp);
-
-    // cleanup this component
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);  
-
   function handleKeyDown (event) {
     if (['Shift', 'CapsLock'].includes(event.key)) {
       setBonusMode(event.getModifierState('CapsLock') ? false : true);
     }
   }
-
   function handleKeyUp (event) {
     if (['Shift', 'CapsLock'].includes(event.key)) {
       setBonusMode(event.getModifierState('CapsLock') ? true : false);
@@ -40,9 +33,26 @@ const Tree = (props) => {
   }
 
   const {skillLevels, skillBonuses, treeData, character, currentTab} = props;
-
-  const setSkillLevel = createSkillLevelSetter(character, skillLevels, props.setSkillLevels);
-  const setBonusLevel = createSkillLevelSetter(character, skillBonuses, props.setSkillBonuses);
+  function setSkillLevel (key, lvl) {
+    lvl = Math.floor(Number(lvl));
+    if (!(lvl > 0)) {
+      let skillLevelsNew = {...skillLevels};
+      delete skillLevelsNew[key]
+      props.setSkillLevels(character, skillLevelsNew);
+      return
+    }
+    props.setSkillLevels(character, { ...skillLevels, [key]: lvl});
+  }
+  function setSkillBonus (key, bonus) {
+    bonus = Math.floor(Number(bonus));
+    if (!(bonus > 0)) {
+      let skillLevelsNew = {...skillLevels};
+      delete skillLevelsNew[key]
+      props.setSkillBonuses(character, skillLevelsNew);
+      return
+    }
+    props.setSkillBonuses(character, { ...skillLevels, [key]: bonus});
+  }
 
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);
   const skills = treeData[currentTab]['skills'].map((skill) => {
@@ -53,10 +63,11 @@ const Tree = (props) => {
           {...skill}
           key={skill.skillName}
           lvl={lvl}
-          bonus={getTotalBonus(lvl, skillBonus, generalBonus)}
+          bonus={skillBonus}
+          totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}
           setSkillLevel={setSkillLevel}
-          setBonusLevel={setBonusLevel}
+          setSkillBonus={setSkillBonus}
           setCurrentSkill={props.setCurrentSkill}
       />
     )
@@ -68,7 +79,7 @@ const Tree = (props) => {
       treeName={treeData[id]['treeName']}
       treeBonus={skillBonuses[`tab${id}`] || 0}
       setTab={props.setTab}
-      setBonusLevel={setBonusLevel}
+      setSkillBonus={setSkillBonus}
     />
   ))
   return (
@@ -83,27 +94,10 @@ const Tree = (props) => {
       <CharacterSpace
         character={character}
         allBonus={skillBonuses.all || 0}
-        setBonusLevel={setBonusLevel}
+        setSkillBonus={setSkillBonus}
       />
     </div>
   );
 };
-
-function createSkillLevelSetter (character, skillLevels, setStateFunction) {
-  function setter (key, lvl) {
-    lvl = Math.floor(Number(lvl));
-    if (!(lvl >= 0)) {
-      return
-    } 
-    if (lvl === 0) {
-      let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[key]
-      setStateFunction(character, skillLevelsNew);
-      return
-    }
-    setStateFunction(character, { ...skillLevels, [key]: lvl});
-  }
-  return setter;
-}
 
 export default Tree;

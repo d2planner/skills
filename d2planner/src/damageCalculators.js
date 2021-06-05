@@ -2,26 +2,27 @@ import calculateSkillValue from './calculateSkillValue'
 
 const lvlBreakpoints = [[0, 1], [1, 8], [8, 16], [16, 22], [22, 28], [28, null]];
 
-function calculatePhysicalDamageMin (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'minDam', 'minLevDam', 'dmgSymPerCalc');
+function calculatePhysicalDamageMin (skill, lvl, skillLevels, skillBonuses, missileNum=null) {
+  return calculateDamage(skill, lvl, skillLevels, skillBonuses, 'minDam', 'minLevDam', 'dmgSymPerCalc');
 }
 
-function calculatePhysicalDamageMax (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'maxDam', 'maxLevDam', 'dmgSymPerCalc');
+function calculatePhysicalDamageMax (skill, lvl, skillLevels, skillBonuses, missileNum=null) {
+  return calculateDamage(skill, lvl, skillLevels, skillBonuses, 'maxDam', 'maxLevDam', 'dmgSymPerCalc');
 }
 
-function calculateElementalDamageMin (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'eMin', 'eMinLev', 'eDmgSymPerCalc', missileNum);
+function calculateElementalDamageMin (skill, lvl, skillLevels, skillBonuses, missileNum=null) {
+  return calculateDamage(skill, lvl, skillLevels, skillBonuses, 'eMin', 'eMinLev', 'eDmgSymPerCalc', missileNum);
 }
 
-function calculateElementalDamageMax (skill, lvl, skillLevels, missileNum=null) {
-  return calculateDamage(skill, lvl, skillLevels, 'eMax', 'eMaxLev', 'eDmgSymPerCalc', missileNum);
+function calculateElementalDamageMax (skill, lvl, skillLevels, skillBonuses, missileNum=null) {
+  return calculateDamage(skill, lvl, skillLevels, skillBonuses, 'eMax', 'eMaxLev', 'eDmgSymPerCalc', missileNum);
 }
 
 function calculateDamage (
   skill,
   lvl,
   skillLevels,
+  skillBonuses,
   initialDamageKey,
   damagePerLevelKeyRoot,
   synergyKey,
@@ -31,7 +32,7 @@ function calculateDamage (
     skill = skill[`missile${missileNum}`];
   }
 
-  const synergyBonus = calculateSkillValue(skill[synergyKey], skill, lvl, skillLevels) || 0;
+  const synergyBonus = calculateSkillValue(skill[synergyKey], skill, lvl, skillLevels, skillBonuses) || 0;
   const synergyMultiplier = (100 + synergyBonus) / 100;
 
   let damage = skill[initialDamageKey];

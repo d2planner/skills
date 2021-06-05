@@ -2,7 +2,7 @@ import { evaluate } from 'mathjs'
 
 import calcLookup from './calculators';
 
-function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
+function calculateSkillValue (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   if (calcExpression === undefined) {
     return calcExpression;
   }

@@ -67,4 +67,12 @@ function evaluateCalcs (calcExpression, skill, lvl, skillLevels) {
   return calcExpression.replace(re, replacer);
 }
 
+function getTotalBonus (lvl, skillBonus, generalBonus) {
+  if (!((lvl + skillBonus) > 0)) {
+    return 0;
+  }
+  return skillBonus + generalBonus;
+}
+
+export {getTotalBonus};
 export default calculateSkillValue;

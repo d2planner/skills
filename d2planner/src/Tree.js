@@ -1,4 +1,5 @@
 import './Tree.css';
+import {getTotalBonus} from './calculateSkillValue'
 import CharacterSpace from './CharacterSpace'
 import Skill from './Skill'
 import Tab from './Tab';
@@ -68,13 +69,6 @@ function createSkillLevelSetter (character, skillLevels, setStateFunction) {
     setStateFunction(character, { ...skillLevels, [key]: lvl});
   }
   return setter;
-}
-
-function getTotalBonus (lvl, skillBonus, generalBonus) {
-  if (!((lvl + skillBonus) > 0)) {
-    return 0;
-  }
-  return skillBonus + generalBonus;
 }
 
 export default Tree;

@@ -237,8 +237,8 @@ function formatMinionLife (skill, lvl, skillLevels, skillBonuses, ta, tb, ca, cb
 }
 
 function formatSkeletonDamage (skill, lvl, skillLevels, skillBonuses, ta, tb, ca, cb) {
-  // TODO(dustin): use bonuses properly here
-  const masteryDamage = skillLevels.skeletonMasteryLevel || 0 * skill.relatedSkills.skeletonMastery.params.par2;
+  const masteryLevel = calculateSkillValue("skill('skeletonMastery'.lvl)", skill, lvl, skillLevels, skillBonuses);
+  const masteryDamage = skill.relatedSkills.skeletonMastery.params.par2 * masteryLevel;
 
   const monsterMinDamage = skill.summon.a1MinDNormal;
   const monsterMaxDamage = skill.summon.a1MaxDNormal;
@@ -249,6 +249,7 @@ function formatSkeletonDamage (skill, lvl, skillLevels, skillBonuses, ta, tb, ca
 
   const minDamage = floor(multiplier * (monsterMinDamage + skillDamage + masteryDamage));
   const maxDamage = floor(multiplier * (monsterMaxDamage + skillDamage + masteryDamage));
+
   return `Damage: ${minDamage}-${maxDamage}`;
 }
 

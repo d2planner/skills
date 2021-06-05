@@ -2,6 +2,7 @@ import './BonusForm.css'
 
 const BonusForm = (props) => {
   const {lvl, setLevel, label} = props;
+  const bonusClass = (props.lvl > 0) ? 'hasBonus' : 'noBonus';
 
   const handleChange = (event) => {
     const {value} = event.target;
@@ -10,9 +11,9 @@ const BonusForm = (props) => {
 
   return (
     <div className='bonusContainer'>
-      <label>{label}</label>
+      <label className={bonusClass}>{label}</label>
       <input
-        className='bonus'
+        className={`bonus ${bonusClass}`}
         type="number"
         value={lvl}
         onChange={handleChange}

@@ -9,8 +9,8 @@ const calcLookup = {
   edmn: calculateElementalDamageMin,
   edmx: calculateElementalDamageMax,
   edln: calculateLength,
-  edns: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMin(skill, lvl, skillLevels)),
-  edxs: (skill, lvl, skillLevels) => (256 * calculateElementalDamageMax(skill, lvl, skillLevels)),
+  edns: (skill, lvl, skillLevels, skillBonuses) => (256 * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses)),
+  edxs: (skill, lvl, skillLevels, skillBonuses,) => (256 * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses)),
   ln12: createLinearCalculator('par1', 'par2'),
   ln34: createLinearCalculator('par3', 'par4'),
   ln56: createLinearCalculator('par5', 'par6'),
@@ -24,7 +24,7 @@ const calcLookup = {
   macr: createMasteryCalculator('passiveMasteryCrit'),
   mps: calculateManaCostPerSecond,
   len: createCalculatorOnCalcField('auraLen'),
-  usmc: (skill, lvl, skillLevels) => (calculateManaCost(skill, lvl, skillLevels, 256)),
+  usmc: (skill, lvl, skillLevels, skillBonuses) => (calculateManaCost(skill, lvl, 256)),
   m1en: createMissileMinDamageCalculator(1),
   m1ex: createMissileMaxDamageCalculator(1),
   m2en: createMissileMinDamageCalculator(2),
@@ -49,22 +49,22 @@ const calcLookup = {
   clc2: createCalculatorOnCalcField('calc2'),
   clc3: createCalculatorOnCalcField('calc3'),
   clc4: createCalculatorOnCalcField('calc4'),
-  lvl: (skill, lvl, skillLevels) => (lvl),
+  lvl: (skill, lvl, skillLevels, skillBonuses) => (lvl),
 };
 
-function calculateToHit (skill, lvl, skillLevels) {
+function calculateToHit (skill, lvl, skillLevels, skillBonuses) {
   const toHitExpression = skill.toHitCalc;
   if (toHitExpression) {
-    return calculateSkillValue(toHitExpression, skill, lvl, skillLevels);
+    return calculateSkillValue(toHitExpression, skill, lvl, skillLevels, skillBonuses);
   }
   return (skill.toHit || 0) + (skill.levToHit || 0) * (lvl - 1);
 }
 
-function calculateManaCostPerSecond (skill, lvl, skillLevels) {
-  return calculateManaCost(skill, lvl, skillLevels) * framesPerSecond / 2;
+function calculateManaCostPerSecond (skill, lvl, skillLevels, skillBonuses) {
+  return calculateManaCost(skill, lvl) * framesPerSecond / 2;
 }
 
-function calculateManaCost (skill, lvl, skillLevels, multiplier=null) {
+function calculateManaCost (skill, lvl, multiplier=null) {
   const mana = skill.mana;
   const lvlMana = skill.lvlMana || 0;
   const manaShift = skill.manaShift;
@@ -75,8 +75,8 @@ function calculateManaCost (skill, lvl, skillLevels, multiplier=null) {
   return Math.max(cost, skill.minMana || 0);
 }
 
-function calculateLength (skill, lvl, skillLevels) {
-  const synergyBonus = calculateSkillValue(skill.eLenSymPerCalc, skill, lvl, skillLevels) || 0;
+function calculateLength (skill, lvl, skillLevels, skillBonuses) {
+  const synergyBonus = calculateSkillValue(skill.eLenSymPerCalc, skill, lvl, skillLevels, skillBonuses) || 0;
   const synergyMultipler = (100 + synergyBonus) / 100;
 
   let length = skill.eLen;
@@ -93,7 +93,7 @@ function calculateLength (skill, lvl, skillLevels) {
 }
 
 function createLinearCalculator (paramKeyA, paramKeyB) {
-  function calculator (skill, lvl, skillLevels) {
+  function calculator (skill, lvl, skillLevels, skillBonuses) {
     const a = skill.params[paramKeyA] || 0;
     const b = skill.params[paramKeyB] || 0;
     return a + b * (lvl - 1);
@@ -102,7 +102,7 @@ function createLinearCalculator (paramKeyA, paramKeyB) {
 }
 
 function createDiminishingCalculator (paramKeyA, paramKeyB) {
-  function calculator (skill, lvl, skillLevels) {
+  function calculator (skill, lvl, skillLevels, skillBonuses) {
     const a = skill.params[paramKeyA] || 0;
     const b = skill.params[paramKeyB] || 0;
     return Math.floor(a + ((110 * lvl) * (b - a)) / (100 * (lvl + 6)));
@@ -111,23 +111,31 @@ function createDiminishingCalculator (paramKeyA, paramKeyB) {
 }
 
 function createMissileMinDamageCalculator (missileNum, multipler=1) {
-  return (skill, lvl, skillLevels) => (multipler * calculateElementalDamageMin(skill, lvl, skillLevels, missileNum));
+  return (skill, lvl, skillLevels, skillBonuses) => (
+    multipler * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses, missileNum)
+  );
 }
 
 function createMissileMaxDamageCalculator (missileNum, multipler=1) {
-  return (skill, lvl, skillLevels) => (multipler * calculateElementalDamageMax(skill, lvl, skillLevels, missileNum));
+  return (skill, lvl, skillLevels, skillBonuses) => (
+    multipler * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses, missileNum)
+  );
 }
 
 function createCalculatorOnCalcField (calcField) {
-  return (skill, lvl, skillLevels) => (calculateSkillValue(skill.calcs[calcField], skill, lvl, skillLevels));
+  return (skill, lvl, skillLevels, skillBonuses) => (
+    calculateSkillValue(skill.calcs[calcField], skill, lvl, skillLevels, skillBonuses)
+  );
 }
 
 function createMasteryCalculator (masteryKey) {
-  return (skill, lvl, skillLevels) => (calculateSkillValue(skill.mastery[masteryKey], skill, lvl, skillLevels));
+  return (skill, lvl, skillLevels, skillBonuses) => (
+    calculateSkillValue(skill.mastery[masteryKey], skill, lvl, skillLevels, skillBonuses)
+  );
 }
 
 function createParamCalculator (paramNumber) {
-  function calculator (skill, lvl, skillLevels) {
+  function calculator (skill, lvl, skillLevels, skillBonuses) {
     return skill.params[`par${paramNumber}`];
   }
   return calculator;

@@ -2,7 +2,7 @@ import { evaluate } from 'mathjs'
 
 import calcLookup from './calculators';
 
-function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
+function calculateSkillValue (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   if (calcExpression === undefined) {
     return calcExpression;
   }
@@ -10,33 +10,33 @@ function calculateSkillValue (calcExpression, skill, lvl, skillLevels) {
   if (!calcExpression.trim()) {
     return calcExpression;
   }
-  calcExpression = fillOtherSkillLevels(calcExpression, skillLevels);
-  calcExpression = evaluateSklvlCalcs(calcExpression, skill, lvl, skillLevels);
-  calcExpression = evaluateOtherEntityCalcs(calcExpression, skill, lvl, skillLevels);
-  calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels);
+  calcExpression = fillOtherSkillLevels(calcExpression, skillLevels, skillBonuses);
+  calcExpression = evaluateSklvlCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
+  calcExpression = evaluateOtherEntityCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
+  calcExpression = evaluateCalcs(calcExpression, skill, lvl, skillLevels, skillBonuses);
   return evaluate(calcExpression);
 }
 
-function fillOtherSkillLevels (calcExpression, skillLevels) {
+function fillOtherSkillLevels (calcExpression, skillLevels, skillBonuses) {
   const re = /skill\('((?:\w|\s)+)'.(?:lvl|blvl)\)/g;
   const replacer = (match, group1) => (skillLevels[group1] || 0);
   return calcExpression.replace(re, replacer);
 }
 
-function evaluateSklvlCalcs (calcExpression, skill, lvl, skillLevels) {
+function evaluateSklvlCalcs (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   const re = /sklvl\('((?:\w|\s)+)'\.(\w+)\.(?!lvl)(\w+)\)/g;
   const replacer = (match, group1, group2, group3) => {
     const otherSkill = skill.relatedSkills[group1];
     const lvlCalculator = calcLookup[group2];
     const calculator = calcLookup[group3];
 
-    const effectiveLvl = lvlCalculator(skill, lvl, skillLevels);
-    return calculator(otherSkill, effectiveLvl, {});
+    const effectiveLvl = lvlCalculator(skill, lvl, skillLevels, skillBonuses);
+    return calculator(otherSkill, effectiveLvl, skillLevels, skillBonuses);
   }
   return calcExpression.replace(re, replacer);
 }
 
-function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
+function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   const re = /(skill|miss)\('((?:\w|\s)+)'\.(?!lvl)(\w+)\)/g;
   const replacer = (match, group1, group2, group3) => {
     const entityKind = getEntityKind(group1);
@@ -45,7 +45,7 @@ function evaluateOtherEntityCalcs (calcExpression, skill, lvl, skillLevels) {
 
     const calculator = calcLookup[group3];
     lvl = (entityKind === 'Skill') ? skillLevels[entityName] || 0 : lvl;
-    return calculator(entity, lvl, skillLevels);
+    return calculator(entity, lvl, skillLevels, skillBonuses);
   }
   return calcExpression.replace(re, replacer);
 }
@@ -58,13 +58,21 @@ function getEntityKind (entityKey) {
   return entityKindLookup[entityKey];
 }
 
-function evaluateCalcs (calcExpression, skill, lvl, skillLevels) {
+function evaluateCalcs (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   const re = new RegExp(Object.keys(calcLookup).join('|'), 'g');
   const replacer = (match) => {
     const calculator = calcLookup[match];
-    return calculator(skill, lvl, skillLevels);
+    return calculator(skill, lvl, skillLevels, skillBonuses);
   }
   return calcExpression.replace(re, replacer);
 }
 
+function getTotalBonus (lvl, skillBonus, generalBonus) {
+  if (!((lvl + skillBonus) > 0)) {
+    return 0;
+  }
+  return skillBonus + generalBonus;
+}
+
+export {getTotalBonus};
 export default calculateSkillValue;

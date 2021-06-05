@@ -9,8 +9,9 @@ describe('<Tooltip />', () => {
 
   it('renders immolation arrow', () => {
     render(<Tooltip
-      skill={skillData.skillDetails['magicArrow']}
-      lvl={20}
+      skill={skillData.skillDetails['immolationArrow']}
+      skillName='immolationArrow'
+      skillBonuses={{'all': 5}}
       skillLevels={{'fireArrowLevel': 10, 'explodingArrowLevel': 5}}
     />);
   });
@@ -19,8 +20,9 @@ describe('<Tooltip />', () => {
     Object.entries(skillData.skillDetails).forEach(([skillName, skill]) => {
       render(<Tooltip
         skill={skill}
-        lvl={10}
-        skillLevels={{}}
+        skillName={skillName}
+        skillBonuses={{'all': 1}}
+        skillLevels={{[skillName]: 10}}
       />);
       expect(screen.queryByText(/undefined/)).toBeNull();
       expect(screen.queryByText(/NaN/)).toBeNull();

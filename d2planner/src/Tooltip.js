@@ -1,29 +1,39 @@
 import './Tooltip.css';
+import {getTotalBonus} from './calculateSkillValue'
 import formatDesclines from './formatDesclines';
 
 const Tooltip = (props) => {
-  const {skill, lvl, skillLevels} = props;
+  const {skill, skillName, skillLevels, skillBonuses} = props;
   if (!skill) {
     return <div className='tooltipContainer'></div>
   }
+  const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${skill.skillPage}`] || 0);
+  const lvl = skillLevels[skillName] || 0;
+  const totalBonus = getTotalBonus(lvl, skillBonuses[skillName] || 0, generalBonus);
+  const totalLevel = lvl + totalBonus;
 
-  const synergyLines = formatDesclines('dsc3', skill, lvl, skillLevels);
-  const currentLevelLines = formatDesclines('desc', skill, lvl, skillLevels);
-  const nextLevelLines = formatDesclines('desc', skill, lvl + 1, skillLevels);
+  const synergyLines = formatDesclines('dsc3', skill, totalLevel, skillLevels, skillBonuses);
+  const currentLevelLines = formatDesclines('desc', skill, totalLevel, skillLevels, skillBonuses);
+  const nextLevelLines = formatDesclines('desc', skill, totalLevel + 1, skillLevels, skillBonuses);
 
   return (
     <div className='tooltipContainer'>
-      <SkillPreamble skill={skill} lvl={lvl} skillLevels={skillLevels}/>
-      <CurrentLevel lvl={lvl} lines={currentLevelLines}/>
-      <NextLevel lines={(lvl > 0) ? nextLevelLines.filter(item => (!currentLevelLines.includes(item))) : nextLevelLines}/>
+      <SkillPreamble skill={skill} lvl={totalLevel} skillLevels={skillLevels} skillBonuses={skillBonuses}/>
+      <CurrentLevel lvl={totalLevel} lines={currentLevelLines}/>
+      <NextLevel lines={
+        (totalLevel > 0)
+        ? nextLevelLines.filter(item => (!currentLevelLines.includes(item)))
+        : nextLevelLines
+      }
+      />
       <Synergies lines={synergyLines}/>
     </div>
   );
 };
 
 const SkillPreamble = (props) => {
-  const {skill, lvl, skillLevels} = props;
-  const preambleItems = formatDesclines('dsc2', skill, lvl, skillLevels).map((line, index) => (
+  const {skill, lvl, skillLevels, skillBonuses} = props;
+  const preambleItems = formatDesclines('dsc2', skill, lvl, skillLevels, skillBonuses).map((line, index) => (
     <li key={index}>{line}</li>
   ));
   return (

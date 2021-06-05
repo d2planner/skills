@@ -1,6 +1,6 @@
 import formattersByDescline from './formatters';
 
-function formatDesclines (root, skill, lvl, skillLevels) {
+function formatDesclines (root, skill, lvl, skillLevels, skillBonuses) {
   if (skill[`${root}Lines`] === undefined) {
     return [];
   }
@@ -11,6 +11,7 @@ function formatDesclines (root, skill, lvl, skillLevels) {
       skill,
       lvl,
       skillLevels,
+      skillBonuses,
       entry[`${root}TextA`],
       entry[`${root}TextB`],
       entry[`${root}CalcA`],
@@ -23,13 +24,13 @@ function formatDesclines (root, skill, lvl, skillLevels) {
   return lines;
 }
 
-function formatDescline (desclineNumber, skill, lvl, skillLevels, ta, tb, ca, cb) {
+function formatDescline (desclineNumber, skill, lvl, skillLevels, skillBonuses, ta, tb, ca, cb) {
   const formatter = formattersByDescline[desclineNumber];
   if (formatter === undefined) {
     return `MISSING FORMATTER: ${desclineNumber}`;
   }
 
-  const line = formatter(skill, lvl, skillLevels, ta, tb, ca, cb);
+  const line = formatter(skill, lvl, skillLevels, skillBonuses, ta, tb, ca, cb);
   if (line === null) {
     return null;
   }

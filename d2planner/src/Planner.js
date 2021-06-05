@@ -53,7 +53,6 @@ class Planner extends Component {
         <div className='plannerCoreContainer'>
           <Tooltip
             skill={skillData.skillDetails[this.state.currentSkill]}
-            skillName={this.state.currentSkill}
             skillLevels={this.state[`${this.state.character}SkillLevels`]}
             skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
           />

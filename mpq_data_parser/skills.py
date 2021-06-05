@@ -109,6 +109,7 @@ def _without_related(skill: dict) -> dict:
 
 def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_details: dict) -> dict:
     return {
+        'skillName': to_camelcase(row.skill),
         'strName': row['str name'],
         'strLong': row['str long'],
         'charclass': CHARCLASS_MAP.get(row.charclass),

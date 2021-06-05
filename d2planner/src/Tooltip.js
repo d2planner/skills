@@ -3,11 +3,11 @@ import {getTotalLevel} from './calculateSkillValue'
 import formatDesclines from './formatDesclines';
 
 const Tooltip = (props) => {
-  const {skill, skillName, skillLevels, skillBonuses} = props;
+  const {skill, skillLevels, skillBonuses} = props;
   if (!skill) {
     return <div className='tooltipContainer'></div>
   }
-  const totalLevel = getTotalLevel(skill, skillName, skillLevels, skillBonuses);
+  const totalLevel = getTotalLevel(skill, skillLevels, skillBonuses);
 
   const synergyLines = formatDesclines('dsc3', skill, totalLevel, skillLevels, skillBonuses);
   const currentLevelLines = formatDesclines('desc', skill, totalLevel, skillLevels, skillBonuses);

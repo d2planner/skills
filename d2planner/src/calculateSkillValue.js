@@ -26,7 +26,7 @@ function fillOtherSkillLevels (calcExpression, skill, skillLevels, skillBonuses)
       return skillLevels[otherSkillName] || 0;
     }
     const otherSkill = skill.relatedSkills[otherSkillName]
-    return getTotalLevel(otherSkill, otherSkillName, skillLevels, skillBonuses);
+    return getTotalLevel(otherSkill, skillLevels, skillBonuses);
   };
   return calcExpression.replace(re, replacer);
 }
@@ -75,10 +75,10 @@ function evaluateCalcs (calcExpression, skill, lvl, skillLevels, skillBonuses) {
   return calcExpression.replace(re, replacer);
 }
 
-function getTotalLevel (skill, skillName, skillLevels, skillBonuses) {
+function getTotalLevel (skill, skillLevels, skillBonuses) {
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${skill.skillPage}`] || 0);
-  const lvl = skillLevels[skillName] || 0;
-  const totalBonus = getTotalBonus(lvl, skillBonuses[skillName] || 0, generalBonus);
+  const lvl = skillLevels[skill.skillName] || 0;
+  const totalBonus = getTotalBonus(lvl, skillBonuses[skill.skillName] || 0, generalBonus);
   return lvl + totalBonus;
 }
 

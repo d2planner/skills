@@ -9,15 +9,22 @@ const Tree = (props) => {
 
   const setSkillLevel = createSkillLevelSetter(character, skillLevels, props.setSkillLevels);
   const setBonusLevel = createSkillLevelSetter(character, skillBonuses, props.setSkillBonuses);
-  const skills = treeData[currentTab]['skills'].map((skill) => (
-    <Skill
-        {...skill}
-        lvl={skillLevels[skill.skillName] || 0}
-        key={skill.skillName}
-        setSkillLevel={setSkillLevel}
-        setCurrentSkill={props.setCurrentSkill}
-    />
-  ));
+
+  const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);
+  const skills = treeData[currentTab]['skills'].map((skill) => {
+    const lvl = skillLevels[skill.skillName] || 0;
+    const skillBonus = skillBonuses[skill.skillName] || 0;
+    return (
+      <Skill
+          {...skill}
+          lvl={lvl}
+          bonus={getTotalBonus(lvl, skillBonus, generalBonus)}
+          key={skill.skillName}
+          setSkillLevel={setSkillLevel}
+          setCurrentSkill={props.setCurrentSkill}
+      />
+    )
+  });
   const tabs = [1, 2, 3].map((id) => (
     <Tab
       key={id}
@@ -61,6 +68,13 @@ function createSkillLevelSetter (character, skillLevels, setStateFunction) {
     setStateFunction(character, { ...skillLevels, [key]: lvl});
   }
   return setter;
+}
+
+function getTotalBonus (lvl, skillBonus, generalBonus) {
+  if (!((lvl + skillBonus) > 0)) {
+    return 0;
+  }
+  return skillBonus + generalBonus;
 }
 
 export default Tree;

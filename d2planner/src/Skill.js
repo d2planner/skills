@@ -1,7 +1,7 @@
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, setSkillLevel, setCurrentSkill} = props;
+  const {row, column, skillName, lvl, bonus, setSkillLevel, setCurrentSkill} = props;
   const setLevel = (lvl) => (setSkillLevel(skillName, lvl));
   const setAsCurrent = () => (setCurrentSkill(skillName));
 
@@ -14,6 +14,7 @@ const Skill = (props) => {
       />
       <SkillForm
         lvl={lvl}
+        bonus={bonus}
         setLevel={setLevel}
         setAsCurrent={setAsCurrent}
       />
@@ -26,9 +27,7 @@ const SkillButton = (props) => {
   const onClick = () => setLevel(lvl + 1);
   const onContextMenu = (e) => {
     e.preventDefault();
-    if (lvl > 0) {
-      setLevel(lvl - 1);
-    };
+    setLevel(lvl - 1);
   };
   return (
     <button
@@ -41,22 +40,24 @@ const SkillButton = (props) => {
 };
 
 const SkillForm = (props) => {
-  const {lvl, setLevel, setAsCurrent} = props;
+  const {lvl, bonus, setLevel, setAsCurrent} = props;
+  const bonusClass = (bonus > 0) ? 'hasBonus' : 'noBonus';
 
   const handleChange = (event) => {
     const {value} = event.target;
     setAsCurrent();
-    setLevel(value);
+    const newLvl = Math.floor(Number(value)) - bonus;
+    setLevel(newLvl);
   }
 
   return (
-      <input
-        className='skillPoints'
-        type="number"
-        value={lvl}
-        onChange={handleChange}
-        onClick={setAsCurrent}
-      />
+    <input
+      className={`skillPoints ${bonusClass}`}
+      type="number"
+      value={lvl + bonus}
+      onChange={handleChange}
+      onClick={setAsCurrent}
+    />
   );
 };
 

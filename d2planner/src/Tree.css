@@ -4,6 +4,15 @@
   width: fit-content;
   float: left;
 }
+
 .tree {
   width: 420px;
+}
+
+label.hasBonus, input.hasBonus {
+  color:  #EDBA47
+}
+
+label.noBonus, input.noBonus {
+  color:  linen;
 }

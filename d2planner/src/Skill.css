@@ -45,14 +45,13 @@
   background-color: transparent;
   border-color:  #EDBA47;
 }
-.skillPoints, .skillPoints:hover {
+.skillPoints {
   position:  absolute;
   text-align: center;
   border-color: transparent;
   margin:  0px;
   bottom: 0px;
   right:  1px;
-  color:  linen;
   font-weight: bold;
   font-size: 11pt;
   padding:  0;

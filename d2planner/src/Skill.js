@@ -51,13 +51,13 @@ const SkillForm = (props) => {
   }
 
   return (
-      <input
-        className={`skillPoints ${bonusClass}`}
-        type="number"
-        value={lvl + bonus}
-        onChange={handleChange}
-        onClick={setAsCurrent}
-      />
+    <input
+      className={`skillPoints ${bonusClass}`}
+      type="number"
+      value={lvl + bonus}
+      onChange={handleChange}
+      onClick={setAsCurrent}
+    />
   );
 };
 

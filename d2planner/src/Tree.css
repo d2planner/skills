@@ -9,10 +9,10 @@
   width: 420px;
 }
 
-.hasBonus {
+label.hasBonus, input.hasBonus {
   color:  #EDBA47
 }
 
-.noBonus {
+label.noBonus, input.noBonus {
   color:  linen;
 }

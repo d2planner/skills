@@ -15,7 +15,7 @@ const BonusForm = (props) => {
       <input
         className={`bonus ${bonusClass}`}
         type="number"
-        value={lvl}
+        value={lvl.toString()}
         onChange={handleChange}
       />
     </div>

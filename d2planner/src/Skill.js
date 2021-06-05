@@ -49,12 +49,11 @@ const SkillForm = (props) => {
     const newLvl = Math.floor(Number(value)) - bonus;
     setLevel(newLvl);
   }
-
   return (
     <input
       className={`skillPoints ${bonusClass}`}
       type="number"
-      value={lvl + bonus}
+      value={(lvl + bonus).toString()}
       onChange={handleChange}
       onClick={setAsCurrent}
     />

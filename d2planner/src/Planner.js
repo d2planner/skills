@@ -15,9 +15,9 @@ class Planner extends Component {
   constructor (props) {
     super(props);
     const initialState = {
-      character: 'amazon',
+      character: 'sorceress',
       currentTab: 1,
-      currentSkill: 'magicArrow',
+      currentSkill: 'fireBolt',
       ...getEmptySkillLevels(skillData),
       ...getEmptySkillBonuses(skillData),
     };

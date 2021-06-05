@@ -13,11 +13,11 @@ describe('<Planner />', () => {
     expect(screen.getByText('sorceress')).toBeInTheDocument();
     expect(screen.getByText('druid')).toBeInTheDocument();
   });
-  it('renders default (amazon) tabs', () => {
+  it('renders default (sorceress) tabs', () => {
     const  history = createBrowserHistory();
     render(<Router history={history}><Planner /></Router>);
-    expect(screen.getByText('Bow and Crossbow')).toBeInTheDocument();
-    expect(screen.getByText('Passive and Magic')).toBeInTheDocument();
-    expect(screen.getByText('Javelin and Spear')).toBeInTheDocument();
+    expect(screen.getByText('Fire Spells')).toBeInTheDocument();
+    expect(screen.getByText('Cold Spells')).toBeInTheDocument();
+    expect(screen.getByText('Lightning Spells')).toBeInTheDocument();
   });
 });

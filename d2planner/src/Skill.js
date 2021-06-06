@@ -76,7 +76,7 @@ const SkillForm = (props) => {
     debouncedSetLevel(e.target.value);  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skillLevels]);
 
-  const bonusClass = (totalBonus > 0) ? 'hasBonus' : 'noBonus';
+  const bonusClass = ((totalBonus > 0) && isTyping === false) ? 'hasBonus' : 'noBonus';
   return (
     <input
       className={`skillPoints ${bonusClass}`}

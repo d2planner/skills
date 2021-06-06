@@ -14,6 +14,7 @@ const Skill = (props) => {
       <SkillButton
         lvl={lvl}
         bonus={bonus}
+        totalBonus={totalBonus}
         bonusMode={bonusMode}
         setLevel={setLevel}
         setBonus={setBonus}
@@ -22,7 +23,7 @@ const Skill = (props) => {
       <SkillForm
         lvl={lvl}
         skillLevels={skillLevels}
-        totalBonus={totalBonus}
+        totalBonus={bonusMode ? 0 : totalBonus}
         setLevel={setLevel}
         setAsCurrent={setAsCurrent}
       />
@@ -31,8 +32,8 @@ const Skill = (props) => {
 };
 
 const SkillButton = (props) => {
-  const {lvl, bonus, setLevel, bonusMode, setBonus, setAsCurrent} = props;
-  const buttonText = (bonusMode) ? `+${bonus}` : null;
+  const {lvl, bonus, totalBonus, bonusMode, setLevel, setBonus, setAsCurrent} = props;
+  const buttonText = (bonusMode) ? `+${totalBonus}` : null;
   const onClick = (e) => {
     if (bonusMode) {
       setBonus(bonus + 1);

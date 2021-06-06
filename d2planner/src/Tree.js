@@ -46,12 +46,12 @@ const Tree = (props) => {
   function setSkillBonus (key, bonus) {
     bonus = Math.floor(Number(bonus));
     if (!(bonus > 0)) {
-      let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[key]
-      props.setSkillBonuses(character, skillLevelsNew);
+      let skillBonusesNew = {...skillBonuses};
+      delete skillBonusesNew[key]
+      props.setSkillBonuses(character, skillBonusesNew);
       return
     }
-    props.setSkillBonuses(character, { ...skillLevels, [key]: bonus});
+    props.setSkillBonuses(character, { ...skillBonuses, [key]: bonus});
   }
 
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);

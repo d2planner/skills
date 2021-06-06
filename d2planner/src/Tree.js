@@ -63,6 +63,7 @@ const Tree = (props) => {
           {...skill}
           key={skill.skillName}
           lvl={lvl}
+          skillLevels={skillLevels}
           bonus={skillBonus}
           totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}

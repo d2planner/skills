@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, bonus, totalBonus, bonusMode} = props;
+  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode} = props;
   const setLevel = (l) => (props.setSkillLevel(skillName, l));
   const setBonus = (b) => (props.setSkillBonus(skillName, b));
   const setAsCurrent = () => (props.setCurrentSkill(skillName));
@@ -20,8 +20,8 @@ const Skill = (props) => {
         setAsCurrent={setAsCurrent}
       />
       <SkillForm
-        skillName={skillName}
         lvl={lvl}
+        skillLevels={skillLevels}
         totalBonus={totalBonus}
         setLevel={setLevel}
         setAsCurrent={setAsCurrent}
@@ -59,21 +59,21 @@ const SkillButton = (props) => {
 };
 
 const SkillForm = (props) => {
-  const {skillName, lvl, totalBonus, setLevel, setAsCurrent} = props;
+  const {lvl, skillLevels, totalBonus, setLevel, setAsCurrent} = props;
   const [userInput, setUserInput] = useState(lvl + totalBonus);
   const [isTyping, setIsTyping] = useState(false);
 
-  const saveNewLevel = (value) => {
-    setLevel(value);
+  const debouncedSetLevel = debounce(value => {
+    setLevel(value)
     setIsTyping(false);
-  }
-  const delayedSaveNewLevel = debounce(v => saveNewLevel(v), 1000);
-  const onChange = e => {
+  }, 750);
+
+  const onChange = useCallback(e => {
     setUserInput(e.target.value);
     setIsTyping(true);
     setAsCurrent();
-    delayedSaveNewLevel(e.target.value);
-  }
+    debouncedSetLevel(e.target.value);  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillLevels]);
 
   const bonusClass = (totalBonus > 0) ? 'hasBonus' : 'noBonus';
   return (

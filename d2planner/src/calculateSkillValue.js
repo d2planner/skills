@@ -83,7 +83,7 @@ function getTotalLevel (skill, skillLevels, skillBonuses) {
 }
 
 function getTotalBonus (lvl, skillBonus, generalBonus) {
-  if (!((lvl + skillBonus) > 0)) {
+  if (!((lvl + skillBonus) > 0)) {  // only apply bonus with hard point or specific bonus
     return 0;
   }
   return skillBonus + generalBonus;

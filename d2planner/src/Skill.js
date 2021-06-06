@@ -1,10 +1,15 @@
 import { useCallback, useState } from 'react';
+import ReactTooltip from "react-tooltip";
 import { debounce } from 'lodash';
+
+import mouseLeftImage from './assets/mouse-left-64x64.png'
+import mouseRightImage from './assets/mouse-right-64x64.png'
+import shiftImage from './assets/shift-128x128.png'
 
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode} = props;
+  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode, showTooltip} = props;
   const setLevel = (l) => (props.setSkillLevel(skillName, l));
   const setBonus = (b) => (props.setSkillBonus(skillName, b));
   const setAsCurrent = () => (props.setCurrentSkill(skillName));
@@ -16,6 +21,7 @@ const Skill = (props) => {
         bonus={bonus}
         totalBonus={totalBonus}
         bonusMode={bonusMode}
+        showTooltip={showTooltip}
         setLevel={setLevel}
         setBonus={setBonus}
         setAsCurrent={setAsCurrent}
@@ -32,7 +38,7 @@ const Skill = (props) => {
 };
 
 const SkillButton = (props) => {
-  const {lvl, bonus, totalBonus, bonusMode, setLevel, setBonus, setAsCurrent} = props;
+  const {lvl, bonus, totalBonus, bonusMode, showTooltip, setLevel, setBonus, setAsCurrent} = props;
   const buttonText = (bonusMode) ? `+${totalBonus}` : null;
   const onClick = (e) => {
     if (bonusMode) {
@@ -49,13 +55,44 @@ const SkillButton = (props) => {
     }
     setLevel(lvl - 1);
   };
+  const tooltip = (
+    <ReactTooltip
+      id='skillButtonTip'
+      place='right'
+      effect='solid'
+      type='light'
+      textColor='#404040'
+      borderColor='#CCCCCC'
+      border={true}
+    >
+      <pre className='tooltipText'>
+        <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>
+        : +1 {bonusMode ? 'bonus' : 'point'}
+      </pre>
+        <pre className='tooltipText'>
+        <img className='mouseRightImage' src={mouseRightImage} alt='Right Click'/>
+        : -1 {bonusMode ? 'bonus' : 'point'}
+      </pre>
+        <pre className='tooltipText'>
+        <img className='shiftImage' src={shiftImage} alt='Shift'/>
+        : edit bonus
+      </pre>
+    </ReactTooltip>
+  )
   return (
-    <button
-      className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
-      onClick={onClick}
-      onMouseEnter={setAsCurrent}
-      onContextMenu={onContextMenu}
-    >{buttonText}</button>
+    <div className='skillButtonContainer'>
+      <button
+        data-tip
+        className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
+        data-for='skillButtonTip'
+        onClick={onClick}
+        onMouseEnter={setAsCurrent}
+        onContextMenu={onContextMenu}
+      >
+        {buttonText}
+      </button>
+      {showTooltip ? tooltip : null}
+    </div>
   )
 };
 

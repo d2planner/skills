@@ -1,5 +1,10 @@
 import { useCallback, useState } from 'react';
+import ReactTooltip from "react-tooltip";
 import { debounce } from 'lodash';
+
+import mouseLeftImage from './assets/mouse-left-64x64.png'
+import mouseRightImage from './assets/mouse-right-64x64.png'
+import shiftImage from './assets/shift-128x128.png'
 
 import './Skill.css';
 
@@ -50,12 +55,29 @@ const SkillButton = (props) => {
     setLevel(lvl - 1);
   };
   return (
-    <button
-      className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
-      onClick={onClick}
-      onMouseEnter={setAsCurrent}
-      onContextMenu={onContextMenu}
-    >{buttonText}</button>
+    <div className='skillButtonContainer'>
+      <button
+        data-tip
+        className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
+        data-for='skillButtonTip'
+        onClick={onClick}
+        onMouseEnter={setAsCurrent}
+        onContextMenu={onContextMenu}
+      >
+        {buttonText}
+      </button>
+      <ReactTooltip
+        id='skillButtonTip'
+        place='right'
+        effect='solid'
+        type='light'
+        textColor='#404040'
+      >
+        <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>: +1 point<br/>
+        <img className='mouseRightImage' src={mouseRightImage} alt='Right Click'/>: -1 point<br/>
+        <img className='shiftImage' src={shiftImage} alt='Shift'/>: edit bonus
+      </ReactTooltip>
+    </div>
   )
 };
 

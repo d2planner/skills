@@ -72,10 +72,21 @@ const SkillButton = (props) => {
         effect='solid'
         type='light'
         textColor='#404040'
+        borderColor='#CCCCCC'
+        border={true}
       >
-        <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>: +1 point<br/>
-        <img className='mouseRightImage' src={mouseRightImage} alt='Right Click'/>: -1 point<br/>
-        <img className='shiftImage' src={shiftImage} alt='Shift'/>: edit bonus
+        <pre className='tooltipText'>
+          <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>
+          : +1 {bonusMode ? 'bonus' : 'point'}
+        </pre>
+          <pre className='tooltipText'>
+          <img className='mouseRightImage' src={mouseRightImage} alt='Right Click'/>
+          : -1 {bonusMode ? 'bonus' : 'point'}
+        </pre>
+          <pre className='tooltipText'>
+          <img className='shiftImage' src={shiftImage} alt='Shift'/>
+          : edit bonus
+        </pre>
       </ReactTooltip>
     </div>
   )

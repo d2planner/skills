@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { debounce } from 'lodash';
 
 import './Tree.css';
 import {getTotalBonus} from './calculateSkillValue'
@@ -9,28 +10,32 @@ import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
   const [bonusMode, setBonusMode] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(true);
+
   React.useEffect(() => {
+    function handleKeyDown (event) {
+      if (['Shift', 'CapsLock'].includes(event.key)) {
+        setBonusMode(event.getModifierState('CapsLock') ? false : true);
+      }
+    }
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
   React.useEffect(() => {
+    function handleKeyUp (event) {
+      const debouncedDisableTooltip = debounce(() => setShowTooltip(false), 5000);
+      if (['Shift', 'CapsLock'].includes(event.key)) {
+        setBonusMode(event.getModifierState('CapsLock') ? true : false);
+        debouncedDisableTooltip();
+      }
+    }
     window.addEventListener('keyup', handleKeyUp);
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, []);  
-  function handleKeyDown (event) {
-    if (['Shift', 'CapsLock'].includes(event.key)) {
-      setBonusMode(event.getModifierState('CapsLock') ? false : true);
-    }
-  }
-  function handleKeyUp (event) {
-    if (['Shift', 'CapsLock'].includes(event.key)) {
-      setBonusMode(event.getModifierState('CapsLock') ? true : false);
-    }
-  }
+  }, []);
 
   const {skillLevels, skillBonuses, treeData, character, currentTab} = props;
   function setSkillLevel (key, lvl) {
@@ -67,6 +72,7 @@ const Tree = (props) => {
           bonus={skillBonus}
           totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}
+          showTooltip={showTooltip}
           setSkillLevel={setSkillLevel}
           setSkillBonus={setSkillBonus}
           setCurrentSkill={props.setCurrentSkill}

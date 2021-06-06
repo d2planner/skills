@@ -38,13 +38,30 @@
   background-color: transparent;
   border-color: transparent;
   z-index: 1;
+  outline: none;
 }
 .skill:hover, .skill:active {
   border-radius: 2px;
   border-width: 3px;
   background-color: transparent;
-  border-color:  #EDBA47;
+  border-color:  linen;
+  outline: none;
 }
+
+button.bonusMode {
+  backdrop-filter: blur(2px) brightness(60%);
+  color: #EDBA47;
+  font-size: 20pt;
+  font-weight: bold;
+  padding: 0px;
+}
+
+button.bonusMode:hover, button.bonusMode:active {
+  border-color: #EDBA47;
+  border-radius: 2px;
+  outline: none;
+}
+
 .skillPoints {
   position:  absolute;
   text-align: center;

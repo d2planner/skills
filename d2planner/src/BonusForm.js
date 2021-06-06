@@ -11,7 +11,14 @@ const BonusForm = (props) => {
 
   return (
     <div className='bonusContainer'>
-      <label className={bonusClass}>{label}</label>
+      <button
+        className={`bonusFormButton ${bonusClass}`}
+        onClick={() => {setLevel(lvl + 1)}}
+        onContextMenu = {(e) => {
+          e.preventDefault();
+          setLevel(lvl - 1)
+        }}
+      >{label}</button>
       <input
         className={`bonus ${bonusClass}`}
         type="number"

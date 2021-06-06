@@ -1,20 +1,29 @@
+import { useCallback, useState } from 'react';
+import { debounce } from 'lodash';
+
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, bonus, setSkillLevel, setCurrentSkill} = props;
-  const setLevel = (lvl) => (setSkillLevel(skillName, lvl));
-  const setAsCurrent = () => (setCurrentSkill(skillName));
+  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode} = props;
+  const setLevel = (l) => (props.setSkillLevel(skillName, l));
+  const setBonus = (b) => (props.setSkillBonus(skillName, b));
+  const setAsCurrent = () => (props.setCurrentSkill(skillName));
 
   return (
     <div className={`skillContainer row${row} column${column}`}>
       <SkillButton
         lvl={lvl}
+        bonus={bonus}
+        totalBonus={totalBonus}
+        bonusMode={bonusMode}
         setLevel={setLevel}
+        setBonus={setBonus}
         setAsCurrent={setAsCurrent}
       />
       <SkillForm
         lvl={lvl}
-        bonus={bonus}
+        skillLevels={skillLevels}
+        totalBonus={bonusMode ? 0 : totalBonus}
         setLevel={setLevel}
         setAsCurrent={setAsCurrent}
       />
@@ -23,38 +32,57 @@ const Skill = (props) => {
 };
 
 const SkillButton = (props) => {
-  const {lvl, setLevel, setAsCurrent} = props;
-  const onClick = () => setLevel(lvl + 1);
+  const {lvl, bonus, totalBonus, bonusMode, setLevel, setBonus, setAsCurrent} = props;
+  const buttonText = (bonusMode) ? `+${totalBonus}` : null;
+  const onClick = (e) => {
+    if (bonusMode) {
+      setBonus(bonus + 1);
+      return
+    }
+    setLevel(lvl + 1);
+  };
   const onContextMenu = (e) => {
     e.preventDefault();
+    if (bonusMode) {
+      setBonus(bonus - 1);
+      return
+    }
     setLevel(lvl - 1);
   };
   return (
     <button
-      className='skill'
+      className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
       onClick={onClick}
       onMouseEnter={setAsCurrent}
       onContextMenu={onContextMenu}
-    ></button>
+    >{buttonText}</button>
   )
 };
 
 const SkillForm = (props) => {
-  const {lvl, bonus, setLevel, setAsCurrent} = props;
-  const bonusClass = (bonus > 0) ? 'hasBonus' : 'noBonus';
+  const {lvl, skillLevels, totalBonus, setLevel, setAsCurrent} = props;
+  const [userInput, setUserInput] = useState(lvl + totalBonus);
+  const [isTyping, setIsTyping] = useState(false);
 
-  const handleChange = (event) => {
-    const {value} = event.target;
+  const debouncedSetLevel = debounce(value => {
+    setLevel(value)
+    setIsTyping(false);
+  }, 750);
+
+  const onChange = useCallback(e => {
+    setUserInput(e.target.value);
+    setIsTyping(true);
     setAsCurrent();
-    const newLvl = Math.floor(Number(value)) - bonus;
-    setLevel(newLvl);
-  }
+    debouncedSetLevel(e.target.value);  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skillLevels]);
+
+  const bonusClass = ((totalBonus > 0) && isTyping === false) ? 'hasBonus' : 'noBonus';
   return (
     <input
       className={`skillPoints ${bonusClass}`}
       type="number"
-      value={(lvl + bonus).toString()}
-      onChange={handleChange}
+      value={isTyping ? userInput : lvl + totalBonus}
+      onChange={onChange}
       onClick={setAsCurrent}
     />
   );

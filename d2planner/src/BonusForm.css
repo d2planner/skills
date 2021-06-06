@@ -8,10 +8,23 @@
   right: 3px; 
 }
 
-label {
+.bonusFormButton, .bonusFormButton:focus {
   text-align:right;
   font-size:  11pt;
-  padding-bottom:  .6em;
+  padding:  2px;
+  padding-right: 0;
+  margin: 0;
+  border-color: transparent;
+  outline: none;
+  background-color: transparent;
+}
+
+.bonusFormButton:hover, .bonusFormButton:active {
+  border-radius: 2px;
+  border-width: 1px;
+  background-color: transparent;
+  border-color:  #EDBA47;
+  outline: none;
 }
 
 .bonus {
@@ -28,6 +41,9 @@ label {
   margin: 0;
 }
 
+.bonus:hover {
+  border-color: #EDBA47;
+}
 .bonus:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px #EDBA47;
   border-color: transparent;

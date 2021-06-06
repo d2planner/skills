@@ -1,3 +1,6 @@
+import { useCallback, useState } from 'react';
+import { debounce } from 'lodash';
+
 import './Skill.css';
 
 const Skill = (props) => {
@@ -17,6 +20,7 @@ const Skill = (props) => {
         setAsCurrent={setAsCurrent}
       />
       <SkillForm
+        skillName={skillName}
         lvl={lvl}
         bonus={bonus}
         setLevel={setLevel}
@@ -55,21 +59,29 @@ const SkillButton = (props) => {
 };
 
 const SkillForm = (props) => {
-  const {lvl, bonus, setLevel, setAsCurrent} = props;
-  const bonusClass = (bonus > 0) ? 'hasBonus' : 'noBonus';
+  const {skillName, lvl, bonus, setLevel, setAsCurrent} = props;
+  const [userInput, setUserInput] = useState(lvl + bonus);
+  const [isTyping, setIsTyping] = useState(false);
 
-  const handleChange = (event) => {
-    const {value} = event.target;
-    setAsCurrent();
-    const newLvl = Math.floor(Number(value)) - bonus;
-    setLevel(newLvl);
+  const saveNewLevel = (value) => {
+    setLevel(value);
+    setIsTyping(false);
   }
+  const delayedSaveNewLevel = debounce(v => saveNewLevel(v), 1000);
+  const onChange = e => {
+    setUserInput(e.target.value);
+    setIsTyping(true);
+    setAsCurrent();
+    delayedSaveNewLevel(e.target.value);
+  }
+
+  const bonusClass = (bonus > 0) ? 'hasBonus' : 'noBonus';
   return (
     <input
       className={`skillPoints ${bonusClass}`}
       type="number"
-      value={(lvl + bonus).toString()}
-      onChange={handleChange}
+      value={isTyping ? userInput : lvl + bonus}
+      onChange={onChange}
       onClick={setAsCurrent}
     />
   );

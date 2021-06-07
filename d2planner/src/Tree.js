@@ -10,6 +10,7 @@ import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
   const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, synergies} = props;
+  const relevantRequirements = props.requirements.filter(r => (!(skillLevels[r.skillName] > 0)))
   const [bonusMode, setBonusMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
 
@@ -74,6 +75,7 @@ const Tree = (props) => {
           bonusMode={bonusMode}
           showTooltip={showTooltip}
           isCurrentSkill={skill.skillName === currentSkill}
+          isRequirement={isInRequirements(skill.skillName, relevantRequirements)}
           isSynergy={synergies.includes(skill.skillName)}
           setSkillLevel={setSkillLevel}
           setSkillBonus={setSkillBonus}
@@ -108,5 +110,14 @@ const Tree = (props) => {
     </div>
   );
 };
+
+function isInRequirements (skillName, requirements) {
+  for (const requirement of requirements) {
+    if (skillName === requirement.skillName) {
+      return requirement;
+    }
+  }
+  return null;
+}
 
 export default Tree;

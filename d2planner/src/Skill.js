@@ -20,11 +20,12 @@ const Skill = (props) => {
     bonusMode,
     showTooltip,
     isCurrentSkill,
+    isRequirement,
     isSynergy,
   } = props;
-  const setLevel = (l) => (props.setSkillLevel(skillName, l));
-  const setBonus = (b) => (props.setSkillBonus(skillName, b));
-  const setAsCurrent = () => (props.setCurrentSkill(skillName));
+  const setLevel = (l) => props.setSkillLevel(skillName, l);
+  const setBonus = (b) => props.setSkillBonus(skillName, b);
+  const setAsCurrent = () => props.setCurrentSkill(skillName);
 
   return (
     <div className={`skillContainer row${row} column${column}`}>
@@ -35,6 +36,7 @@ const Skill = (props) => {
         bonusMode={bonusMode}
         showTooltip={showTooltip}
         isCurrentSkill={isCurrentSkill}
+        isRequirement={isRequirement}
         isSynergy={isSynergy}
         setLevel={setLevel}
         setBonus={setBonus}
@@ -59,6 +61,7 @@ const SkillButton = (props) => {
     bonusMode,
     showTooltip,
     isCurrentSkill,
+    isRequirement,
     isSynergy,
     setLevel,
     setBonus,
@@ -107,8 +110,9 @@ const SkillButton = (props) => {
   const className = [
     'skill',
     bonusMode ? 'bonusMode' : null,
-    isSynergy ? 'synergy' : null,
     isCurrentSkill ? 'currentSkill' : null,
+    isSynergy ? 'synergy' : null,
+    isRequirement ? 'requirement' : null,
   ].join(' ')
   return (
     <div className='skillButtonContainer'>

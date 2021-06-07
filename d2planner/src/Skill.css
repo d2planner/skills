@@ -66,6 +66,13 @@ button.synergy, button.synergy:focus {
   outline: none;
 }
 
+button.requirement, button.requirement:focus {
+  border-color: #D45113;
+  border-width:  2px;
+  box-shadow: 0 0 6px #D45113;
+  outline: none;
+}
+
 button.bonusMode {
   backdrop-filter: blur(2px) brightness(60%);
   color: #EDBA47;

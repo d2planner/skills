@@ -9,6 +9,7 @@ import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
+  const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, currentSkillSynergies} = props;
   const [bonusMode, setBonusMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
 
@@ -37,7 +38,6 @@ const Tree = (props) => {
     };
   }, []);
 
-  const {skillLevels, skillBonuses, treeData, character, currentTab} = props;
   function setSkillLevel (key, lvl) {
     lvl = Math.floor(Number(lvl));
     if (!(lvl > 0)) {
@@ -60,7 +60,7 @@ const Tree = (props) => {
   }
 
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);
-  const skills = treeData[currentTab]['skills'].map((skill) => {
+  const skills = treeData[currentTab].skills.map((skill) => {
     const lvl = skillLevels[skill.skillName] || 0;
     const skillBonus = skillBonuses[skill.skillName] || 0;
     return (
@@ -73,6 +73,8 @@ const Tree = (props) => {
           totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}
           showTooltip={showTooltip}
+          isCurrentSkill={skill.skillName === currentSkill}
+          isCurrentSynergy={currentSkillSynergies.includes(skill.skillName)}
           setSkillLevel={setSkillLevel}
           setSkillBonus={setSkillBonus}
           setCurrentSkill={props.setCurrentSkill}

@@ -45,6 +45,38 @@
   border-width: 3px;
   background-color: transparent;
   border-color:  linen;
+  box-shadow: 0 0 6px linen;
+  outline: none;
+}
+
+button.currentSkill, button.currentSkill:focus {
+  border-color: linen;
+  border-width: 2px;
+  box-shadow: 0 0 6px linen;
+  outline: none; 
+}
+button.currentSkill:hover, button.currentSkill:active {
+  border-width: 3px;
+}
+
+button.synergy, button.synergy:focus {
+  border-color: #598AB1;
+  border-width:  2px;
+  box-shadow: 0 0 6px #598AB1;
+  outline: none;
+}
+
+button.bonusMode {
+  backdrop-filter: blur(2px) brightness(60%);
+  color: #EDBA47;
+  font-size: 20pt;
+  font-weight: bold;
+  padding: 0px;
+}
+
+button.bonusMode:hover, button.bonusMode:active {
+  border-color: #EDBA47;
+  border-radius: 2px;
   outline: none;
 }
 
@@ -70,20 +102,6 @@
   width:  20px;
   vertical-align: middle;
   margin-bottom: 1px;
-}
-
-button.bonusMode {
-  backdrop-filter: blur(2px) brightness(60%);
-  color: #EDBA47;
-  font-size: 20pt;
-  font-weight: bold;
-  padding: 0px;
-}
-
-button.bonusMode:hover, button.bonusMode:active {
-  border-color: #EDBA47;
-  border-radius: 2px;
-  outline: none;
 }
 
 .skillPoints {

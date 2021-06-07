@@ -9,7 +9,19 @@ import shiftImage from './assets/shift-128x128.png'
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode, showTooltip} = props;
+  const {
+    row,
+    column,
+    skillName,
+    lvl,
+    skillLevels,
+    bonus,
+    totalBonus,
+    bonusMode,
+    showTooltip,
+    isCurrentSkill,
+    isCurrentSynergy,
+  } = props;
   const setLevel = (l) => (props.setSkillLevel(skillName, l));
   const setBonus = (b) => (props.setSkillBonus(skillName, b));
   const setAsCurrent = () => (props.setCurrentSkill(skillName));
@@ -22,6 +34,8 @@ const Skill = (props) => {
         totalBonus={totalBonus}
         bonusMode={bonusMode}
         showTooltip={showTooltip}
+        isCurrentSkill={isCurrentSkill}
+        isCurrentSynergy={isCurrentSynergy}
         setLevel={setLevel}
         setBonus={setBonus}
         setAsCurrent={setAsCurrent}
@@ -38,7 +52,18 @@ const Skill = (props) => {
 };
 
 const SkillButton = (props) => {
-  const {lvl, bonus, totalBonus, bonusMode, showTooltip, setLevel, setBonus, setAsCurrent} = props;
+  const {
+    lvl,
+    bonus,
+    totalBonus,
+    bonusMode,
+    showTooltip,
+    isCurrentSkill,
+    isCurrentSynergy,
+    setLevel,
+    setBonus,
+    setAsCurrent,
+  } = props;
   const buttonText = (bonusMode) ? `+${totalBonus}` : null;
   const onClick = (e) => {
     if (bonusMode) {
@@ -79,11 +104,17 @@ const SkillButton = (props) => {
       </pre>
     </ReactTooltip>
   )
+  const className = [
+    'skill',
+    bonusMode ? 'bonusMode' : null,
+    isCurrentSynergy ? 'synergy' : null,
+    isCurrentSkill ? 'currentSkill' : null,
+  ].join(' ')
   return (
     <div className='skillButtonContainer'>
       <button
         data-tip
-        className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
+        className={className}
         data-for='skillButtonTip'
         onClick={onClick}
         onMouseEnter={setAsCurrent}

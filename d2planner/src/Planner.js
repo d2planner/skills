@@ -61,7 +61,9 @@ class Planner extends Component {
             skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
             treeData={skillData.tree[this.state.character]}
             character={this.state.character}
+            currentSkill={this.state.currentSkill}
             currentTab={this.state.currentTab}
+            currentSkillSynergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
             setTab={this.setTab}
             setSkillLevels={this.setSkillLevels}
             setSkillBonuses={this.setSkillBonuses}

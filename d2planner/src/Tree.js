@@ -14,6 +14,8 @@ const Tree = (props) => {
   const [bonusMode, setBonusMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
 
+
+
   React.useEffect(() => {
     function handleKeyDown (event) {
       if (['Shift', 'CapsLock'].includes(event.key)) {
@@ -39,16 +41,6 @@ const Tree = (props) => {
     };
   }, []);
 
-  function setSkillLevel (key, lvl) {
-    lvl = Math.floor(Number(lvl));
-    if (!(lvl > 0)) {
-      let skillLevelsNew = {...skillLevels};
-      delete skillLevelsNew[key]
-      props.setSkillLevels(character, skillLevelsNew);
-      return
-    }
-    props.setSkillLevels(character, { ...skillLevels, [key]: lvl});
-  }
   function setSkillBonus (key, bonus) {
     bonus = Math.floor(Number(bonus));
     if (!(bonus > 0)) {
@@ -70,14 +62,14 @@ const Tree = (props) => {
           key={skill.skillName}
           lvl={lvl}
           skillLevels={skillLevels}
+          requirements={relevantRequirements}
           bonus={skillBonus}
           totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}
           showTooltip={showTooltip}
           isCurrentSkill={skill.skillName === currentSkill}
-          isRequirement={isInRequirements(skill.skillName, relevantRequirements)}
           isSynergy={synergies.includes(skill.skillName)}
-          setSkillLevel={setSkillLevel}
+          setSkillLevels={(skillLevels) => props.setSkillLevels(character, skillLevels)}
           setSkillBonus={setSkillBonus}
           setCurrentSkill={props.setCurrentSkill}
       />
@@ -110,14 +102,5 @@ const Tree = (props) => {
     </div>
   );
 };
-
-function isInRequirements (skillName, requirements) {
-  for (const requirement of requirements) {
-    if (skillName === requirement.skillName) {
-      return requirement;
-    }
-  }
-  return null;
-}
 
 export default Tree;

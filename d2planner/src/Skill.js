@@ -15,15 +15,32 @@ const Skill = (props) => {
     skillName,
     lvl,
     skillLevels,
+    requirements,
     bonus,
     totalBonus,
     bonusMode,
     showTooltip,
     isCurrentSkill,
-    isRequirement,
     isSynergy,
   } = props;
-  const setLevel = (l) => props.setSkillLevel(skillName, l);
+
+  function setLevel (lvl) {
+    lvl = Math.floor(Number(lvl));
+    if (!(lvl > 0)) {
+      let skillLevelsNew = {...skillLevels};
+      delete skillLevelsNew[skillName]
+      props.setSkillLevels(skillLevelsNew);
+      return
+    }
+    props.setSkillLevels({ ...skillLevels, [skillName]: lvl});
+  }
+  function incrementLevel () {
+    let requirementsAtOne = {};
+    for (const requirement of requirements) {
+      requirementsAtOne[requirement.skillName] = 1;
+    }
+    props.setSkillLevels({ ...skillLevels, ...requirementsAtOne, [skillName]: lvl + 1});
+  }
   const setBonus = (b) => props.setSkillBonus(skillName, b);
   const setAsCurrent = () => props.setCurrentSkill(skillName);
 
@@ -36,9 +53,10 @@ const Skill = (props) => {
         bonusMode={bonusMode}
         showTooltip={showTooltip}
         isCurrentSkill={isCurrentSkill}
-        isRequirement={isRequirement}
+        isRequirement={isInRequirements(skillName, requirements)}
         isSynergy={isSynergy}
         setLevel={setLevel}
+        incrementLevel={incrementLevel}
         setBonus={setBonus}
         setAsCurrent={setAsCurrent}
       />
@@ -52,6 +70,15 @@ const Skill = (props) => {
     </div>
   );
 };
+
+function isInRequirements (skillName, requirements) {
+  for (const requirement of requirements) {
+    if (skillName === requirement.skillName) {
+      return requirement;
+    }
+  }
+  return null;
+}
 
 const SkillButton = (props) => {
   const {
@@ -73,7 +100,7 @@ const SkillButton = (props) => {
       setBonus(bonus + 1);
       return
     }
-    setLevel(lvl + 1);
+    props.incrementLevel();
   };
   const onContextMenu = (e) => {
     e.preventDefault();

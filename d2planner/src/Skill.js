@@ -21,6 +21,7 @@ const Skill = (props) => {
     bonusMode,
     showTooltip,
     isCurrentSkill,
+    isInvalid,
     isSynergy,
   } = props;
 
@@ -58,6 +59,7 @@ const Skill = (props) => {
         isCurrentSkill={isCurrentSkill}
         isRequirement={isInRequirements(skillName, requirements)}
         isSynergy={isSynergy}
+        isInvalid={isInvalid}
         setLevel={setLevel}
         incrementLevel={incrementLevel}
         setBonus={setBonus}
@@ -92,6 +94,7 @@ const SkillButton = (props) => {
     showTooltip,
     isCurrentSkill,
     isRequirement,
+    isInvalid,
     isSynergy,
     setLevel,
     setBonus,
@@ -143,6 +146,8 @@ const SkillButton = (props) => {
     isCurrentSkill ? 'currentSkill' : null,
     isSynergy ? 'synergy' : null,
     isRequirement ? 'requirement' : null,
+    isInvalid ? 'invalid' : null,
+    ((lvl + bonus) > 0) ? 'allocated' : null,
   ].join(' ')
   return (
     <div className='skillButtonContainer'>

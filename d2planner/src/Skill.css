@@ -32,6 +32,7 @@
 }
 .skill, .skill:focus {
   position: absolute;
+  backdrop-filter: brightness(60%);
   width: 77%;
   height:  77%;
   border-radius: 2px;
@@ -49,8 +50,13 @@
   outline: none;
 }
 
+button.allocated, button.allocated:focus {
+  backdrop-filter: none;
+}
+
 button.currentSkill, button.currentSkill:focus {
   border-color: linen;
+  backdrop-filter: none;
   border-width: 2px;
   box-shadow: 0 0 6px linen;
   outline: none; 
@@ -66,19 +72,43 @@ button.synergy, button.synergy:focus {
   outline: none;
 }
 
-button.requirement, button.requirement:focus {
+button.invalid, button.invalid:focus {
   border-color: #D45113;
   border-width:  2px;
   box-shadow: 0 0 6px #D45113;
   outline: none;
 }
 
-button.requirement.synergy, button.requirement.synergy:focus {
-  box-shadow: inset 0 0 6px 2px #598AB1, 0 0 6px #D45113;
+button.requirement, button.requirement:focus {
+  border-color: linen;
+  border-width:  1px;
+  backdrop-filter: none;
+  box-shadow: 0 0 6px linen;
+  outline: none;
 }
 
-button.bonusMode {
+button.requirement.synergy, button.requirement.synergy:focus {
+  box-shadow: inset 0 0 6px 2px #598AB1, 0 0 6px linen;
+}
+
+button.requirement.invalid, button.requirement.invalid:focus {
+  box-shadow: inset 0 0 6px 2px #D45113, 0 0 6px linen;
+}
+
+button.currentSkill.invalid, button.currentSkill.invalid:focus {
+  border-color:  linen;
+  border-width: 2px;
+  box-shadow: inset 0 0 6px 2px #D45113, 0 0 6px linen;
+}
+
+button.currentSkill.invalid:hover, button.currentSkill.invalid:active {
+  border-width: 3px;
+}
+
+button.bonusMode, button.bonusMode:focus {
   backdrop-filter: blur(2px) brightness(60%);
+  border-color: transparent;
+  box-shadow: none;
   color: #EDBA47;
   font-size: 20pt;
   font-weight: bold;
@@ -87,8 +117,20 @@ button.bonusMode {
 
 button.bonusMode:hover, button.bonusMode:active {
   border-color: #EDBA47;
-  border-radius: 2px;
-  outline: none;
+  box-shadow: 0 0 6px #EDBA47;
+}
+
+button.bonusMode.currentSkill, button.bonusMode.currentSkill:focus {
+  border-width: 2px;
+  border-color: #EDBA47;
+}
+
+button.bonusMode.currentSkill:hover, button.bonusMode.currentSkill:active {
+  border-width: 3px;
+}
+
+button.bonusMode.requirement, button.bonusMode.requirement:focus {
+  box-shadow: none;
 }
 
 .tooltipText {

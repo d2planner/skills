@@ -20,7 +20,7 @@ const Skill = (props) => {
     bonusMode,
     showTooltip,
     isCurrentSkill,
-    isCurrentSynergy,
+    isSynergy,
   } = props;
   const setLevel = (l) => (props.setSkillLevel(skillName, l));
   const setBonus = (b) => (props.setSkillBonus(skillName, b));
@@ -35,7 +35,7 @@ const Skill = (props) => {
         bonusMode={bonusMode}
         showTooltip={showTooltip}
         isCurrentSkill={isCurrentSkill}
-        isCurrentSynergy={isCurrentSynergy}
+        isSynergy={isSynergy}
         setLevel={setLevel}
         setBonus={setBonus}
         setAsCurrent={setAsCurrent}
@@ -59,7 +59,7 @@ const SkillButton = (props) => {
     bonusMode,
     showTooltip,
     isCurrentSkill,
-    isCurrentSynergy,
+    isSynergy,
     setLevel,
     setBonus,
     setAsCurrent,
@@ -107,7 +107,7 @@ const SkillButton = (props) => {
   const className = [
     'skill',
     bonusMode ? 'bonusMode' : null,
-    isCurrentSynergy ? 'synergy' : null,
+    isSynergy ? 'synergy' : null,
     isCurrentSkill ? 'currentSkill' : null,
   ].join(' ')
   return (

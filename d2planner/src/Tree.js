@@ -9,7 +9,7 @@ import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
-  const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, currentSkillSynergies} = props;
+  const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, synergies} = props;
   const [bonusMode, setBonusMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
 
@@ -74,7 +74,7 @@ const Tree = (props) => {
           bonusMode={bonusMode}
           showTooltip={showTooltip}
           isCurrentSkill={skill.skillName === currentSkill}
-          isCurrentSynergy={currentSkillSynergies.includes(skill.skillName)}
+          isSynergy={synergies.includes(skill.skillName)}
           setSkillLevel={setSkillLevel}
           setSkillBonus={setSkillBonus}
           setCurrentSkill={props.setCurrentSkill}

@@ -9,10 +9,43 @@ import shiftImage from './assets/shift-128x128.png'
 import './Skill.css';
 
 const Skill = (props) => {
-  const {row, column, skillName, lvl, skillLevels, bonus, totalBonus, bonusMode, showTooltip} = props;
-  const setLevel = (l) => (props.setSkillLevel(skillName, l));
-  const setBonus = (b) => (props.setSkillBonus(skillName, b));
-  const setAsCurrent = () => (props.setCurrentSkill(skillName));
+  const {
+    row,
+    column,
+    skillName,
+    lvl,
+    skillLevels,
+    requirements,
+    bonus,
+    totalBonus,
+    bonusMode,
+    showTooltip,
+    isCurrentSkill,
+    isSynergy,
+  } = props;
+
+  function setLevel (lvl) {
+    lvl = Math.floor(Number(lvl));
+    if (!(lvl > 0)) {
+      let skillLevelsNew = {...skillLevels};
+      delete skillLevelsNew[skillName]
+      props.setSkillLevels(skillLevelsNew);
+      return
+    }
+    if (lvl > 20) {
+      return
+    }
+    props.setSkillLevels({ ...skillLevels, [skillName]: lvl});
+  }
+  function incrementLevel () {
+    let requirementsAtOne = {};
+    for (const requirement of requirements) {
+      requirementsAtOne[requirement.skillName] = 1;
+    }
+    props.setSkillLevels({ ...skillLevels, ...requirementsAtOne, [skillName]: (lvl < 20) ? lvl + 1: 20});
+  }
+  const setBonus = (b) => props.setSkillBonus(skillName, b);
+  const setAsCurrent = () => props.setCurrentSkill(skillName);
 
   return (
     <div className={`skillContainer row${row} column${column}`}>
@@ -22,7 +55,11 @@ const Skill = (props) => {
         totalBonus={totalBonus}
         bonusMode={bonusMode}
         showTooltip={showTooltip}
+        isCurrentSkill={isCurrentSkill}
+        isRequirement={isInRequirements(skillName, requirements)}
+        isSynergy={isSynergy}
         setLevel={setLevel}
+        incrementLevel={incrementLevel}
         setBonus={setBonus}
         setAsCurrent={setAsCurrent}
       />
@@ -37,15 +74,36 @@ const Skill = (props) => {
   );
 };
 
+function isInRequirements (skillName, requirements) {
+  for (const requirement of requirements) {
+    if (skillName === requirement.skillName) {
+      return requirement;
+    }
+  }
+  return null;
+}
+
 const SkillButton = (props) => {
-  const {lvl, bonus, totalBonus, bonusMode, showTooltip, setLevel, setBonus, setAsCurrent} = props;
+  const {
+    lvl,
+    bonus,
+    totalBonus,
+    bonusMode,
+    showTooltip,
+    isCurrentSkill,
+    isRequirement,
+    isSynergy,
+    setLevel,
+    setBonus,
+    setAsCurrent,
+  } = props;
   const buttonText = (bonusMode) ? `+${totalBonus}` : null;
   const onClick = (e) => {
     if (bonusMode) {
       setBonus(bonus + 1);
       return
     }
-    setLevel(lvl + 1);
+    props.incrementLevel();
   };
   const onContextMenu = (e) => {
     e.preventDefault();
@@ -79,11 +137,18 @@ const SkillButton = (props) => {
       </pre>
     </ReactTooltip>
   )
+  const className = [
+    'skill',
+    bonusMode ? 'bonusMode' : null,
+    isCurrentSkill ? 'currentSkill' : null,
+    isSynergy ? 'synergy' : null,
+    isRequirement ? 'requirement' : null,
+  ].join(' ')
   return (
     <div className='skillButtonContainer'>
       <button
         data-tip
-        className={`skill ${(bonusMode) ? 'bonusMode' : null}`}
+        className={className}
         data-for='skillButtonTip'
         onClick={onClick}
         onMouseEnter={setAsCurrent}

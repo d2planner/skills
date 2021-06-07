@@ -9,11 +9,12 @@ from common import safe_int, camelcase_skill_or_missile_calc, to_camelcase
 
 # Constants
 N_PASSIVE_STATS = 5
-N_CALC_FIELDS = 4
+N_CALC_COLS = 4
 N_PARAMS = 8
 N_DESC_COLS = 6
 N_DSC2_COLS = 4
 N_DSC3_COLS = 7
+N_REQSKILL_COLS = 3
 LVL_BREAKPOINTS = [(0, 1), (1, 8), (8, 16), (16, 22), (22, 28), (28, None)]
 CHARCLASS_MAP = {
     'ama': 'amazon',
@@ -50,33 +51,78 @@ def get_skill_details(
 
         row_details = _get_skill_details_for_row(row, missile_details, monster_details)
         row_details['skillId'] = COMPRESSED_ID_MAP[raw_id]
-        skill_details[skill_key] = {k: v for k, v in row_details.items() if v or v == 0}
-
         if previous_character == row.charclass:
             raw_id += 1
         else:
             raw_id = 0
             previous_character = row.charclass
+        skill_details[skill_key] = {k: v for k, v in row_details.items() if v or v == 0}
 
     for index, row in charskills.iterrows():  # requires all skills populated first
         row = row.copy().replace({np.nan: None})
         skill_key = to_camelcase(row.skill)
 
+        skill_details[skill_key]['requirements'] = _get_recursive_requirements(skill_key, skill_details)
+        skill_details[skill_key]['synergies'] = _get_synergies_for_row(skill_key, skill_details)
+
         other_skill_params_pattern = r"(?:skill|sklvl)\('((?:\w|\s)+)'(?:\.(?!lvl|blvl)\w+)+\)"
         related_skills = _get_related_entities_for_calcs(row, other_skill_params_pattern)
-        related_skill_details = {skill: _without_related(skill_details[skill]) for skill in related_skills}
-        if related_skill_details:
-            skill_details[skill_key]['relatedSkills'] = related_skill_details
+        skill_details[skill_key]['relatedSkills'] = {
+            skill: _without_related(skill_details[skill]) for skill in related_skills
+        }
 
         related_missiles = _get_related_entities_for_calcs(row, r"miss\('((?:\w|\s)+)'\.\w+\)")
-        related_missile_details = {missile: _without_related(missile_details[missile]) for missile in related_missiles}
-        if related_missile_details:
-            skill_details[skill_key]['relatedMissiles'] = related_missile_details
+        skill_details[skill_key]['relatedMissiles'] = {
+            missile: _without_related(missile_details[missile]) for missile in related_missiles
+        }
+
+        skill_details[skill_key] = {k: v for k, v in skill_details[skill_key].items() if v or v == 0}
 
     for non_char_skill in related_non_charskills or []:
         del skill_details[to_camelcase(non_char_skill)]
 
     return skill_details
+
+
+def _get_recursive_requirements(skill_key: str, skill_details: dict) -> list[str]:
+    skill = skill_details[skill_key]
+    requirements = []
+    for required_skill_name in skill.get('reqSkills', []):
+        requirement = {
+            'skillName': required_skill_name,
+            'edges': _get_requirement_edge(skill, skill_details[required_skill_name])
+        }
+        requirements.append(requirement)
+        nested_requirements = _get_recursive_requirements(required_skill_name, skill_details)
+        requirements.extend(nested_requirements)
+    return requirements
+
+
+def _get_requirement_edge(skill_a: dict, skill_b: dict):
+    skills = sorted([skill_a, skill_b], key=lambda skill: (skill['skillRow'], skill['skillColumn']))
+    return {
+        'from': {'row': skills[0]['skillRow'], 'column': skills[0]['skillColumn']},
+        'to': {'row': skills[1]['skillRow'], 'column': skills[1]['skillColumn']},
+    }
+
+
+def _get_synergies_for_row(skill_key: str, skill_details: dict) -> list[str]:
+    skill_name_lookup = {
+        skill['strName']: skill['skillName']
+        for skill in skill_details.values()
+        if skill.get('strName') is not None
+    }
+    pattern = r"|".join([strName for strName in skill_name_lookup.keys()])
+
+    synergies = set()
+    for line in skill_details[skill_key].get('dsc3Lines', []):
+        if line['dsc3Line'] == 40:
+            continue
+        
+        match = re.match(pattern=pattern, string=line['dsc3TextA'])
+        if match:
+            synergies.add(skill_name_lookup[match[0]])
+    return list(synergies)
 
 
 def _get_related_entities_for_calcs(row: pd.Series, pattern=str) -> set[str]:
@@ -89,15 +135,6 @@ def _get_related_entities_for_calcs(row: pd.Series, pattern=str) -> set[str]:
         matches = re.findall(pattern=pattern, string=str(calc_expression))
         related = related.union({to_camelcase(match) for match in matches})
     return related
-
-
-def _get_calc_columns() -> list[str]:
-    calc_columns = []
-    for col_root, line_limit in {'desccalc': N_DESC_COLS, 'dsc2calc': N_DSC2_COLS, 'dsc3calc': N_DSC3_COLS}.items():
-        for a_b in 'ab':
-            for i in range(1, line_limit + 1):
-                calc_columns.append(f'{col_root}{a_b}{i}')
-    return calc_columns
 
 
 def _without_related(skill: dict) -> dict:
@@ -116,6 +153,8 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
         'skillPage': safe_int(row.SkillPage),
         'skillRow': safe_int(row.SkillRow),
         'skillColumn': safe_int(row.SkillColumn),
+        'reqLevel': safe_int(row.reqlevel),
+        'reqSkills': _get_immediate_required_skills_for_row(row),
         'strMana': row['str mana'],
         'mana': safe_int(row['mana']),
         'lvlMana': safe_int(row['lvlmana']),
@@ -175,6 +214,27 @@ def _get_skill_details_for_row(row: pd.Series, missile_details: dict, monster_de
     }
 
 
+def _get_immediate_required_skills_for_row(row: pd.Series) -> list[str]:
+    return [to_camelcase(row[f'reqskill{i}']) for i in range(1, N_REQSKILL_COLS + 1) if row[f'reqskill{i}']]
+
+
+def _get_calc_columns() -> list[str]:
+    calc_columns = [
+        'DmgSymPerCalc',
+        'EDmgSymPerCalc',
+        'ELenSymPerCalc',
+        'auralencalc',
+        *[f'calc{i}' for i in range(1, N_CALC_COLS + 1)], 
+    ]
+    for col_root, line_limit in {
+        'desccalc': N_DESC_COLS, 'dsc2calc': N_DSC2_COLS, 'dsc3calc': N_DSC3_COLS
+    }.items():
+        for a_b in 'ab':
+            for i in range(1, line_limit + 1):
+                calc_columns.append(f'{col_root}{a_b}{i}')
+    return calc_columns
+
+
 def _get_mastery_details_for_row(row: pd.Series) -> dict[str, str]:
     passives = {row[f'passivestat{i}']: row[f'passivecalc{i}'] for i in range(1, N_PASSIVE_STATS + 1)}
     mastery_details = {
@@ -188,7 +248,7 @@ def _get_mastery_details_for_row(row: pd.Series) -> dict[str, str]:
 def _get_calc_fields_for_row(row: pd.Series) -> dict[str, Union[int, str]]:
     calcs = {
         'auraLen': row.auralencalc,
-        **{f'calc{i}': row[f'calc{i}'] for i in range(1, N_CALC_FIELDS + 1)},
+        **{f'calc{i}': row[f'calc{i}'] for i in range(1, N_CALC_COLS + 1)},
     }
     return {k: camelcase_skill_or_missile_calc(v) for k, v in calcs.items() if v or v == 0}
 

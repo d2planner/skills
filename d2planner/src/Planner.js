@@ -63,7 +63,6 @@ class Planner extends Component {
             character={this.state.character}
             currentSkill={this.state.currentSkill}
             currentTab={this.state.currentTab}
-            requirements={skillData.skillDetails[this.state.currentSkill].requirements || []}
             synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
             setTab={this.setTab}
             setSkillLevels={this.setSkillLevels}

@@ -10,11 +10,8 @@ import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
   const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, synergies} = props;
-  const relevantRequirements = props.requirements.filter(r => (!(skillLevels[r.skillName] > 0)))
   const [bonusMode, setBonusMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
-
-
 
   React.useEffect(() => {
     function handleKeyDown (event) {
@@ -53,6 +50,8 @@ const Tree = (props) => {
   }
 
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);
+  const relevantRequirements = getRelevantRequirements(treeData[currentTab].skills, skillLevels, currentSkill);
+  const invalidSkills = getInvalidSkills(treeData[currentTab].skills, skillLevels);
   const skills = treeData[currentTab].skills.map((skill) => {
     const lvl = skillLevels[skill.skillName] || 0;
     const skillBonus = skillBonuses[skill.skillName] || 0;
@@ -68,6 +67,7 @@ const Tree = (props) => {
           bonusMode={bonusMode}
           showTooltip={showTooltip}
           isCurrentSkill={skill.skillName === currentSkill}
+          isInvalid={invalidSkills.has(skill.skillName)}
           isSynergy={synergies.includes(skill.skillName)}
           setSkillLevels={(skillLevels) => props.setSkillLevels(character, skillLevels)}
           setSkillBonus={setSkillBonus}
@@ -102,5 +102,29 @@ const Tree = (props) => {
     </div>
   );
 };
+
+function getRelevantRequirements (treeSkills, skillLevels, currentSkill) {
+  for (const skill of treeSkills) {
+    if (skill.skillName === currentSkill) {
+      return (skill.requirements || []).filter(r => (!(skillLevels[r.skillName] > 0)))
+    }
+  }
+  return []
+}
+
+function getInvalidSkills (treeSkills, skillLevels) {
+  let invalidSkills = new Set();
+  for (const skill of treeSkills) {
+    if (!(skillLevels[skill.skillName] > 0)) {
+      continue
+    }
+    for (const requirement of (skill.requirements || [])) {
+      if (!(skillLevels[requirement.skillName] > 0)) {
+        invalidSkills.add(requirement.skillName);
+      }
+    }
+  }
+  return invalidSkills;
+}
 
 export default Tree;

@@ -32,6 +32,9 @@ const Skill = (props) => {
       props.setSkillLevels(skillLevelsNew);
       return
     }
+    if (lvl > 20) {
+      return
+    }
     props.setSkillLevels({ ...skillLevels, [skillName]: lvl});
   }
   function incrementLevel () {
@@ -39,7 +42,7 @@ const Skill = (props) => {
     for (const requirement of requirements) {
       requirementsAtOne[requirement.skillName] = 1;
     }
-    props.setSkillLevels({ ...skillLevels, ...requirementsAtOne, [skillName]: lvl + 1});
+    props.setSkillLevels({ ...skillLevels, ...requirementsAtOne, [skillName]: (lvl < 20) ? lvl + 1: 20});
   }
   const setBonus = (b) => props.setSkillBonus(skillName, b);
   const setAsCurrent = () => props.setCurrentSkill(skillName);

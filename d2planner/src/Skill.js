@@ -146,7 +146,8 @@ const SkillButton = (props) => {
     isCurrentSkill ? 'currentSkill' : null,
     isSynergy ? 'synergy' : null,
     isRequirement ? 'requirement' : null,
-    isInvalid ? 'invalid': null,
+    isInvalid ? 'invalid' : null,
+    ((lvl + bonus) > 0) ? 'allocated' : null,
   ].join(' ')
   return (
     <div className='skillButtonContainer'>

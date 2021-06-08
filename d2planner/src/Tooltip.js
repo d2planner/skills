@@ -15,7 +15,7 @@ const Tooltip = (props) => {
 
   return (
     <div className='tooltipContainer'>
-      <SkillPreamble skill={skill} lvl={totalLevel} skillLevels={skillLevels} skillBonuses={skillBonuses}/>
+      <SkillPreamble lvl={totalLevel} {...props}/>
       <CurrentLevel lvl={totalLevel} lines={currentLevelLines}/>
       <NextLevel lines={
         (totalLevel > 0)

@@ -229,7 +229,7 @@ function formatMissileRangeInYards (skill, lvl, skillLevels, skillBonuses, diffi
 }
 
 function formatMinionLife (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) {
-  const baseLife = (skill.summon.minHPNormal + skill.summon.maxHPNormal) / 2;
+  const baseLife = (skill.summon[`minHP${difficulty}`] + skill.summon[`maxHP${difficulty}`]) / 2;
   const calcA = calculateSkillValue(ca, skill, lvl, skillLevels, skillBonuses) || 0;
   const calcB = calculateSkillValue(cb, skill, lvl, skillLevels, skillBonuses) || 0;
   const life = floor((1 + calcA / 100) * (baseLife + calcB));
@@ -240,8 +240,8 @@ function formatSkeletonDamage (skill, lvl, skillLevels, skillBonuses, difficulty
   const masteryLevel = calculateSkillValue("skill('skeletonMastery'.lvl)", skill, lvl, skillLevels, skillBonuses);
   const masteryDamage = skill.relatedSkills.skeletonMastery.params.par2 * masteryLevel;
 
-  const monsterMinDamage = skill.summon.a1MinDNormal;
-  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+  const monsterMinDamage = skill.summon[`a1MinD${difficulty}`];
+  const monsterMaxDamage = skill.summon[`a1MaxD${difficulty}`];
 
   const skillDamage = calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses);
   const bonus = (lvl > 3) ? (lvl - 3) * skill.params.par3 : 0;
@@ -257,8 +257,8 @@ function formatGolemDamage (skill, lvl, skillLevels, skillBonuses, difficulty, t
   const damageBonus = (skill.strName === 'Iron Golem') ? 0 : 35 * (lvl - 1);
   const damageMultiplier = 1 + damageBonus / 100;
 
-  const monsterMinDamage = skill.summon.a1MinDNormal;
-  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+  const monsterMinDamage = skill.summon[`a1MinD${difficulty}`];
+  const monsterMaxDamage = skill.summon[`a1MaxD${difficulty}`];
 
   const minDamage = floor(damageMultiplier * monsterMinDamage);
   const maxDamage = floor(damageMultiplier * monsterMaxDamage);
@@ -266,8 +266,8 @@ function formatGolemDamage (skill, lvl, skillLevels, skillBonuses, difficulty, t
 }
 
 function formatFireGolemDamage (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) {
-  const monsterMinDamage = skill.summon.a1MinDNormal;
-  const monsterMaxDamage = skill.summon.a1MaxDNormal;
+  const monsterMinDamage = skill.summon[`a1MinD${difficulty}`];
+  const monsterMaxDamage = skill.summon[`a1MaxD${difficulty}`];
 
   const holyFireMinDamage = calculateSkillValue(ca, skill, lvl, skillLevels, skillBonuses);
   const holyFireMaxDamage = calculateSkillValue(cb, skill, lvl, skillLevels, skillBonuses);

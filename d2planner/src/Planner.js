@@ -19,6 +19,8 @@ class Planner extends Component {
       character: 'sorceress',
       currentTab: 1,
       currentSkill: 'fireBolt',
+      difficulty: 'normal',
+      difficultyAuto: true,
       ...getEmptySkillLevels(skillData),
       ...getEmptySkillBonuses(skillData),
     };
@@ -41,6 +43,8 @@ class Planner extends Component {
   setSkillLevels = (character, skillLevels) => this.setState({[`${character}SkillLevels`]: skillLevels});
   setSkillBonuses = (character, skillBonuses) => this.setState({[`${character}SkillBonuses`]: skillBonuses});
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
+  setDifficulty = (difficulty) => this.setState({difficulty: difficulty});
+  setDifficultyAuto = (difficultyAuto) => this.setState({difficultyAuto: difficultyAuto});
 
   render() {
     history.push(stateToBuildString(this.state, skillData.skillDetails));
@@ -71,7 +75,12 @@ class Planner extends Component {
               setSkillBonuses={this.setSkillBonuses}
               setCurrentSkill={this.setCurrentSkill}
             />
-            <DifficultySelector/>
+            <DifficultySelector
+              difficulty={this.state.difficulty}
+              difficultyAuto={this.state.difficultyAuto}
+              setDifficulty={this.setDifficulty}
+              setDifficultyAuto={this.setDifficultyAuto}
+            />
           </div>
         </div>
       </div>

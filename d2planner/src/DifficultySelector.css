@@ -2,11 +2,35 @@ div.difficultySelector {
   margin-left: auto;
   margin-right: auto;
   width:  fit-content;
+  padding:  8px 0px;
 }
 
-img.difficulty {
-  height:  40px;
-  margin-left: 2px;
-  margin-right: 2px;
-  padding: 0;
+button.difficulty, button.difficulty:focus, button.auto, button.auto:focus {
+  background-color: transparent;
+  border-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  border-width: 2px;
+  outline: none;
+  padding: 2px;
+  margin: 5px 2px;
+}
+
+button.difficulty:hover, button.difficulty:active, button.auto:hover, button.auto:active {
+  border-color: #404040;
+}
+
+button.difficultySelected, button.difficultySelected:focus, button.autoSelected, button.autoSelected:focus {
+  border-color: #404040;
+}
+
+button.difficultyAutoSelected, button.difficultyAutoSelected:focus {
+  border-color: #404040;
+  border-style: dashed;
+}
+
+
+img.difficulty, img.auto {
+  height: 36px;
+  margin: 0px;
 }

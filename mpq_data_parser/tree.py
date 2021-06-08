@@ -21,20 +21,24 @@ TREE_NAMES_LOOKUP = {
     'assassin2': ('StrSklTree31', 'StrSklTree32'),
     'assassin3': ('StrSklTree33', 'StrSklTree34'),
 }
+LAST_ROW_NUMBER = 6
 
 
 def build_skills_tree_lookup(
     skill_details: dict,
     strings_map: dict[str, str]
 ) -> dict[str, dict[int, dict]]:
+    reset_button_columns_by_page = _get_reset_button_columns_by_page(skill_details)
+
     characters = {skill['charclass'] for skill in skill_details.values()}
     tree = {
         character: {
-            1: {'treeName': _get_tree_name(character, 1, strings_map), 'skills': []},
-            2: {'treeName': _get_tree_name(character, 2, strings_map), 'skills': []},
-            3: {'treeName': _get_tree_name(character, 3, strings_map), 'skills': []},
-        }
-        for character in characters
+            page: {
+                'treeName': _get_tree_name(character, page, strings_map),
+                'resetButtonColumn': reset_button_columns_by_page[character][page],
+                'skills': [],
+            } for page in range(1, 4)
+        } for character in characters
     }
     for skill_name, skill in skill_details.items():
         skill_metadata = {
@@ -52,3 +56,28 @@ def build_skills_tree_lookup(
 def _get_tree_name(character: str, tree: int, strings_map: dict) -> str:
     string_keys = TREE_NAMES_LOOKUP[f'{character}{tree}']
     return '\n'.join(strings_map[key] for key in string_keys)
+
+
+def _get_reset_button_columns_by_page(skill_details):
+    characters = {skill['charclass'] for skill in skill_details.values()}
+    open_bottom_rows = {
+        character: {
+            page: {1, 2, 3} for page in range(1, 4)
+        } for character in characters 
+    }
+    for skill_name, skill in skill_details.items():
+        if skill['skillRow'] == LAST_ROW_NUMBER:
+            open_bottom_rows[skill['charclass']][skill['skillPage']].remove(skill['skillColumn'])
+    return {
+        character: {
+            page: _get_reset_button_column(open_bottom_rows[character][page]) for page in range(1, 4)
+        } for character in characters
+    }
+
+
+def _get_reset_button_column(open_bottom_rows: set):
+    order_of_preference = [1, 3, 2]
+    for column in order_of_preference:
+        if column in open_bottom_rows:
+            return column
+    raise ValueError(f'No reset button column found for {open_bottom_rows}')

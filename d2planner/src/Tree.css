@@ -16,3 +16,32 @@ button.hasBonus, input.hasBonus {
 button.noBonus, input.noBonus {
   color:  linen;
 }
+
+button.resetButton, button.resetButton:focus {
+  position: absolute;
+  background-color: transparent;
+  border-color:  transparent;
+  border-radius: 2px;
+  top: 88%;
+  width: 10%;
+  height: 7.4%;
+  backdrop-filter: brightness(100%);
+}
+button.resetButton:hover {
+  backdrop-filter: brightness(120%);
+}
+button.resetButton:active{
+ backdrop-filter: brightness(100%); 
+}
+
+button.resetButton.resetButton1 {
+  left:  4.6%;
+}
+
+button.resetButton.resetButton2 {
+  left:  31.2%;
+}
+
+button.resetButton.resetButton3 {
+  left:  53.5%;
+}

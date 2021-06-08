@@ -50,19 +50,20 @@
   outline: none;
 }
 
-button.allocated, button.allocated:focus {
-  backdrop-filter: none;
-}
 
 button.currentSkill, button.currentSkill:focus {
   border-color: linen;
-  backdrop-filter: none;
+  backdrop-filter: brightness(80%);
   border-width: 2px;
   box-shadow: 0 0 6px linen;
   outline: none; 
 }
 button.currentSkill:hover, button.currentSkill:active {
   border-width: 3px;
+}
+
+button.allocated, button.allocated:focus {
+  backdrop-filter: none;
 }
 
 button.synergy, button.synergy:focus {
@@ -82,7 +83,7 @@ button.invalid, button.invalid:focus {
 button.requirement, button.requirement:focus {
   border-color: linen;
   border-width:  1px;
-  backdrop-filter: none;
+  backdrop-filter: brightness(80%);
   box-shadow: 0 0 6px linen;
   outline: none;
 }

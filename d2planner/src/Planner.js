@@ -48,6 +48,11 @@ class Planner extends Component {
 
   render() {
     history.push(stateToBuildString(this.state, skillData.skillDetails));
+    const characterLevel = estimateCharacterLevel(
+      this.state[`${this.state.character}SkillLevels`],
+      skillData.skillDetails,
+      this.state.difficulty,
+    )
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -68,6 +73,7 @@ class Planner extends Component {
               skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
               treeData={skillData.tree[this.state.character]}
               character={this.state.character}
+              characterLevel={characterLevel}
               currentSkill={this.state.currentSkill}
               currentTab={this.state.currentTab}
               synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
@@ -88,6 +94,20 @@ class Planner extends Component {
     );
   };
 };
+
+function estimateCharacterLevel (skillLevels, skillData, difficulty) {
+  const questSkills = {'Normal': 4, 'Nightmare': 8, 'Hell': 12}[difficulty];
+  let levelFromPoints = 1;
+  let levelFromReqs = 1;
+  for (const [skillName, lvl] of Object.entries(skillLevels)) {
+    const skillRequiredLevel = lvl + skillData[skillName].reqLevel - 1;
+    levelFromReqs = Math.max(levelFromReqs, skillRequiredLevel);
+
+    levelFromPoints += lvl;
+  }
+  levelFromPoints = Math.max(1, levelFromPoints - questSkills);
+  return Math.max(levelFromReqs, levelFromPoints);
+}
 
 function getEmptySkillLevels (skillData) {
   let skillLevels = {};

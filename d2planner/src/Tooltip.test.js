@@ -13,6 +13,7 @@ describe('<Tooltip />', () => {
       skillName='immolationArrow'
       skillBonuses={{'all': 5}}
       skillLevels={{'fireArrowLevel': 10, 'explodingArrowLevel': 5}}
+      difficulty={'Nightmare'}
     />);
   });
 
@@ -23,6 +24,7 @@ describe('<Tooltip />', () => {
         skillName={skillName}
         skillBonuses={{'all': 1}}
         skillLevels={{[skillName]: 10}}
+        difficulty={'Normal'}
       />);
       expect(screen.queryByText(/undefined/)).toBeNull();
       expect(screen.queryByText(/NaN/)).toBeNull();

@@ -136,7 +136,7 @@ const SkillButton = (props) => {
       </pre>
         <pre className='tooltipText'>
         <img className='shiftImage' src={shiftImage} alt='Shift'/>
-        : edit bonus
+        : bonuses
       </pre>
     </ReactTooltip>
   )

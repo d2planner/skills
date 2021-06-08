@@ -6,6 +6,7 @@ import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
 import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
+import DifficultySelector from './DifficultySelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
@@ -18,6 +19,8 @@ class Planner extends Component {
       character: 'sorceress',
       currentTab: 1,
       currentSkill: 'fireBolt',
+      difficulty: 'Normal',
+      difficultyAuto: true,
       ...getEmptySkillLevels(skillData),
       ...getEmptySkillBonuses(skillData),
     };
@@ -40,6 +43,8 @@ class Planner extends Component {
   setSkillLevels = (character, skillLevels) => this.setState({[`${character}SkillLevels`]: skillLevels});
   setSkillBonuses = (character, skillBonuses) => this.setState({[`${character}SkillBonuses`]: skillBonuses});
   setCurrentSkill = (skillName) => this.setState({currentSkill: skillName});
+  setDifficulty = (difficulty) => this.setState({difficulty: difficulty});
+  setDifficultyAuto = (difficultyAuto) => this.setState({difficultyAuto: difficultyAuto});
 
   render() {
     history.push(stateToBuildString(this.state, skillData.skillDetails));
@@ -55,20 +60,29 @@ class Planner extends Component {
             skill={skillData.skillDetails[this.state.currentSkill]}
             skillLevels={this.state[`${this.state.character}SkillLevels`]}
             skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
+            difficulty={this.state.difficulty}
           />
-          <Tree
-            skillLevels={this.state[`${this.state.character}SkillLevels`]}
-            skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
-            treeData={skillData.tree[this.state.character]}
-            character={this.state.character}
-            currentSkill={this.state.currentSkill}
-            currentTab={this.state.currentTab}
-            synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
-            setTab={this.setTab}
-            setSkillLevels={this.setSkillLevels}
-            setSkillBonuses={this.setSkillBonuses}
-            setCurrentSkill={this.setCurrentSkill}
-          />
+          <div className='treeWithOptionsContainer'>
+            <Tree
+              skillLevels={this.state[`${this.state.character}SkillLevels`]}
+              skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
+              treeData={skillData.tree[this.state.character]}
+              character={this.state.character}
+              currentSkill={this.state.currentSkill}
+              currentTab={this.state.currentTab}
+              synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
+              setTab={this.setTab}
+              setSkillLevels={this.setSkillLevels}
+              setSkillBonuses={this.setSkillBonuses}
+              setCurrentSkill={this.setCurrentSkill}
+            />
+            <DifficultySelector
+              difficulty={this.state.difficulty}
+              difficultyAuto={this.state.difficultyAuto}
+              setDifficulty={this.setDifficulty}
+              setDifficultyAuto={this.setDifficultyAuto}
+            />
+          </div>
         </div>
       </div>
     );

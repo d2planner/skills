@@ -6,6 +6,7 @@ import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
 import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
+import DifficultySelector from './DifficultySelector';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
@@ -56,19 +57,22 @@ class Planner extends Component {
             skillLevels={this.state[`${this.state.character}SkillLevels`]}
             skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
           />
-          <Tree
-            skillLevels={this.state[`${this.state.character}SkillLevels`]}
-            skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
-            treeData={skillData.tree[this.state.character]}
-            character={this.state.character}
-            currentSkill={this.state.currentSkill}
-            currentTab={this.state.currentTab}
-            synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
-            setTab={this.setTab}
-            setSkillLevels={this.setSkillLevels}
-            setSkillBonuses={this.setSkillBonuses}
-            setCurrentSkill={this.setCurrentSkill}
-          />
+          <div className='treeWithOptionsContainer'>
+            <Tree
+              skillLevels={this.state[`${this.state.character}SkillLevels`]}
+              skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
+              treeData={skillData.tree[this.state.character]}
+              character={this.state.character}
+              currentSkill={this.state.currentSkill}
+              currentTab={this.state.currentTab}
+              synergies={skillData.skillDetails[this.state.currentSkill].synergies || []}
+              setTab={this.setTab}
+              setSkillLevels={this.setSkillLevels}
+              setSkillBonuses={this.setSkillBonuses}
+              setCurrentSkill={this.setCurrentSkill}
+            />
+            <DifficultySelector/>
+          </div>
         </div>
       </div>
     );

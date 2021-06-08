@@ -1,0 +1,12 @@
+div.difficultySelector {
+  margin-left: auto;
+  margin-right: auto;
+  width:  fit-content;
+}
+
+img.difficulty {
+  height:  40px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding: 0;
+}

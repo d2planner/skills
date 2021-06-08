@@ -49,6 +49,14 @@ const Tree = (props) => {
     props.setSkillBonuses(character, { ...skillBonuses, [key]: bonus});
   }
 
+  function resetTreeSkills () {
+    let skillLevelsNew = {...skillLevels}
+    for (const skill of treeData[currentTab].skills) {
+      delete skillLevelsNew[skill.skillName]
+    }
+    props.setSkillLevels(character, skillLevelsNew)
+  }
+
   const generalBonus = (skillBonuses.all || 0) + (skillBonuses[`tab${currentTab}`] || 0);
   const relevantRequirements = getRelevantRequirements(treeData[currentTab].skills, skillLevels, currentSkill);
   const invalidSkills = getInvalidSkills(treeData[currentTab].skills, skillLevels);
@@ -94,6 +102,10 @@ const Tree = (props) => {
       />
       {skills}
       {tabs}
+      <ResetButton
+        resetButtonColumn={treeData[currentTab].resetButtonColumn}
+        resetTreeSkills={resetTreeSkills}
+      />
       <CharacterSpace
         character={character}
         allBonus={skillBonuses.all || 0}
@@ -102,6 +114,15 @@ const Tree = (props) => {
     </div>
   );
 };
+
+const ResetButton = (props) => {
+  return (
+    <button
+      className={`resetButton resetButton${props.resetButtonColumn}`}
+      onClick={props.resetTreeSkills}
+    ></button>
+  )
+}
 
 function getRelevantRequirements (treeSkills, skillLevels, currentSkill) {
   for (const skill of treeSkills) {

@@ -3,15 +3,15 @@ import {getTotalLevel} from './calculateSkillValue'
 import formatDesclines from './formatDesclines';
 
 const Tooltip = (props) => {
-  const {skill, skillLevels, skillBonuses} = props;
+  const {skill, skillLevels, skillBonuses, difficulty} = props;
   if (!skill) {
     return <div className='tooltipContainer'></div>
   }
   const totalLevel = getTotalLevel(skill, skillLevels, skillBonuses);
 
-  const synergyLines = formatDesclines('dsc3', skill, totalLevel, skillLevels, skillBonuses);
-  const currentLevelLines = formatDesclines('desc', skill, totalLevel, skillLevels, skillBonuses);
-  const nextLevelLines = formatDesclines('desc', skill, totalLevel + 1, skillLevels, skillBonuses);
+  const synergyLines = formatDesclines('dsc3', skill, totalLevel, skillLevels, skillBonuses, difficulty);
+  const currentLevelLines = formatDesclines('desc', skill, totalLevel, skillLevels, skillBonuses, difficulty);
+  const nextLevelLines = formatDesclines('desc', skill, totalLevel + 1, skillLevels, skillBonuses, difficulty);
 
   return (
     <div className='tooltipContainer'>
@@ -29,8 +29,8 @@ const Tooltip = (props) => {
 };
 
 const SkillPreamble = (props) => {
-  const {skill, lvl, skillLevels, skillBonuses} = props;
-  const preambleItems = formatDesclines('dsc2', skill, lvl, skillLevels, skillBonuses).map((line, index) => (
+  const {skill, lvl, skillLevels, skillBonuses, difficulty} = props;
+  const preambleItems = formatDesclines('dsc2', skill, lvl, skillLevels, skillBonuses, difficulty).map((line, index) => (
     <li key={index}>{line}</li>
   ));
   return (

@@ -4,9 +4,9 @@ import images from './assets/favicon_io';
 const DifficultySelector = (props) => {
   return (
     <div className='difficultySelector'>
-      <DifficultyOption optionKind='normal' {...props}/>
-      <DifficultyOption optionKind='nightmare' {...props}/>
-      <DifficultyOption optionKind='hell' {...props}/>
+      <DifficultyOption optionKind='Normal' {...props}/>
+      <DifficultyOption optionKind='Nightmare' {...props}/>
+      <DifficultyOption optionKind='Hell' {...props}/>
       <AutoOption {...props}/>
     </div>
   )

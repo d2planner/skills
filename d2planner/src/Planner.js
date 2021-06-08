@@ -19,7 +19,7 @@ class Planner extends Component {
       character: 'sorceress',
       currentTab: 1,
       currentSkill: 'fireBolt',
-      difficulty: 'normal',
+      difficulty: 'Normal',
       difficultyAuto: true,
       ...getEmptySkillLevels(skillData),
       ...getEmptySkillBonuses(skillData),
@@ -60,6 +60,7 @@ class Planner extends Component {
             skill={skillData.skillDetails[this.state.currentSkill]}
             skillLevels={this.state[`${this.state.character}SkillLevels`]}
             skillBonuses={this.state[`${this.state.character}SkillBonuses`]}
+            difficulty={this.state.difficulty}
           />
           <div className='treeWithOptionsContainer'>
             <Tree

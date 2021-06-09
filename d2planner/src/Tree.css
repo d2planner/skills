@@ -45,3 +45,8 @@ button.resetButton.resetButton2 {
 button.resetButton.resetButton3 {
   left:  53.5%;
 }
+
+.resetTipText {
+  margin: 0;
+  padding: 0;
+}

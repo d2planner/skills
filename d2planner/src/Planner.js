@@ -7,6 +7,7 @@ import skillData from './assets/1.14D/game_data/d2_skill_data.json';
 import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import DifficultySelector from './DifficultySelector';
+import Instructions from './Instructions';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
@@ -110,6 +111,7 @@ class Planner extends Component {
             difficulty={this.state.difficulty}
           />
           <div className='treeWithOptionsContainer'>
+            <Instructions/>
             <Tree
               skillLevels={this.state[`${this.state.character}SkillLevels`]}
               skillBonuses={this.state[`${this.state.character}SkillBonuses`]}

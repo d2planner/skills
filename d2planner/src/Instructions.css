@@ -1,0 +1,12 @@
+.instructionsContainer {
+  display:  flex;
+  justify-content: space-evenly;
+  width:  305px;
+  margin-bottom: 4px;
+}
+
+p.instructionsText {
+  font-size: 11pt;
+  margin: 0;
+  padding: 0;
+}

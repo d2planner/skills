@@ -134,30 +134,6 @@ button.bonusMode.requirement, button.bonusMode.requirement:focus {
   box-shadow: none;
 }
 
-.tooltipText {
-  margin: 0;
-  padding: 0;
-}
-
-.mouseLeftImage {
-  height:  20px;
-  width:  20px;
-  vertical-align: middle;
-  margin-bottom: 2px;
-}
-.mouseRightImage {
-  height:  20px;
-  width:  20px;
-  vertical-align: middle;
-  margin-bottom: 2px;
-}
-.shiftImage {
-  height: 20px;
-  width:  20px;
-  vertical-align: middle;
-  margin-bottom: 1px;
-}
-
 .skillPoints {
   position:  absolute;
   text-align: center;

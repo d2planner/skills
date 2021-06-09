@@ -1,10 +1,5 @@
 import { useCallback, useState } from 'react';
-import ReactTooltip from "react-tooltip";
 import { debounce } from 'lodash';
-
-import mouseLeftImage from './assets/mouse-left-64x64.png';
-import mouseRightImage from './assets/mouse-right-64x64.png';
-import shiftImage from './assets/shift-128x128.png';
 
 import './Skill.css';
 
@@ -19,7 +14,6 @@ const Skill = (props) => {
     bonus,
     totalBonus,
     bonusMode,
-    showTooltip,
     isCurrentSkill,
     isInvalid,
     isSynergy,
@@ -55,7 +49,6 @@ const Skill = (props) => {
         bonus={bonus}
         totalBonus={totalBonus}
         bonusMode={bonusMode}
-        showTooltip={showTooltip}
         isCurrentSkill={isCurrentSkill}
         isRequirement={isInRequirements(skillName, requirements)}
         isSynergy={isSynergy}
@@ -91,7 +84,6 @@ const SkillButton = (props) => {
     bonus,
     totalBonus,
     bonusMode,
-    showTooltip,
     isCurrentSkill,
     isRequirement,
     isInvalid,
@@ -116,30 +108,6 @@ const SkillButton = (props) => {
     }
     setLevel(lvl - 1);
   };
-  const tooltip = (
-    <ReactTooltip
-      id='skillButtonTip'
-      place='right'
-      effect='solid'
-      type='light'
-      textColor='#404040'
-      borderColor='#CCCCCC'
-      border={true}
-    >
-      <pre className='tooltipText'>
-        <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>
-        : +1 {bonusMode ? 'bonus' : 'point'}
-      </pre>
-        <pre className='tooltipText'>
-        <img className='mouseRightImage' src={mouseRightImage} alt='Right Click'/>
-        : -1 {bonusMode ? 'bonus' : 'point'}
-      </pre>
-        <pre className='tooltipText'>
-        <img className='shiftImage' src={shiftImage} alt='Shift'/>
-        : bonuses
-      </pre>
-    </ReactTooltip>
-  )
   const className = [
     'skill',
     bonusMode ? 'bonusMode' : null,
@@ -152,16 +120,13 @@ const SkillButton = (props) => {
   return (
     <div className='skillButtonContainer'>
       <button
-        data-tip
         className={className}
-        data-for='skillButtonTip'
         onClick={onClick}
         onMouseEnter={setAsCurrent}
         onContextMenu={onContextMenu}
       >
         {buttonText}
       </button>
-      {showTooltip ? tooltip : null}
     </div>
   )
 };

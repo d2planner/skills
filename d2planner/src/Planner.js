@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
+import ShareButton from './ShareButton';
 import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import DifficultySelector from './DifficultySelector';
@@ -126,12 +127,15 @@ class Planner extends Component {
               setSkillBonuses={this.setSkillBonuses}
               setCurrentSkill={this.setCurrentSkill}
             />
-            <DifficultySelector
-              difficulty={this.state.difficulty}
-              difficultyAuto={this.state.difficultyAuto}
-              setDifficulty={this.setDifficulty}
-              setDifficultyAuto={this.setDifficultyAuto}
-            />
+            <div className='treeFooter'>
+              <DifficultySelector
+                difficulty={this.state.difficulty}
+                difficultyAuto={this.state.difficultyAuto}
+                setDifficulty={this.setDifficulty}
+                setDifficultyAuto={this.setDifficultyAuto}
+              />
+              <ShareButton/>
+            </div>
           </div>
         </div>
       </div>

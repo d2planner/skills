@@ -1,0 +1,19 @@
+img.shareImage {
+  height:  36px;
+  background-color: #F5F5F5;
+}
+
+button.shareButton, button.shareButton:focus {
+  display: flex;
+  background-color: transparent;
+  border-color: #404040;
+  height: fit-content;
+  border-width: 2px;
+  outline: none;
+  padding: 2px;
+  margin: 0px auto;
+}
+
+button.shareButton:hover, button.shareButton:active {
+  border-color: #404040;
+}

@@ -21,7 +21,7 @@ const CharacterSpace = (props) => {
 const CharacterLevel = (props) => {
   return (
     <div className='characterLevelContainer'>
-      <p className='characterText'>{'Character Level'}</p>
+      <p className='characterText'>Level</p>
       <p className='characterLevel'>{props.lvl}</p>
     </div>
   )

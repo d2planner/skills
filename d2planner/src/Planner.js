@@ -29,18 +29,22 @@ class Planner extends Component {
     };
     const { buildString } = props.match.params;
     const buildState = buildStringToState(buildString, skillData.tree);
-    const [characterLevel, difficulty] = estimateCharacterLevelAndDifficulty(
-      buildState[`${buildState.character}SkillLevels`],
-      skillData.skillDetails,
-      initialState.difficulty,
-      initialState.difficultyAuto,
-    );
-    this.state = {
-      ...initialState,
-      characterLevel: characterLevel,
-      difficulty: difficulty,
-      ...buildState,
-    };
+    if (buildState) {
+      const [characterLevel, difficulty] = estimateCharacterLevelAndDifficulty(
+        buildState[`${buildState.character}SkillLevels`],
+        skillData.skillDetails,
+        initialState.difficulty,
+        initialState.difficultyAuto,
+      );
+      this.state = {
+        ...initialState,
+        characterLevel: characterLevel,
+        difficulty: difficulty,
+        ...buildState,
+      };
+    } else {
+      this.state = initialState;
+    }
   }
 
   setTab = (id) => this.setState({

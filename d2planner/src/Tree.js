@@ -108,6 +108,7 @@ const Tree = (props) => {
       />
       <CharacterSpace
         character={character}
+        characterLevel={props.characterLevel}
         allBonus={skillBonuses.all || 0}
         setSkillBonus={setSkillBonus}
       />

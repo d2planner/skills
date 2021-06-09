@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 import ReactTooltip from "react-tooltip";
 import { debounce } from 'lodash';
 
-import mouseLeftImage from './assets/mouse-left-64x64.png'
-import mouseRightImage from './assets/mouse-right-64x64.png'
-import shiftImage from './assets/shift-128x128.png'
+import mouseLeftImage from './assets/mouse-left-64x64.png';
+import mouseRightImage from './assets/mouse-right-64x64.png';
+import shiftImage from './assets/shift-128x128.png';
 
 import './Skill.css';
 

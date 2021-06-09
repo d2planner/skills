@@ -1,5 +1,5 @@
 import './Tooltip.css';
-import {getTotalLevel} from './calculateSkillValue'
+import {getTotalLevel} from './calculateSkillValue';
 import formatDesclines from './formatDesclines';
 
 const Tooltip = (props) => {

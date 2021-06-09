@@ -22,10 +22,7 @@ const DifficultyOption = (props) => {
   return (
     <button
       className={buttonClass}
-      onClick={() => {
-        props.setDifficulty(optionKind);
-        props.setDifficultyAuto(false);
-      }}
+      onClick={() => props.setDifficulty(optionKind)}
     >
       <img className='difficulty' src={images[`${optionKind}Image`]} alt={optionKind}/>
     </button>

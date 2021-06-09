@@ -28,7 +28,7 @@ const Skill = (props) => {
       return
     }
     if (lvl > 20) {
-      return
+      lvl = 20;
     }
     props.setSkillLevels({ ...skillLevels, [skillName]: lvl});
   }
@@ -152,7 +152,7 @@ const SkillForm = (props) => {
   return (
     <input
       className={`skillPoints ${bonusClass}`}
-      type="number"
+      type="tel"
       value={isTyping ? userInput : lvl + totalBonus}
       onChange={onChange}
       onClick={setAsCurrent}

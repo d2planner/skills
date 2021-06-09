@@ -96,7 +96,8 @@ class Planner extends Component {
   };
 
   render() {
-    history.push(stateToBuildString(this.state, skillData.skillDetails));
+    const buildString = stateToBuildString(this.state, skillData.skillDetails)
+    history.push(buildString);
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -134,7 +135,7 @@ class Planner extends Component {
                 setDifficulty={this.setDifficulty}
                 setDifficultyAuto={this.setDifficultyAuto}
               />
-              <ShareButton/>
+              <ShareButton buildString={buildString}/>
             </div>
           </div>
         </div>

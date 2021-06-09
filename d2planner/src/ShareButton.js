@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ReactTooltip from "react-tooltip";
 
 import shareImage from './assets/share.png';

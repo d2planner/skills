@@ -28,9 +28,18 @@ class Planner extends Component {
       ...getEmptySkillBonuses(skillData),
     };
     const { buildString } = props.match.params;
+    const buildState = buildStringToState(buildString, skillData.tree);
+    const [characterLevel, difficulty] = estimateCharacterLevelAndDifficulty(
+      buildState[`${buildState.character}SkillLevels`],
+      skillData.skillDetails,
+      initialState.difficulty,
+      initialState.difficultyAuto,
+    );
     this.state = {
       ...initialState,
-      ...buildStringToState(buildString, skillData.tree),
+      characterLevel: characterLevel,
+      difficulty: difficulty,
+      ...buildState,
     };
   }
 

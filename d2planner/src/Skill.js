@@ -21,10 +21,13 @@ const Skill = (props) => {
 
   function setLevel (lvl) {
     lvl = Math.floor(Number(lvl));
-    if (!(lvl > 0)) {
+    if (lvl < 1) {
       let skillLevelsNew = {...skillLevels};
       delete skillLevelsNew[skillName]
       props.setSkillLevels(skillLevelsNew);
+      return
+    }
+    if (!(lvl > 0)) {
       return
     }
     if (lvl > 20) {

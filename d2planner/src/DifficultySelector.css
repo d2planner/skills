@@ -1,18 +1,19 @@
 div.difficultySelector {
-  margin-left: auto;
-  margin-right: auto;
-  width:  305px;
+  display:  flex;
+  margin:  0;
+  justify-content: center;
+  width:  300px;
 }
 
 button.difficulty, button.difficulty:focus, button.auto, button.auto:focus {
+  display: flex;
   background-color: transparent;
   border-color: transparent;
-  display: inline-flex;
-  align-items: center;
+  height: fit-content;
   border-width: 2px;
   outline: none;
-  padding: 0px 2px;
-  margin: 5px 2px;
+  padding: 2px;
+  margin: 0px 2px;
 }
 
 button.difficulty:hover, button.difficulty:active, button.auto:hover, button.auto:active {

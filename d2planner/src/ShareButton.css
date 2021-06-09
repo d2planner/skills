@@ -1,0 +1,23 @@
+img.shareImage {
+  height:  36px;
+  background-color: #F5F5F5;
+}
+
+div.shareButton {
+  display: flex;
+  margin: 0px auto;
+}
+
+button.shareButton, button.shareButton:focus {
+  display: flex;
+  padding: 2px;
+  background-color: transparent;
+  border-color: #404040;
+  height: fit-content;
+  border-width: 2px;
+  outline: none;
+}
+
+button.shareButton:hover, button.shareButton:active {
+  border-color: #404040;
+}

@@ -7,6 +7,7 @@
 
 .tree {
   width: 420px;
+  box-shadow: 0 0 8px black;
 }
 
 button.hasBonus, input.hasBonus {

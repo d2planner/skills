@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import './Planner.css';
 import skillData from './assets/1.14D/game_data/d2_skill_data.json';
+import ShareButton from './ShareButton';
 import stateToBuildString, { buildStringToState } from './buildStrings'
 import CharacterSelector from './CharacterSelector';
 import DifficultySelector from './DifficultySelector';
@@ -27,10 +28,23 @@ class Planner extends Component {
       ...getEmptySkillBonuses(skillData),
     };
     const { buildString } = props.match.params;
-    this.state = {
-      ...initialState,
-      ...buildStringToState(buildString, skillData.tree),
-    };
+    const buildState = buildStringToState(buildString, skillData.tree);
+    if (buildState) {
+      const [characterLevel, difficulty] = estimateCharacterLevelAndDifficulty(
+        buildState[`${buildState.character}SkillLevels`],
+        skillData.skillDetails,
+        initialState.difficulty,
+        initialState.difficultyAuto,
+      );
+      this.state = {
+        ...initialState,
+        characterLevel: characterLevel,
+        difficulty: difficulty,
+        ...buildState,
+      };
+    } else {
+      this.state = initialState;
+    }
   }
 
   setTab = (id) => this.setState({
@@ -95,7 +109,8 @@ class Planner extends Component {
   };
 
   render() {
-    history.push(stateToBuildString(this.state, skillData.skillDetails));
+    const buildString = stateToBuildString(this.state, skillData.skillDetails)
+    history.push(buildString);
     return (
       <div className='plannerContainer'>
         <CharacterSelector
@@ -126,12 +141,15 @@ class Planner extends Component {
               setSkillBonuses={this.setSkillBonuses}
               setCurrentSkill={this.setCurrentSkill}
             />
-            <DifficultySelector
-              difficulty={this.state.difficulty}
-              difficultyAuto={this.state.difficultyAuto}
-              setDifficulty={this.setDifficulty}
-              setDifficultyAuto={this.setDifficultyAuto}
-            />
+            <div className='treeFooter'>
+              <DifficultySelector
+                difficulty={this.state.difficulty}
+                difficultyAuto={this.state.difficultyAuto}
+                setDifficulty={this.setDifficulty}
+                setDifficultyAuto={this.setDifficultyAuto}
+              />
+              <ShareButton buildString={buildString}/>
+            </div>
           </div>
         </div>
       </div>

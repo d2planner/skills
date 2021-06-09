@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import ReactTooltip from "react-tooltip";
 
 import './Tree.css';
-import mouseLeftImage from './assets/mouse-left-64x64.png';
 import {getTotalBonus} from './calculateSkillValue';
 import CharacterSpace from './CharacterSpace';
 import Skill from './Skill';
 import Tab from './Tab';
 import images from './assets/1.14D/game_images';
+import mouseLeftImage from './assets/mouse-left-64x64.png';
 
 const Tree = (props) => {
   const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, synergies} = props;

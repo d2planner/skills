@@ -15,7 +15,7 @@ function stateToBuildString (plannerState, skillDetails) {
 function buildStringToState (buildString, treeData) {
   const build = (buildString) ? JSON.parse(atob(buildString)) : {};
   if (!build.c) {
-    return {};
+    return null;
   }
 
   const skillsMap = buildSkillsMap(treeData[build.c]);

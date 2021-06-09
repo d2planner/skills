@@ -10,9 +10,6 @@ function ShareButton (props) {
         data-tip
         data-for='shareButtonTip'
         className='shareButton'
-        onClick={() => {
-          navigator.clipboard.writeText(`d2planner.github.io/${props.buildString}`);
-        }}
       >
         <img className='shareImage' src={shareImage} alt='Share Build'/>
       </button>
@@ -22,6 +19,7 @@ function ShareButton (props) {
         effect='solid'
         event='click'
         eventOff='mouseleave'
+        afterShow={() => navigator.clipboard.writeText(`d2planner.github.io/${props.buildString}`)}
         delayHide={500}
         type='light'
         textColor='#404040'

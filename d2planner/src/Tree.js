@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { debounce } from 'lodash';
+import ReactTooltip from "react-tooltip";
 
 import './Tree.css';
-import {getTotalBonus} from './calculateSkillValue'
-import CharacterSpace from './CharacterSpace'
-import Skill from './Skill'
+import mouseLeftImage from './assets/mouse-left-64x64.png';
+import {getTotalBonus} from './calculateSkillValue';
+import CharacterSpace from './CharacterSpace';
+import Skill from './Skill';
 import Tab from './Tab';
 import images from './assets/1.14D/game_images';
 
 const Tree = (props) => {
   const {skillLevels, skillBonuses, treeData, character, currentTab, currentSkill, synergies} = props;
   const [bonusMode, setBonusMode] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(true);
 
   React.useEffect(() => {
     function handleKeyDown (event) {
@@ -26,10 +26,8 @@ const Tree = (props) => {
   }, []);
   React.useEffect(() => {
     function handleKeyUp (event) {
-      const debouncedDisableTooltip = debounce(() => setShowTooltip(false), 5000);
       if (['Shift', 'CapsLock'].includes(event.key)) {
         setBonusMode(event.getModifierState('CapsLock') ? true : false);
-        debouncedDisableTooltip();
       }
     }
     window.addEventListener('keyup', handleKeyUp);
@@ -73,7 +71,6 @@ const Tree = (props) => {
           bonus={skillBonus}
           totalBonus={getTotalBonus(lvl, skillBonus, generalBonus)}
           bonusMode={bonusMode}
-          showTooltip={showTooltip}
           isCurrentSkill={skill.skillName === currentSkill}
           isInvalid={invalidSkills.has(skill.skillName)}
           isSynergy={synergies.includes(skill.skillName)}
@@ -118,10 +115,26 @@ const Tree = (props) => {
 
 const ResetButton = (props) => {
   return (
-    <button
-      className={`resetButton resetButton${props.resetButtonColumn}`}
-      onClick={props.resetTreeSkills}
-    ></button>
+    <div className='resetButton'>
+      <button
+        data-tip
+        data-for='resetButtonTip'
+        className={`resetButton resetButton${props.resetButtonColumn}`}
+        onClick={props.resetTreeSkills}
+      ></button>
+      <ReactTooltip
+        id='resetButtonTip'
+        place='right'
+        effect='solid'
+        type='light'
+        textColor='#404040'
+      >
+        <p className='resetTipText'>
+          <img className='mouseLeftImage' src={mouseLeftImage} alt='Left Click'/>
+          : Reset tree
+        </p>
+      </ReactTooltip>
+    </div>
   )
 }
 

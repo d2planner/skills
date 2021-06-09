@@ -1,8 +1,7 @@
 div.difficultySelector {
   margin-left: auto;
   margin-right: auto;
-  width:  fit-content;
-  padding:  8px 0px;
+  width:  305px;
 }
 
 button.difficulty, button.difficulty:focus, button.auto, button.auto:focus {
@@ -12,7 +11,7 @@ button.difficulty, button.difficulty:focus, button.auto, button.auto:focus {
   align-items: center;
   border-width: 2px;
   outline: none;
-  padding: 2px;
+  padding: 0px 2px;
   margin: 5px 2px;
 }
 

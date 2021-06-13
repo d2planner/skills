@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/skills/static/css/main.9a70f43a.chunk.css",
+    "main.js": "/skills/static/js/main.f08ec440.chunk.js",
+    "main.js.map": "/skills/static/js/main.f08ec440.chunk.js.map",
+    "runtime-main.js": "/skills/static/js/runtime-main.f707be76.js",
+    "runtime-main.js.map": "/skills/static/js/runtime-main.f707be76.js.map",
+    "static/js/2.c5420bf7.chunk.js": "/skills/static/js/2.c5420bf7.chunk.js",
+    "static/js/2.c5420bf7.chunk.js.map": "/skills/static/js/2.c5420bf7.chunk.js.map",
+    "static/js/3.cbaacc95.chunk.js": "/skills/static/js/3.cbaacc95.chunk.js",
+    "static/js/3.cbaacc95.chunk.js.map": "/skills/static/js/3.cbaacc95.chunk.js.map",
+    "index.html": "/skills/index.html",
+    "static/css/main.9a70f43a.chunk.css.map": "/skills/static/css/main.9a70f43a.chunk.css.map",
+    "static/js/2.c5420bf7.chunk.js.LICENSE.txt": "/skills/static/js/2.c5420bf7.chunk.js.LICENSE.txt",
+    "static/media/amazon_tree_1.51818534.jpg": "/skills/static/media/amazon_tree_1.51818534.jpg",
+    "static/media/amazon_tree_2.730a2b01.jpg": "/skills/static/media/amazon_tree_2.730a2b01.jpg",
+    "static/media/amazon_tree_3.017bb911.jpg": "/skills/static/media/amazon_tree_3.017bb911.jpg",
+    "static/media/assassin_tree_1.31c2b01f.jpg": "/skills/static/media/assassin_tree_1.31c2b01f.jpg",
+    "static/media/assassin_tree_2.78584904.jpg": "/skills/static/media/assassin_tree_2.78584904.jpg",
+    "static/media/assassin_tree_3.c8eec2b6.jpg": "/skills/static/media/assassin_tree_3.c8eec2b6.jpg",
+    "static/media/barbarian_tree_1.f6c85fe1.jpg": "/skills/static/media/barbarian_tree_1.f6c85fe1.jpg",
+    "static/media/barbarian_tree_2.151536b4.jpg": "/skills/static/media/barbarian_tree_2.151536b4.jpg",
+    "static/media/barbarian_tree_3.dd4f3e10.jpg": "/skills/static/media/barbarian_tree_3.dd4f3e10.jpg",
+    "static/media/druid_tree_1.7214d93b.jpg": "/skills/static/media/druid_tree_1.7214d93b.jpg",
+    "static/media/druid_tree_2.fbba9566.jpg": "/skills/static/media/druid_tree_2.fbba9566.jpg",
+    "static/media/druid_tree_3.a3f8a0b1.jpg": "/skills/static/media/druid_tree_3.a3f8a0b1.jpg",
+    "static/media/necromancer_tree_1.02809e52.jpg": "/skills/static/media/necromancer_tree_1.02809e52.jpg",
+    "static/media/necromancer_tree_2.50723941.jpg": "/skills/static/media/necromancer_tree_2.50723941.jpg",
+    "static/media/necromancer_tree_3.515be771.jpg": "/skills/static/media/necromancer_tree_3.515be771.jpg",
+    "static/media/paladin_tree_1.71b71bef.jpg": "/skills/static/media/paladin_tree_1.71b71bef.jpg",
+    "static/media/paladin_tree_2.fe5331dd.jpg": "/skills/static/media/paladin_tree_2.fe5331dd.jpg",
+    "static/media/paladin_tree_3.711668ea.jpg": "/skills/static/media/paladin_tree_3.711668ea.jpg",
+    "static/media/sorceress_tree_1.de3bff2c.jpg": "/skills/static/media/sorceress_tree_1.de3bff2c.jpg",
+    "static/media/sorceress_tree_2.28766255.jpg": "/skills/static/media/sorceress_tree_2.28766255.jpg",
+    "static/media/sorceress_tree_3.852981ad.jpg": "/skills/static/media/sorceress_tree_3.852981ad.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f707be76.js",
+    "static/js/2.c5420bf7.chunk.js",
+    "static/css/main.9a70f43a.chunk.css",
+    "static/js/main.f08ec440.chunk.js"
+  ]
+}

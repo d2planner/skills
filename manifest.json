@@ -1,0 +1,20 @@
+{
+  "short_name": "D2 Planner",
+  "name": "Diablo 2 Character Planner",
+  "icons": [
+    {
+      "src": "favicon/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "favicon/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

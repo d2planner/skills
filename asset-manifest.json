@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/skills/static/css/main.9a70f43a.chunk.css",
-    "main.js": "/skills/static/js/main.9390a8c8.chunk.js",
-    "main.js.map": "/skills/static/js/main.9390a8c8.chunk.js.map",
-    "runtime-main.js": "/skills/static/js/runtime-main.f707be76.js",
-    "runtime-main.js.map": "/skills/static/js/runtime-main.f707be76.js.map",
-    "static/js/2.c5420bf7.chunk.js": "/skills/static/js/2.c5420bf7.chunk.js",
-    "static/js/2.c5420bf7.chunk.js.map": "/skills/static/js/2.c5420bf7.chunk.js.map",
-    "static/js/3.cbaacc95.chunk.js": "/skills/static/js/3.cbaacc95.chunk.js",
-    "static/js/3.cbaacc95.chunk.js.map": "/skills/static/js/3.cbaacc95.chunk.js.map",
+    "main.js": "/skills/static/js/main.8672ba69.chunk.js",
+    "main.js.map": "/skills/static/js/main.8672ba69.chunk.js.map",
+    "runtime-main.js": "/skills/static/js/runtime-main.96fff9a3.js",
+    "runtime-main.js.map": "/skills/static/js/runtime-main.96fff9a3.js.map",
+    "static/js/2.211f7fcb.chunk.js": "/skills/static/js/2.211f7fcb.chunk.js",
+    "static/js/2.211f7fcb.chunk.js.map": "/skills/static/js/2.211f7fcb.chunk.js.map",
+    "static/js/3.a025e4ba.chunk.js": "/skills/static/js/3.a025e4ba.chunk.js",
+    "static/js/3.a025e4ba.chunk.js.map": "/skills/static/js/3.a025e4ba.chunk.js.map",
     "index.html": "/skills/index.html",
     "static/css/main.9a70f43a.chunk.css.map": "/skills/static/css/main.9a70f43a.chunk.css.map",
-    "static/js/2.c5420bf7.chunk.js.LICENSE.txt": "/skills/static/js/2.c5420bf7.chunk.js.LICENSE.txt",
+    "static/js/2.211f7fcb.chunk.js.LICENSE.txt": "/skills/static/js/2.211f7fcb.chunk.js.LICENSE.txt",
     "static/media/amazon_tree_1.51818534.jpg": "/skills/static/media/amazon_tree_1.51818534.jpg",
     "static/media/amazon_tree_2.730a2b01.jpg": "/skills/static/media/amazon_tree_2.730a2b01.jpg",
     "static/media/amazon_tree_3.017bb911.jpg": "/skills/static/media/amazon_tree_3.017bb911.jpg",
@@ -35,9 +35,9 @@
     "static/media/sorceress_tree_3.852981ad.jpg": "/skills/static/media/sorceress_tree_3.852981ad.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.f707be76.js",
-    "static/js/2.c5420bf7.chunk.js",
+    "static/js/runtime-main.96fff9a3.js",
+    "static/js/2.211f7fcb.chunk.js",
     "static/css/main.9a70f43a.chunk.css",
-    "static/js/main.9390a8c8.chunk.js"
+    "static/js/main.8672ba69.chunk.js"
   ]
 }

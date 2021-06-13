@@ -19,5 +19,5 @@ button.shareButton, button.shareButton:focus {
 }
 
 button.shareButton:hover, button.shareButton:active {
-  border-color: #404040;
+  background-color: #E3EBF2;
 }

@@ -1,0 +1,24 @@
+.footerContentContainer {
+  display:  flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: .3em 0;
+}
+
+p.openSource, p.copyRight {
+  margin-top: .2em;
+  margin-bottom: .2em;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+button.reportIssue, button.reportIssue:focus {
+  background-color: #598AB1;
+  border-color: transparent;
+  margin: .2em 20px;
+}
+
+button.reportIssue:hover, button.reportIssue:active {
+  background-color: #4E7FA6;
+}

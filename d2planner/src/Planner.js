@@ -27,7 +27,8 @@ class Planner extends Component {
       ...getEmptySkillLevels(skillData),
       ...getEmptySkillBonuses(skillData),
     };
-    const { buildString } = props.match.params;
+
+    const buildString = props.location.search.substring(1);
     const buildState = buildStringToState(buildString, skillData.tree);
     if (buildState) {
       const [characterLevel, difficulty] = estimateCharacterLevelAndDifficulty(
@@ -110,7 +111,7 @@ class Planner extends Component {
 
   render() {
     const buildString = stateToBuildString(this.state, skillData.skillDetails)
-    history.push(buildString);
+    history.push(`?${buildString}`);
     return (
       <div className='plannerContainer'>
         <CharacterSelector

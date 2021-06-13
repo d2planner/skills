@@ -7,7 +7,10 @@
 }
 
 p.openSource, p.copyRight {
-  margin: .2em 0;
+  margin-top: .2em;
+  margin-bottom: .2em;
+  margin-left: 20px;
+  margin-right: 0;
 }
 
 button.reportIssue, button.reportIssue:focus {

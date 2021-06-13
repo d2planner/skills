@@ -1,6 +1,10 @@
 import './Footer.css';
 
 function Footer (props) {
+  function sendEmail () {
+    window.open("mailto:d2plannerissues@gmail.com?subject=Report%20Issue");
+  }
+
   return (
     <div className='footerContainer'>
       <hr/>
@@ -9,7 +13,12 @@ function Footer (props) {
           <p className='openSource'>An open source project (<a href='https://github.com/d2planner/d2planner'>view</a>).</p>
           <p className='copyRight'>© Copyright 2021, D2 Planner Developers</p>
         </div>
-        <button className='reportIssue'>Report Issue</button>
+        <button
+          className='reportIssue'
+          onClick={sendEmail}
+        >
+        Report Issue
+        </button>
       </div>
     </div>
   )

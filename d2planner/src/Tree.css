@@ -1,3 +1,7 @@
+.treeWithOptionsContainer {
+  margin-top: 2em;
+}
+
 .treeContainer {
   position: relative;
   height: fit-content;

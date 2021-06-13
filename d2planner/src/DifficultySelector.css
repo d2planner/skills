@@ -24,9 +24,17 @@ button.difficultySelected, button.difficultySelected:focus, button.autoSelected,
   border-color: #404040;
 }
 
+button.autoSelected:hover, button.autoSelected:active {
+  background-color: #E3EBF2;
+}
+
 button.difficultyAutoSelected, button.difficultyAutoSelected:focus {
   border-color: #404040;
   border-style: dashed;
+}
+
+button.difficultyAutoSelected:hover, button.difficultyAutoSelected:active {
+  border-style: solid;
 }
 
 

@@ -12,7 +12,7 @@ import Instructions from './Instructions';
 import Tooltip from './Tooltip';
 import Tree from './Tree';
 
-const  history = createBrowserHistory();
+const  history = createBrowserHistory({basename: '/skills'});
 
 class Planner extends Component {
   constructor (props) {

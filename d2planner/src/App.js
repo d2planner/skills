@@ -1,4 +1,4 @@
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import './App.css';
@@ -9,14 +9,10 @@ const  history = createBrowserHistory();
 
 function App() {
   return (
-    <Router history={history}>
+    <Router basename={process.env.PUBLIC_URL} history={history}>
         <div className="planner">
           <h1 className="mainTitle">Diablo 2 Skill Planner</h1>
-          <Switch>
-            <Route path="/skills/:buildString" component={Planner}/>
-            <Route path="/skills" component={Planner}/>
-            <Route path="/" component={Planner}/>
-          </Switch>
+          <Route path="/" component={Planner}/>
           <Footer/>
         </div>
     </Router>

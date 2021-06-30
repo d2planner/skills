@@ -11,6 +11,9 @@ function calculatePhysicalDamageMax (skill, lvl, skillLevels, skillBonuses, miss
 }
 
 function calculateElementalDamageMin (skill, lvl, skillLevels, skillBonuses, missileNum=null) {
+  if (isLightningMin(skill)) {
+    return 1;
+  }
   return calculateDamage(skill, lvl, skillLevels, skillBonuses, 'eMin', 'eMinLev', 'eDmgSymPerCalc', missileNum);
 }
 
@@ -48,6 +51,17 @@ function calculateDamage (
   const hitShift = skill.hitShift || 0;
   return damage * synergyMultiplier * 2 ** (hitShift - 8);
 }
+
+const isLightningMin = skill => (
+  (skill.eType === "Lightning")
+  && (skill.eMin === 1)
+  && !(skill.eMinLev1 > 0)
+  && !(skill.eMinLev2 > 0)
+  && !(skill.eMinLev3 > 0)
+  && !(skill.eMinLev4 > 0)
+  && !(skill.eMinLev5 > 0)
+);
+
 
 export {
   calculatePhysicalDamageMin,

@@ -86,7 +86,7 @@ function calculateLength (skill, lvl, skillLevels, skillBonuses) {
       break;
     }
     const lengthPerLevel = skill[`eLevLen${i}`] || 0;
-    const lvlForBand = Math.min(upper, lvl);
+    const lvlForBand = (upper !== null) ? Math.min(upper, lvl) : lvl;
     length += (lvlForBand - lower) * lengthPerLevel;
   }
   return length * synergyMultipler;

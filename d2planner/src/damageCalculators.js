@@ -1,4 +1,5 @@
-import calculateSkillValue from './calculateSkillValue'
+import { createLinearCalculator } from './calculators';
+import calculateSkillValue, { getTotalLevel } from './calculateSkillValue';
 
 const lvlBreakpoints = [[0, 1], [1, 8], [8, 16], [16, 22], [22, 28], [28, null]];
 
@@ -38,6 +39,9 @@ function calculateDamage (
   const synergyBonus = calculateSkillValue(skill[synergyKey], skill, lvl, skillLevels, skillBonuses) || 0;
   const synergyMultiplier = (100 + synergyBonus) / 100;
 
+  const masteryBonus = getElementalMasteryBonus(skill, lvl, skillLevels, skillBonuses) || 0;
+  const masteryMultiplier = (100 + masteryBonus) / 100;
+
   let damage = skill[initialDamageKey];
   for (let i = 0; i < lvlBreakpoints.length; i++) {
     const [lower, upper] = lvlBreakpoints[i];
@@ -49,7 +53,20 @@ function calculateDamage (
     damage += (lvlForBand - lower) * damagePerLevel;
   }
   const hitShift = skill.hitShift || 0;
-  return damage * synergyMultiplier * 2 ** (hitShift - 8);
+  return damage * synergyMultiplier * masteryMultiplier * 2 ** (hitShift - 8);
+}
+
+function getElementalMasteryBonus (skill, lvl, skillLevels, skillBonuses) {
+  if (!['Lightning', 'Fire'].includes(skill.eType) || !skill.relatedSkills) {
+    return 0;
+  }
+  const mastery = skill.relatedSkills[`${skill.eType.toLowerCase()}Mastery`];
+  if (!mastery) {
+    return 0;
+  }
+  const calculator = createLinearCalculator('par1', 'par2');
+  const masteryLvl = getTotalLevel(mastery, skillLevels, skillBonuses)
+  return calculator(mastery, masteryLvl, skillLevels, skillBonuses);
 }
 
 const isLightningMin = skill => (

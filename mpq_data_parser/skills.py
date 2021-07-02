@@ -67,6 +67,8 @@ def get_skill_details(
 
         other_skill_params_pattern = r"(?:skill|sklvl)\('((?:\w|\s)+)'(?:\.(?!lvl|blvl)\w+)+\)"
         related_skills = _get_related_entities_for_calcs(row, other_skill_params_pattern)
+        if (row.charclass == 'sor') and (row.EType in ('Fire', 'Lightning')):
+            related_skills.add(f'{row.EType.lower()}Mastery')
         skill_details[skill_key]['relatedSkills'] = {
             skill: _without_related(skill_details[skill]) for skill in related_skills
         }

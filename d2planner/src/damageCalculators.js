@@ -64,8 +64,11 @@ function getElementalMasteryBonus (skill, lvl, skillLevels, skillBonuses) {
   if (!mastery) {
     return 0;
   }
-  const calculator = createLinearCalculator('par1', 'par2');
   const masteryLvl = getTotalLevel(mastery, skillLevels, skillBonuses)
+  if (masteryLvl < 1) {
+    return 0;
+  }
+  const calculator = createLinearCalculator('par1', 'par2');
   return calculator(mastery, masteryLvl, skillLevels, skillBonuses);
 }
 

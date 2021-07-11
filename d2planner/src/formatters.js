@@ -23,7 +23,7 @@ const formattersByDescline = {
   4: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}+${calcA}`)}),
   5: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta} ${calcA}`), precision: 1}),
   6: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`+${calcA} ${ta}`)}),
-  7: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA} ${ta}`)}),
+  7: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${calcA} ${ta}`), precision: 1}),
   8: formatAttackRating,
   9: formatPhysicalDamage,
   10: formatElementalDamage,

@@ -109,10 +109,11 @@ def _get_requirement_edge(skill_a: dict, skill_b: dict):
 
 
 def _get_synergies_for_row(skill_key: str, skill_details: dict) -> list[str]:
+    charclass = skill_details[skill_key].get('charclass')
     skill_name_lookup = {
         skill['strName']: skill['skillName']
         for skill in skill_details.values()
-        if skill.get('strName') is not None
+        if skill.get('strName') is not None and skill.get('charclass') == charclass
     }
     pattern = r"|".join([strName for strName in skill_name_lookup.keys()])
 

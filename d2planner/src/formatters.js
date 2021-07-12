@@ -152,9 +152,8 @@ function formatElementalDamageWithText (skill, lvl, skillLevels, skillBonuses, d
 }
 
 function formatFireDamageOverTime (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) {
-  const adjustment = 2.34 * 2 ** 5  // tuned, just higher than 7/3
-  const minDamage = floor(adjustment * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses));
-  const maxDamage = floor(adjustment * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses));
+  const minDamage = floor(3 * framesPerSecond * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses));
+  const maxDamage = floor(3 * framesPerSecond * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses));
   return `Average Fire Damage: ${minDamage}-${maxDamage} per second`;
 }
 
@@ -203,9 +202,8 @@ function formatMissileDamage (skill, lvl, skillLevels, skillBonuses, difficulty,
 }
 
 function formatFireMissileDamageOverTime (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) {
-  const adjustment = 2.34 * 2 ** 5;  // tuned, just higher than 7/3
-  const minDamage = floor(adjustment * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses, 1));
-  const maxDamage = floor(adjustment * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses, 1));
+  const minDamage = floor(3 * framesPerSecond * calculateElementalDamageMin(skill, lvl, skillLevels, skillBonuses, 1));
+  const maxDamage = floor(3 * framesPerSecond * calculateElementalDamageMax(skill, lvl, skillLevels, skillBonuses, 1));
   return `Average Fire Damage: ${minDamage}-${maxDamage} per second`;
 }
 

@@ -291,7 +291,7 @@ function createFillTaWithCalcAFormatter (pattern) {
 function createFillTbWithCalcAFormatter (pattern) {
   function formatter (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) {
     const calcA = calculateSkillValue(ca, skill, lvl, skillLevels, skillBonuses);
-    return tb.replace(pattern, calcA);
+    return `${ta}: ${tb.replace(pattern, calcA)}`;
   }
   return formatter;
 }

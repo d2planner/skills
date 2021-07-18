@@ -28,7 +28,7 @@ const formattersByDescline = {
   9: formatPhysicalDamage,
   10: formatElementalDamage,
   11: formatElementalLength,
-  12: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${ta}${calcA} seconds`), frames: true, precision: 10}),
+  12: createCalcFormatter({template: (ta, tb, calcA, calcB) => (`${tb}${ta}${calcA} seconds`), frames: true, precision: 10}),
   13: formatMinionLife,
   14: formatPoisonDamage,
   // 15: (skill, lvl, skillLevels, skillBonuses, difficulty, ta, tb, ca, cb) => (`${ta || ''}:${tb || ''}`),
